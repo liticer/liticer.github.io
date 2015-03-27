@@ -1,0 +1,794 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xsl:stylesheet [<!ENTITY mdash "&#x2014;">]>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title type="text" xml:lang="en">nadjetey's blog</title>
+  <link type="application/atom+xml" href="http://nadjetey.github.io/feed.xml" rel="self"/>
+  <link type="text/html" href="http://nadjetey.github.io" rel="alternate"/>
+  <updated>2015-03-27T10:07:46+00:00</updated>
+  <id>http://nadjetey.github.io/all_feed</id>
+  <author>
+    <name>Nii Adjetey</name>
+  </author>
+
+  
+  <entry>
+    <title>Full text search w/ RoR and Postgres</title>
+    <link href="http://nadjetey.github.io/2015/02/full-text-search-with-postgres/"/>
+    <updated>2015-02-17T00:00:00+00:00</updated>
+    <id>http://nadjetey.github.io/2015/02/full-text-search-with-postgres</id>
+    <content type="html">&lt;p&gt;Full text searching provides the capability to identify documents/models that satify a query, and even sort by relevance to the query (optional). &lt;a href=&quot;http://www.postgresql.org/docs/9.1/static/textsearch-intro.html&quot;&gt;Full documentation&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;1 Build your search form&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-erb&quot; data-lang=&quot;erb&quot;&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;form_tag&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;users_path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:method&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;get&amp;quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;  &amp;lt;p&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;text_field_tag&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:query&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:query&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:placeholder&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Search...&amp;quot;&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;submit_tag&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;SEARCH&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;  &amp;lt;/p&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;&amp;lt;%&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;2 Alter Controller action&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# GET /users filtered by custom search method&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;index&lt;/span&gt;
+  &lt;span class=&quot;vi&quot;&gt;@search&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;custom_search&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:query&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;3 Alter the model and define custom search function&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;custom_search&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;present?&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;where&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;name @@ :q&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;all&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Done!&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Dirty tracking</title>
+    <link href="http://nadjetey.github.io/2014/11/dirty-tracking/"/>
+    <updated>2014-11-24T00:00:00+00:00</updated>
+    <id>http://nadjetey.github.io/2014/11/dirty-tracking</id>
+    <content type="html">&lt;p&gt;Dirty tracking is a way to check if an attribute of interest has changed or not - it is a way to verify is an attribute is dirty (or changed). Rails/ActiveModel supports dirty tracking.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;_attr_changed?  #=&amp;gt; returns a whether attr changed.&lt;/li&gt;
+&lt;li&gt;attr_change  #=&amp;gt; returns an array [old_value, new_value].&lt;/li&gt;
+&lt;li&gt;attr_was  #=&amp;gt; returns the old value of attr.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3&gt;Use in an example&lt;/h3&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;after_validation&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:geocode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:address_changed?&lt;/span&gt;
+&lt;span class=&quot;ss&quot;&gt;:address_changed?&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#=&amp;gt; This is an example of dirty tracking&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content>
+  </entry>
+  
+  <entry>
+    <title>My year on #Github (2014 recap)</title>
+    <link href="http://nadjetey.github.io/2014/11/my-year-on-github/"/>
+    <updated>2014-11-22T00:00:00+00:00</updated>
+    <id>http://nadjetey.github.io/2014/11/my-year-on-github</id>
+    <content type="html">&lt;p&gt;2014 is almost over (about a month more to go), and I am very proud of my contributions on #github. I assume they will grow some more as I plan to increase my projects and web development experience. Waiting for the right gig is not working for me anymore. The plan is to #read more and work on more short term projects (more weekend hackathons-like project idea). Hopefully with the arrival of my very own mac - ikr :) - will increase my productivity. &lt;/p&gt;
+
+&lt;h3&gt;2014 contributions on #github (recap)&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://nadjetey.github.io/assets/images/contrib.png&quot; alt=&quot;contrib github&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;I admit this graph is not as impressive as others. In my defense, my previous year had worse contribution stats. I have learned so much during this year that I can almost guarantee that my graph will be much more colourful by the end of the year 2015. &lt;/p&gt;
+
+&lt;p&gt;Wish me luck. Happy new year! &lt;br /&gt;
+Cheers to the #2015&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>How to deploy Jekyll 2.1.1 on Github server</title>
+    <link href="http://nadjetey.github.io/2014/10/how-to-deploy-jekyll-2.1.1-on-github-server/"/>
+    <updated>2014-10-23T00:00:00+00:00</updated>
+    <id>http://nadjetey.github.io/2014/10/how-to-deploy-jekyll-2.1.1-on-github-server</id>
+    <content type="html">&lt;p&gt;&lt;strong&gt;[UPDATED]&lt;/strong&gt; GitHub Pages now runs Jekyll 2.2.0.
+Check out the full list of 300+ changes and new features added to Jekyll since version 1.5.1.
+&lt;a href=&quot;https://github.com/blog/1867-github-pages-now-runs-jekyll-2-2-0&quot;&gt;Read more&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Problem is that SASS with Jekyll, cannnot be used GitHub Pages since the GitHub Pages server is still using Jekyll 1.5.1, as shown &lt;a href=&quot;https://pages.github.com/versions/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Solution:&lt;/p&gt;
+
+&lt;p&gt;#1 Use sass as described &lt;a href=&quot;http://jekyllrb.com/docs/assets/&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;#2 When committing changes and hosting on Github Pages, comment out the sass/scss options in the _config file&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;c1&quot;&gt;#/_config.yml&lt;/span&gt;
+&lt;span class=&quot;nn&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#sass:&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#    sass_dir: _sass&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#    style: :compressed&lt;/span&gt;
+&lt;span class=&quot;nn&quot;&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;#3 Copy the compressed file into \css\ after running &lt;code&gt;jekyll build&lt;/code&gt; in local development. Copy the pre-compiled css from _site and place it into \css.&lt;/p&gt;
+
+&lt;p&gt;#4 Rename the main css file (e.g. main.scss) to _main.scss to avoid compilation by the static server&lt;/p&gt;
+
+&lt;p&gt;#5 Go ahead and run commits and complete hosting&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;If you like this hack, shout me out on &lt;a href=&quot;https://twitter.com/_nadjetey&quot;&gt;twitter&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;More Vimm!&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>African Developer Community — afridevcmty</title>
+    <link href="http://nadjetey.github.io/2014/07/african-developer-community-afridevcmty/"/>
+    <updated>2014-07-20T00:00:00+00:00</updated>
+    <id>http://nadjetey.github.io/2014/07/african-developer-community-afridevcmty</id>
+    <content type="html">&lt;p&gt;It is common knowledge that programmers/coders/developers/codewriters resident in Africa are not easily visible online. Scott Hanselman referred to them as &lt;a href=&quot;http://www.hanselman.com/blog/DarkMatterDevelopersTheUnseen99.aspx&quot;&gt;dark matter developers&lt;/a&gt;. I do not fully understand exactly why this is the case but I definitely want to contribute to changing it.&lt;/p&gt;
+
+&lt;p&gt;My team is proud to present to you &lt;a href=&quot;http://afridevcmty.herokuapp.com/&quot;&gt;afridevcmty&lt;/a&gt;(version 0.1) This is an online directory of African programmers. A place where anyone can search programmers based on  country (African countries only), programming language and African region. The benefits of &lt;a href=&quot;http://afridevcmty.herokuapp.com/&quot;&gt;afridevcmty&lt;/a&gt; include:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;developers in Africa can find partners (who understand the context) to work with&lt;/li&gt;
+&lt;li&gt;the world can see the work of developers from Africa&lt;/li&gt;
+&lt;li&gt;it offers an aggregated list of coders resident in Africa (along with other information like their language of choice, blogs etc)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Based on research, there are other platforms that have tried to tackle this issue. But these platforms have one thing in common – they require users to signin or signup (the failure of these platforms have been attributed to this problem). That&amp;#39;s where our project stands out.  There is no signup or signin required. All users are pulled from &lt;a href=&quot;https://github.com/&quot;&gt;Github&lt;/a&gt;
+&lt;em&gt;&lt;a href=&quot;http://afridevcmty.herokuapp.com/&quot;&gt;afridevcmty&lt;/a&gt; relies on  &lt;a href=&quot;https://github.com/&quot;&gt;github&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Note: Only users with github accounts that were created before 19 July 2014 and with location fields which are not empty are present in the directory.&lt;/p&gt;
+
+&lt;h3&gt;How to use&lt;/h3&gt;
+
+&lt;iframe src=&quot;//instagram.com/p/qrfzMWoqgG/embed/&quot; width=&quot;612&quot; height=&quot;710&quot; frameborder=&quot;0&quot; scrolling=&quot;no&quot; allowtransparency=&quot;true&quot;&gt;&lt;/iframe&gt;
+
+&lt;p&gt;Visit &lt;a href=&quot;http://afridevcmty.herokuapp.com/&quot;&gt;afridevcmty.herokuapp.com&lt;/a&gt;
+If your github account is not listed but fit the profile then it might be because:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;the account that was created after 19 July 2014 or&lt;/li&gt;
+&lt;li&gt;the location field in your github user account profile is empty&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;if these requirements are fulfilled and still cannot see the profile in afridevcmty, a feature for adding new accounts will be developed very soon&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;To contribute to this project &amp;mdash; afridevcmty, visit the &lt;a href=&quot;https://github.com/nadjetey/afridevcmty&quot;&gt;source code&lt;/a&gt;
+To contact the developers about afridevcmty, send a &lt;a href=&quot;https://github.com/nadjetey/afridevcmty/issues/new&quot;&gt;message&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;More Vimm!&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Ensuring syntax highlighting with Jekyll+Pygments</title>
+    <link href="http://nadjetey.github.io/2014/07/ensuring-syntax-highlighting-with-jekyll+pygments/"/>
+    <updated>2014-07-17T00:00:00+00:00</updated>
+    <id>http://nadjetey.github.io/2014/07/ensuring-syntax-highlighting-with-jekyll+pygments</id>
+    <content type="html">&lt;p&gt;Jekyll+Pygments allows code syntax highlighting in writing posts especially in .markdown/.md
+To use the syntax highlighting, you&amp;#39;ll need to specify the language that you&amp;#39;re using. For example:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;``` ruby
+ def index
+  puts &amp;quot;hello world&amp;quot;
+ end
+``
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Here is a detailed look at the supported files syntax:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;Cucumber (&amp;#39;*.feature&amp;#39;)
+abap (&amp;#39;*.abap&amp;#39;)
+ada (&amp;#39;*.adb&amp;#39;, &amp;#39;*.ads&amp;#39;, &amp;#39;*.ada&amp;#39;)
+ahk (&amp;#39;*.ahk&amp;#39;, &amp;#39;*.ahkl&amp;#39;)
+apacheconf (&amp;#39;.htaccess&amp;#39;, &amp;#39;apache.conf&amp;#39;, &amp;#39;apache2.conf&amp;#39;)
+applescript (&amp;#39;*.applescript&amp;#39;)
+as (&amp;#39;*.as&amp;#39;)
+as3 (&amp;#39;*.as&amp;#39;)
+asy (&amp;#39;*.asy&amp;#39;)
+bash (&amp;#39;*.sh&amp;#39;, &amp;#39;*.ksh&amp;#39;, &amp;#39;*.bash&amp;#39;, &amp;#39;*.ebuild&amp;#39;, &amp;#39;*.eclass&amp;#39;)
+bat (&amp;#39;*.bat&amp;#39;, &amp;#39;*.cmd&amp;#39;)
+befunge (&amp;#39;*.befunge&amp;#39;)
+blitzmax (&amp;#39;*.bmx&amp;#39;)
+boo (&amp;#39;*.boo&amp;#39;)
+brainfuck (&amp;#39;*.bf&amp;#39;, &amp;#39;*.b&amp;#39;)
+c (&amp;#39;*.c&amp;#39;, &amp;#39;*.h&amp;#39;)
+cfm (&amp;#39;*.cfm&amp;#39;, &amp;#39;*.cfml&amp;#39;, &amp;#39;*.cfc&amp;#39;)
+cheetah (&amp;#39;*.tmpl&amp;#39;, &amp;#39;*.spt&amp;#39;)
+cl (&amp;#39;*.cl&amp;#39;, &amp;#39;*.lisp&amp;#39;, &amp;#39;*.el&amp;#39;)
+clojure (&amp;#39;*.clj&amp;#39;, &amp;#39;*.cljs&amp;#39;)
+cmake (&amp;#39;*.cmake&amp;#39;, &amp;#39;CMakeLists.txt&amp;#39;)
+coffeescript (&amp;#39;*.coffee&amp;#39;)
+console (&amp;#39;*.sh-session&amp;#39;)
+control (&amp;#39;control&amp;#39;)
+cpp (&amp;#39;*.cpp&amp;#39;, &amp;#39;*.hpp&amp;#39;, &amp;#39;*.c++&amp;#39;, &amp;#39;*.h++&amp;#39;, &amp;#39;*.cc&amp;#39;, &amp;#39;*.hh&amp;#39;, &amp;#39;*.cxx&amp;#39;, &amp;#39;*.hxx&amp;#39;, &amp;#39;*.pde&amp;#39;)
+csharp (&amp;#39;*.cs&amp;#39;)
+css (&amp;#39;*.css&amp;#39;)
+cython (&amp;#39;*.pyx&amp;#39;, &amp;#39;*.pxd&amp;#39;, &amp;#39;*.pxi&amp;#39;)
+d (&amp;#39;*.d&amp;#39;, &amp;#39;*.di&amp;#39;)
+delphi (&amp;#39;*.pas&amp;#39;)
+diff (&amp;#39;*.diff&amp;#39;, &amp;#39;*.patch&amp;#39;)
+dpatch (&amp;#39;*.dpatch&amp;#39;, &amp;#39;*.darcspatch&amp;#39;)
+duel (&amp;#39;*.duel&amp;#39;, &amp;#39;*.jbst&amp;#39;)
+dylan (&amp;#39;*.dylan&amp;#39;, &amp;#39;*.dyl&amp;#39;)
+erb (&amp;#39;*.erb&amp;#39;)
+erl (&amp;#39;*.erl-sh&amp;#39;)
+erlang (&amp;#39;*.erl&amp;#39;, &amp;#39;*.hrl&amp;#39;)
+evoque (&amp;#39;*.evoque&amp;#39;)
+factor (&amp;#39;*.factor&amp;#39;)
+felix (&amp;#39;*.flx&amp;#39;, &amp;#39;*.flxh&amp;#39;)
+fortran (&amp;#39;*.f&amp;#39;, &amp;#39;*.f90&amp;#39;)
+gas (&amp;#39;*.s&amp;#39;, &amp;#39;*.S&amp;#39;)
+genshi (&amp;#39;*.kid&amp;#39;)
+glsl (&amp;#39;*.vert&amp;#39;, &amp;#39;*.frag&amp;#39;, &amp;#39;*.geo&amp;#39;)
+gnuplot (&amp;#39;*.plot&amp;#39;, &amp;#39;*.plt&amp;#39;)
+go (&amp;#39;*.go&amp;#39;)
+groff (&amp;#39;*.(1234567)&amp;#39;, &amp;#39;*.man&amp;#39;)
+haml (&amp;#39;*.haml&amp;#39;)
+haskell (&amp;#39;*.hs&amp;#39;)
+html (&amp;#39;*.html&amp;#39;, &amp;#39;*.htm&amp;#39;, &amp;#39;*.xhtml&amp;#39;, &amp;#39;*.xslt&amp;#39;)
+hx (&amp;#39;*.hx&amp;#39;)
+hybris (&amp;#39;*.hy&amp;#39;, &amp;#39;*.hyb&amp;#39;)
+ini (&amp;#39;*.ini&amp;#39;, &amp;#39;*.cfg&amp;#39;)
+io (&amp;#39;*.io&amp;#39;)
+ioke (&amp;#39;*.ik&amp;#39;)
+irc (&amp;#39;*.weechatlog&amp;#39;)
+jade (&amp;#39;*.jade&amp;#39;)
+java (&amp;#39;*.java&amp;#39;)
+js (&amp;#39;*.js&amp;#39;)
+jsp (&amp;#39;*.jsp&amp;#39;)
+lhs (&amp;#39;*.lhs&amp;#39;)
+llvm (&amp;#39;*.ll&amp;#39;)
+logtalk (&amp;#39;*.lgt&amp;#39;)
+lua (&amp;#39;*.lua&amp;#39;, &amp;#39;*.wlua&amp;#39;)
+make (&amp;#39;*.mak&amp;#39;, &amp;#39;Makefile&amp;#39;, &amp;#39;makefile&amp;#39;, &amp;#39;Makefile.*&amp;#39;, &amp;#39;GNUmakefile&amp;#39;)
+mako (&amp;#39;*.mao&amp;#39;)
+maql (&amp;#39;*.maql&amp;#39;)
+mason (&amp;#39;*.mhtml&amp;#39;, &amp;#39;*.mc&amp;#39;, &amp;#39;*.mi&amp;#39;, &amp;#39;autohandler&amp;#39;, &amp;#39;dhandler&amp;#39;)
+markdown (&amp;#39;*.md&amp;#39;)
+modelica (&amp;#39;*.mo&amp;#39;)
+modula2 (&amp;#39;*.def&amp;#39;, &amp;#39;*.mod&amp;#39;)
+moocode (&amp;#39;*.moo&amp;#39;)
+mupad (&amp;#39;*.mu&amp;#39;)
+mxml (&amp;#39;*.mxml&amp;#39;)
+myghty (&amp;#39;*.myt&amp;#39;, &amp;#39;autodelegate&amp;#39;)
+nasm (&amp;#39;*.asm&amp;#39;, &amp;#39;*.ASM&amp;#39;)
+newspeak (&amp;#39;*.ns2&amp;#39;)
+objdump (&amp;#39;*.objdump&amp;#39;)
+objectivec (&amp;#39;*.m&amp;#39;)
+objectivej (&amp;#39;*.j&amp;#39;)
+ocaml (&amp;#39;*.ml&amp;#39;, &amp;#39;*.mli&amp;#39;, &amp;#39;*.mll&amp;#39;, &amp;#39;*.mly&amp;#39;)
+ooc (&amp;#39;*.ooc&amp;#39;)
+perl (&amp;#39;*.pl&amp;#39;, &amp;#39;*.pm&amp;#39;)
+php (&amp;#39;*.php&amp;#39;, &amp;#39;*.php(345)&amp;#39;)
+postscript (&amp;#39;*.ps&amp;#39;, &amp;#39;*.eps&amp;#39;)
+pot (&amp;#39;*.pot&amp;#39;, &amp;#39;*.po&amp;#39;)
+pov (&amp;#39;*.pov&amp;#39;, &amp;#39;*.inc&amp;#39;)
+prolog (&amp;#39;*.prolog&amp;#39;, &amp;#39;*.pro&amp;#39;, &amp;#39;*.pl&amp;#39;)
+properties (&amp;#39;*.properties&amp;#39;)
+protobuf (&amp;#39;*.proto&amp;#39;)
+py3tb (&amp;#39;*.py3tb&amp;#39;)
+pytb (&amp;#39;*.pytb&amp;#39;)
+python (&amp;#39;*.py&amp;#39;, &amp;#39;*.pyw&amp;#39;, &amp;#39;*.sc&amp;#39;, &amp;#39;SConstruct&amp;#39;, &amp;#39;SConscript&amp;#39;, &amp;#39;*.tac&amp;#39;)
+rb (&amp;#39;*.rb&amp;#39;, &amp;#39;*.rbw&amp;#39;, &amp;#39;Rakefile&amp;#39;, &amp;#39;*.rake&amp;#39;, &amp;#39;*.gemspec&amp;#39;, &amp;#39;*.rbx&amp;#39;, &amp;#39;*.duby&amp;#39;)
+rconsole (&amp;#39;*.Rout&amp;#39;)
+rebol (&amp;#39;*.r&amp;#39;, &amp;#39;*.r3&amp;#39;)
+redcode (&amp;#39;*.cw&amp;#39;)
+rhtml (&amp;#39;*.rhtml&amp;#39;)
+rst (&amp;#39;*.rst&amp;#39;, &amp;#39;*.rest&amp;#39;)
+sass (&amp;#39;*.sass&amp;#39;)
+scala (&amp;#39;*.scala&amp;#39;)
+scaml (&amp;#39;*.scaml&amp;#39;)
+scheme (&amp;#39;*.scm&amp;#39;)
+scss (&amp;#39;*.scss&amp;#39;)
+smalltalk (&amp;#39;*.st&amp;#39;)
+smarty (&amp;#39;*.tpl&amp;#39;)
+sourceslist (&amp;#39;sources.list&amp;#39;)
+splus (&amp;#39;*.S&amp;#39;, &amp;#39;*.R&amp;#39;)
+sql (&amp;#39;*.sql&amp;#39;)
+sqlite3 (&amp;#39;*.sqlite3-console&amp;#39;)
+squidconf (&amp;#39;squid.conf&amp;#39;)
+ssp (&amp;#39;*.ssp&amp;#39;)
+tcl (&amp;#39;*.tcl&amp;#39;)
+tcsh (&amp;#39;*.tcsh&amp;#39;, &amp;#39;*.csh&amp;#39;)
+tex (&amp;#39;*.tex&amp;#39;, &amp;#39;*.aux&amp;#39;, &amp;#39;*.toc&amp;#39;)
+text (&amp;#39;*.txt&amp;#39;)
+v (&amp;#39;*.v&amp;#39;, &amp;#39;*.sv&amp;#39;)
+vala (&amp;#39;*.vala&amp;#39;, &amp;#39;*.vapi&amp;#39;)
+vbnet (&amp;#39;*.vb&amp;#39;, &amp;#39;*.bas&amp;#39;)
+velocity (&amp;#39;*.vm&amp;#39;, &amp;#39;*.fhtml&amp;#39;)
+vim (&amp;#39;*.vim&amp;#39;, &amp;#39;.vimrc&amp;#39;)
+xml (&amp;#39;*.xml&amp;#39;, &amp;#39;*.xsl&amp;#39;, &amp;#39;*.rss&amp;#39;, &amp;#39;*.xslt&amp;#39;, &amp;#39;*.xsd&amp;#39;, &amp;#39;*.wsdl&amp;#39;)
+xquery (&amp;#39;*.xqy&amp;#39;, &amp;#39;*.xquery&amp;#39;)
+xslt (&amp;#39;*.xsl&amp;#39;, &amp;#39;*.xslt&amp;#39;)
+yaml (&amp;#39;*.yaml&amp;#39;, &amp;#39;*.yml&amp;#39;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;Reference: &lt;a href=&quot;http://support.codebasehq.com/articles/tips-tricks/syntax-highlighting-in-markdown&quot;&gt;http://support.codebasehq.com/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;More Vimm!&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>How to include HTML entities in XML source</title>
+    <link href="http://nadjetey.github.io/2014/06/how-to-include-html-entities-in-xml-source/"/>
+    <updated>2014-06-24T00:00:00+00:00</updated>
+    <id>http://nadjetey.github.io/2014/06/how-to-include-html-entities-in-xml-source</id>
+    <content type="html">&lt;p&gt;In my attemp to build an RSS feed for this blog, I run a problem. Some html entities (without some help) could not be parsed in XML. This was the error generated&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt; error on line # at column #: Entity &amp;#39;mdash&amp;#39; not defined
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;I guess it must have been complaining about lines in my posts such as&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;&amp;quot;The Journey &amp;amp;mdash; Book one complete&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;which under normal circumstances should render as&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;The Journey — Book one complete
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Thanks to this &lt;a href=&quot;http://stackoverflow.com/questions/2729478/leave-entity-intact-in-xml-xslt&quot;&gt;Stackoverflow&lt;/a&gt; answer I overcame this problem by adding only this line to my XML&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;&amp;lt;!DOCTYPE xsl:stylesheet [&amp;lt;!ENTITY mdash &amp;quot;&amp;amp;#x2014;&amp;quot;&amp;gt;]&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Have a look at my template
+&lt;script src=&quot;https://gist.github.com/nadjetey/95d9596405316f9885b4.js&quot;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;More Vimm!&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Challenge accepted</title>
+    <link href="http://nadjetey.github.io/2014/06/challenge-accepted/"/>
+    <updated>2014-06-04T00:00:00+00:00</updated>
+    <id>http://nadjetey.github.io/2014/06/challenge-accepted</id>
+    <content type="html">&lt;h3&gt;Initial project description:&lt;/h3&gt;
+
+&lt;p&gt;An online directory of African programmers. A place where anyone can search programmers based on say, community, programming language, project interests, gender, age brackets etc&lt;/p&gt;
+
+&lt;h3&gt;Appreciation&lt;/h3&gt;
+
+&lt;p&gt;I would like to say thank you to all those who encouraged me to pursue this. And to all those you showed interest in contributing to this:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://twitter.com/royalgoombah&quot;&gt;Aditya Raghuwanshi&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://twitter.com/tinashekav&quot;&gt;Tinashe Kavumbura&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://twitter.com/gr2m&quot;&gt;Gregor&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://twitter.com/SBarnesjr&quot;&gt;Steve Barnes&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This is the git &lt;a href=&quot;https://github.com/nadjetey/afridevcmty&quot;&gt;repository&lt;/a&gt;, let&amp;#39;s do this.&lt;/p&gt;
+
+&lt;p&gt;More Vimm!&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Where are the African programmers?</title>
+    <link href="http://nadjetey.github.io/2014/06/where-are-the-african-coders/"/>
+    <updated>2014-06-02T00:00:00+00:00</updated>
+    <id>http://nadjetey.github.io/2014/06/where-are-the-african-coders</id>
+    <content type="html">&lt;p&gt;&lt;em&gt;(I will talk about Accra, Ghana because that&amp;#39;s what I know)&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Hundreds of qualified computer science students (commonly referred to as IT students) graduate from our universities every year. Yet, for some strange reason, these people are virtually ghosts on the Internet. A simple test: try googling programmers in Accra. Understand what I mean now?&lt;/p&gt;
+
+&lt;p&gt;This is the frustration of many individuals/groups looking to contact such an invaluable human resource be it for job positions, collaboration opportunities or even for regular meetings/discussions. Really, &amp;quot;where are the African programmers&amp;quot;? Imagine the potential of having access to such human resource. The possibility of having meetings (Rails conferences for example) in Africa - specifically Accra city, where I live - excites me enough to attempt to solve this problem in my small corner. I will try and solve this the only way I know how - through software development.&lt;/p&gt;
+
+&lt;p&gt;I propose an online directory of African programmers. A place where anyone can search programmers based on say, community, programming language, project interests, gender, age brackets etc I hope to build this using Ruby on Rails (because that&amp;#39;s what am currently studying). Usually when I ask for help on this blog, I hardly receive it. This time, if you are reading this make an effort. Your help is very welcome. You may even suggest what this project should be called at the very least. I am looking forward to collaborations on this project, &lt;a href=&quot;https://twitter.com/_nadjetey&quot;&gt;tweet&lt;/a&gt; at me and let&amp;#39;s start ideation.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Other words for programmers: coders, developers (devs), codewriters&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;More Vimm!&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>The Journey &mdash; Book one complete</title>
+    <link href="http://nadjetey.github.io/2014/05/the-journey-book-one-complete/"/>
+    <updated>2014-05-28T00:00:00+00:00</updated>
+    <id>http://nadjetey.github.io/2014/05/the-journey-book-one-complete</id>
+    <content type="html">&lt;p&gt;Today, I can say I have completed the book &lt;a href=&quot;http://pragprog.com/book/rails4/agile-web-development-with-rails-4&quot;&gt;&amp;quot;Agile Web Development with Rails, Edition 4&amp;quot;&lt;/a&gt;. I&amp;#39;m excited, especially after such an expected surprize in hosting challenges on &lt;a href=&quot;https://www.heroku.com/home&quot;&gt;Heroku&lt;/a&gt;. I&amp;#39;m talking about issues with:&lt;/p&gt;
+
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Problem&lt;/th&gt;
+&lt;th style=&quot;text-align: center&quot;&gt;Solution&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Converting my Sqlite3 database to&lt;/td&gt;
+&lt;td style=&quot;text-align: center&quot;&gt;&lt;a href=&quot;https://rubygems.org/gems/yaml_db&quot;&gt;yaml_db&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Heroku rails assets not found&lt;/td&gt;
+&lt;td style=&quot;text-align: center&quot;&gt;&lt;a href=&quot;https://github.com/heroku/rails_12factor&quot;&gt;rails_12factor&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;But in the end I triumphed! I think I spent about an hour and half for this last task (The Task K: Deployment and Production). That brings the total time for reading and completing the &lt;em&gt;Agile Web Development with Rails&lt;/em&gt; book to an estimated &lt;strong&gt;12 hours&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;The demo application accompanied with this book, is web-based shopping cart application called Depot (Pragmatic Bookshelf). This application implements an online store, with a catalog, cart, and orders. You are invited to take a look at the source &lt;a href=&quot;https://github.com/nadjetey/Depot&quot;&gt;here&lt;/a&gt; or view the live app online &lt;a href=&quot;http://depot-app-4696.herokuapp.com/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;PS: To log into the app as an administrator use these log in credentials:&lt;/em&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;username: admin
+password: admin
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;Time log&lt;/h3&gt;
+
+&lt;p&gt;For a more comprehensive log of my time spent, refer to the following file (by kind courtesy &lt;a href=&quot;http://rubygems.org/gems/timetrap&quot;&gt;timetrap&lt;/a&gt;)&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;Timesheet: Task A - Creating the application
+    Day                Duration   Notes
+    Mon May 12, 2014   0:10:27    A1:Creating the Products -
+                                    maintenance application
+                       0:13:30    A2:Making prettier listings
+                       0:23:57
+    ------------------------------------------------------------------------
+    Total              0:23:57
+
+Timesheet: Task B - Validating and Unit testing
+    Day                Duration   Notes
+    Mon May 12, 2014   0:12:21    B1:Validating!
+                       0:02:32    B2: Unit testing
+                       0:14:31    B2: Unit testing
+                       0:29:24
+    ------------------------------------------------------------------------
+    Total              0:29:24
+
+Timesheet: Task C - Catalog Display
+    Day                Duration   Notes
+    Mon May 12, 2014   0:09:33    C1:Creating the catalog listing
+                       0:12:17    C2:Adding a page layout
+                       0:02:49    C3:Use a Helper to format the price
+                       0:03:49    C4:Functional testing
+                       0:06:58    C5:Caching
+                       0:35:26
+    ------------------------------------------------------------------------
+    Total              0:35:26
+
+Timesheet: Task D - Cart Creation
+    Day                Duration   Notes
+    Mon May 12, 2014   0:04:17    D1:Finding a cart
+                       0:07:21    D2:Connecting Products to Carts
+                       0:10:15    D3:Add a button
+                       0:06:42    D3:Add a button
+                       0:28:35
+    ------------------------------------------------------------------------
+    Total              0:28:35
+
+Timesheet: Task E - A Smarter Cart
+    Day                Duration   Notes
+    Mon May 12, 2014   0:32:46    E1:Creating a smarter cart
+                       0:14:09    E2:Handling Errors
+                       0:26:02    E3:Finishing the Cart
+                       1:10:38    E3:Finishing the Cart
+                       2:23:35
+    ------------------------------------------------------------------------
+    Total              2:23:35
+
+Timesheet: Task F - Add a dash of Ajax
+    Day                Duration   Notes
+    Tue May 13, 2014   0:03:12    F1:Moving the cart
+                       0:08:22    F1:Moving the cart
+                       0:52:06    F1:Moving the cart
+                       0:06:15    F2:Creating an AJAX-based cart
+                       0:14:58    F3:Highlighting changes
+                       0:21:52    F4:Hiding an empty cart
+                       0:00:22    F5:Making images clickable
+                       0:04:19    F5:Making images clickable
+                       0:22:39    F6:Testing AJAX changes
+                       2:14:05
+    ------------------------------------------------------------------------
+    Total              2:14:05
+
+Timesheet: Task G - Check out!
+    Day                Duration   Notes
+    Tue May 13, 2014   0:17:59    G1:Capturing an order
+                       0:38:46    G1:Capturing an order
+                       0:56:45
+    Wed May 14, 2014   0:12:44    G2:Atom feeds
+                       0:12:44
+    Mon May 19, 2014   0:12:14    G3:Downloading an eBook
+                       0:12:14
+    ------------------------------------------------------------------------
+    Total              1:21:43
+
+Timesheet: Task H - Senging Mail
+    Day                Duration   Notes
+    Tue May 20, 2014   0:39:57    H1:Email notification
+                       0:10:01    H2:Integration tests
+                       0:49:58
+    ------------------------------------------------------------------------
+    Total              0:49:58
+
+Timesheet: Task I - Logging In
+    Day                Duration   Notes
+    Tue May 20, 2014   0:43:39    I1:Adding users
+                       0:20:33    I2:Authenticating users
+                       0:29:13    I3:Limiting access
+                       0:20:53    I4:Add a sidebar
+                       1:54:18
+    ------------------------------------------------------------------------
+    Total              1:54:18
+
+Timesheet: Task J - Internationalization
+    Day                Duration   Notes
+    Tue May 20, 2014   0:03:49    J1:Selecting a locale
+                       0:18:21    J1:Selecting a locale
+                       0:14:21    J2:Translating the store
+                       0:13:39    J3:Translating checkout
+                       0:05:58    J4:Locale switcher
+                       0:56:08
+    ------------------------------------------------------------------------
+    Total              0:56:08
+
+----------------------------------------------------------------------------
+Grand Total            11:37:09
+----------------------------------------------------------------------------
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;More Vimm!&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Wangana &mdash; A Jekyll theme</title>
+    <link href="http://nadjetey.github.io/2014/05/wangana-a-jekyll-theme/"/>
+    <updated>2014-05-14T00:00:00+00:00</updated>
+    <id>http://nadjetey.github.io/2014/05/wangana-a-jekyll-theme</id>
+    <content type="html">&lt;p&gt;Wangana is responsive Jekyll theme, perfect for powering your GitHub hosted blog. This theme was designed and developed by &lt;a href=&quot;https://twitter.com/_nadjetey&quot;&gt;Nii&lt;/a&gt;. It is currently in version 2.5, with the following new improvements:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;SEO optimized&lt;/li&gt;
+&lt;li&gt;Improved design for better UX&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Here are a few screenshots:&lt;/p&gt;
+
+&lt;h3&gt;Screenshots #1&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://nadjetey.github.io/assets/images/wangana_home.png&quot; alt=&quot;home page&quot;&gt;&lt;/p&gt;
+
+&lt;h3&gt;Screenshots #2&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://nadjetey.github.io/assets/images/wangana_post.png&quot; alt=&quot;blog page&quot;&gt;&lt;/p&gt;
+
+&lt;h3&gt;Screenshots #3&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://nadjetey.github.io/assets/images/wangana_tags.png&quot; alt=&quot;tags page&quot;&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;You are welcome to fork this repository, or view the &lt;a href=&quot;https://github.com/nadjetey/wangana&quot;&gt;source code&lt;/a&gt; on github.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;More Vimm!&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Google grid gallery</title>
+    <link href="http://nadjetey.github.io/2014/05/google-grid-gallery/"/>
+    <updated>2014-05-14T00:00:00+00:00</updated>
+    <id>http://nadjetey.github.io/2014/05/google-grid-gallery</id>
+    <content type="html">&lt;p&gt;&lt;em&gt;This post has been updated!&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;A responsive image grid gallery based on the &lt;a href=&quot;https://gweb-gettingstartedguide.appspot.com/&quot;&gt;Google Chromebook getting started&lt;/a&gt; guide gallery ported to Jekyll.&lt;/p&gt;
+
+&lt;p&gt;This is an &lt;a href=&quot;http://tympanus.net/Blueprints/GridGallery/&quot;&gt;experiment&lt;/a&gt; by &lt;a href=&quot;https://twitter.com/crnacura&quot;&gt;@crnacura&lt;/a&gt; ported to Jekyll.&lt;/p&gt;
+
+&lt;h3&gt;How to use (local deployment)&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/nadjetey/GridGallery/archive/master.zip&quot;&gt;Download&lt;/a&gt; &amp;amp; extract package&lt;/li&gt;
+&lt;li&gt;Use the normal process of serving a jekyll site. &lt;a href=&quot;http://jekyllrb.com/&quot;&gt;More details&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Put image in &lt;code&gt;/img/large&lt;/code&gt; and a thumnail version with the same file name in &lt;code&gt;/img/thumb&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Follow this sample front-matter&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;nn&quot;&gt;---&lt;/span&gt;
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;layout&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;default&lt;/span&gt;
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;2014-04-06 23:26:12&lt;/span&gt;
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;photo&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;1.png&lt;/span&gt;
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;caption_header&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;Sample header&lt;/span&gt;
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;caption&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;sample caption&lt;/span&gt;
+&lt;span class=&quot;nn&quot;&gt;---&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;Run jekyll commands to serve site&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3&gt;Screenshot&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://nadjetey.github.io/assets/images/g_grid_gal.png&quot; alt=&quot;screenshot&quot;&gt;&lt;/p&gt;
+
+&lt;h3&gt;Contact&lt;/h3&gt;
+
+&lt;p&gt;You are welcome to &lt;a href=&quot;https://github.com/nadjetey/GridGallery/fork&quot;&gt;fork&lt;/a&gt; this repository. Do contact &lt;a href=&quot;https://twitter.com/_nadjetey&quot;&gt;me&lt;/a&gt; in case of any issues or questions.&lt;/p&gt;
+
+&lt;p&gt;More Vimm!&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>The Journey &mdash; Day one</title>
+    <link href="http://nadjetey.github.io/2014/05/the-journey-day-one/"/>
+    <updated>2014-05-13T00:00:00+00:00</updated>
+    <id>http://nadjetey.github.io/2014/05/the-journey-day-one</id>
+    <content type="html">&lt;p&gt;I talked about my mission in the previous blog post titled, &lt;em&gt;My journey to becoming a Senior Ruby on Rails Developer&lt;/em&gt; (visit that post, if you haven&amp;#39;t seen it already). To complete my first Rails application, I need to complete the following tasks/chapters in the book &lt;a href=&quot;http://pragprog.com/book/rails4/agile-web-development-with-rails-4&quot;&gt;&amp;quot;Agile Web Development with Rails, Edition 4&amp;quot;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;*&lt;/strong&gt; &lt;em&gt;marks completed tasks&lt;/em&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Task A: Creating the application*&lt;/li&gt;
+&lt;li&gt;Task B: Validating and Unit testing*&lt;/li&gt;
+&lt;li&gt;Task C: Catalog Display*&lt;/li&gt;
+&lt;li&gt;Task D: Cart Creation*&lt;/li&gt;
+&lt;li&gt;Task E: A Smarter Cart*&lt;/li&gt;
+&lt;li&gt;Task F: Add a dash of Ajax&lt;/li&gt;
+&lt;li&gt;Task G: Check out!&lt;/li&gt;
+&lt;li&gt;Task H: Senging Mail&lt;/li&gt;
+&lt;li&gt;Task I: Logging In&lt;/li&gt;
+&lt;li&gt;Task J: Internationalization&lt;/li&gt;
+&lt;li&gt;Task K: Deployment and Production&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;After a successful day one, I completed Tasks A to E, which constitutes about 45% of the depot application. In total I spent 4hr:20min:57sec. For a more comprehensive log of my time spent, refer to the following file (by kind courtesy &lt;a href=&quot;http://rubygems.org/gems/timetrap&quot;&gt;timetrap&lt;/a&gt;)&lt;/p&gt;
+
+&lt;h3&gt;Time log&lt;/h3&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;Timesheet: Task A
+Day                Duration   Notes
+Mon May 12, 2014   0:10:27    A1:Creating the Products maintenance application
+                   0:13:30    A2:Making prettier listings
+                   0:23:57
+---------------------------------------------------------------------------
+Total              0:23:57
+
+Timesheet: Task B
+Day                Duration   Notes
+Mon May 12, 2014   0:12:21    B1:Validating!
+                   0:02:32    B2: Unit testing
+                   0:14:31    B2: Unit testing
+                   0:29:24
+---------------------------------------------------------------------------
+Total              0:29:24
+
+Timesheet: Task C
+Day                Duration   Notes
+Mon May 12, 2014   0:09:33    C1:Creating the catalog listing
+                   0:12:17    C2:Adding a page layout
+                   0:02:49    C3:Use a Helper to format the price
+                   0:03:49    C4:Functional testing
+                   0:06:58    C5:Caching
+                   0:35:26
+---------------------------------------------------------------------------
+Total              0:35:26
+
+Timesheet: Task D
+Day                Duration   Notes
+Mon May 12, 2014   0:04:17    D1:Finding a cart
+                   0:07:21    D2:Connecting Products to Carts
+                   0:10:15    D3:Add a button
+                   0:06:42    D3:Add a button
+                   0:28:35
+----------------------------------------------------------------------------
+Total              0:28:35
+
+Timesheet: Task E
+Day                Duration   Notes
+Mon May 12, 2014   0:32:46    E1:Creating a smarter cart
+                   0:14:09    E2:Handling Errors
+                   0:26:02    E3:Finishing the Cart
+                   1:10:38    E3:Finishing the Cart
+                   2:23:35
+----------------------------------------------------------------------------
+Total              2:23:35
+----------------------------------------------------------------------------
+Grand Total        4:20:57
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;More Vimm!&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>My journey to becoming a Senior Ruby on Rails Developer</title>
+    <link href="http://nadjetey.github.io/2014/05/my-journey-to-becoming-a-senior-ruby-on-rails-developer/"/>
+    <updated>2014-05-12T00:00:00+00:00</updated>
+    <id>http://nadjetey.github.io/2014/05/my-journey-to-becoming-a-senior-ruby-on-rails-developer</id>
+    <content type="html">&lt;p&gt;I Nii, have fallen in love with the Rails framework and community. After reading @richardsondx article, &lt;a href=&quot;https://medium.com/how-i-learned-ruby-rails/e08c94e2a51e&quot;&gt;&amp;quot;How I TRAINed to learn Rails (A Guide to Learning Rails in 2 months)&amp;quot;&lt;/a&gt;, I was inspired! No more games, it&amp;#39;s time to up my skills. I got myself a copy of &lt;a href=&quot;http://pragprog.com/book/rails4/agile-web-development-with-rails-4&quot;&gt;&amp;quot;Agile Web Development with Rails, Edition 4&amp;quot;&lt;/a&gt; and started to study/read.&lt;/p&gt;
+
+&lt;p&gt;Previously, I had installed rails but the books perspective was on versions: rails 3.0, ruby 1.9.2, and gem 1.3.7 (those were the current versions available at the time the book was written) Initially I could not tell that this could be a problem. The versions installed on my PC were: rails 4.1.1, ruby 2.1, and gem 2.2.2, I don&amp;#39;t know why I thought I could follow along with the demo example illustrated in the book.&lt;/p&gt;
+
+&lt;p&gt;After struggling with the examples because of the version difference, I turned to the Internet to look for updates to the book. Even though I eventually solved most of my problems, this shrank the fun. I did not find what I was looking for, I found something even better - I found a site with the examples re-adjusted to meet the current versions I was using! &lt;a href=&quot;http://intertwingly.net/projects/AWDwR4/checkdepot-210-41/&quot;&gt;This legit site &lt;/a&gt; promises to restore the joy of learning for me.&lt;/p&gt;
+
+&lt;h2&gt;New plan&lt;/h2&gt;
+
+&lt;p&gt;The updated plan is to continue to read the book but use the site for the examples. I will restart the demo, and this time I intend to keep track of the time I spend with the gem &lt;a href=&quot;http://rubygems.org/gems/timetrap&quot;&gt;timetrap&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3&gt;At the end of this experiment, I will:&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Have learned some valuable Rails tricks&lt;/li&gt;
+&lt;li&gt;Have grounded myself in the framework and the community practices&lt;/li&gt;
+&lt;li&gt;Have provided how long it took me to complete the book &amp;amp; demo&lt;/li&gt;
+&lt;li&gt;Have built the courage to try new Rails projects&lt;/li&gt;
+&lt;li&gt;Have completed my first book and ready to move to the next book on Rails&lt;/li&gt;
+&lt;li&gt;Have successfully provided documented proof of my journey to becoming a Senior Ruby on Rails Developer&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;More Vimm!&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>The key to a successful tech business in Ghana</title>
+    <link href="http://nadjetey.github.io/2014/05/the-key-to-a-successful-tech-business-in-ghana/"/>
+    <updated>2014-05-03T00:00:00+00:00</updated>
+    <id>http://nadjetey.github.io/2014/05/the-key-to-a-successful-tech-business-in-ghana</id>
+    <content type="html">&lt;p&gt;In my opinion, one of the most obstructive stumbling blocks hindering the success of Ghanaian tech businesses is remuneration (money). By “tech businesses”, I mean young developers trying to be entrepreneurial in selling their skills/services/tech products. Apart from the fact that most developers will sell themselves short by settling for significantly cheaper rates, it is very common for clients to renege on payment agreements.&lt;/p&gt;
+
+&lt;p&gt;Almost all of my developer friends have a story like this; a client agrees with a developer (dev) to pay say 50% of an agreed charge before contracted job and another 50% after completion. After job is completed and delivered, the latter 50% charge is not honored by the client. At this point, the dev is faced with a decision as to how to settle this issue. Suing is out of the question – it is expensive and time consuming, not to even mention the frustrations involved. Other options include following up with phone calls, in-person chats and other amicable resolutions (that is, if the client doesn’t play the cat and mouse game with you). The last option is to somehow take down the site or refuse public access (that is, if this option actually applies to the situation)&lt;/p&gt;
+
+&lt;h3&gt;My understanding of what the problem is in bullet points:&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Following legal resolution is not a very enticing option for devs given the circumstances&lt;/li&gt;
+&lt;li&gt;Clients cannot trust devs to deliver if given full payment before hand&lt;/li&gt;
+&lt;li&gt;Devs cannot trust clients to give full payment after job completion and delivery&lt;/li&gt;
+&lt;li&gt;There is no realistic way to guarantee trust from both parties (not yet anyway)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3&gt;The proposed solution:&lt;/h3&gt;
+
+&lt;p&gt;I believe both parties trust the banks and therefore the banks may be used as the ‘middle man’ to guarantee client and dev satisfaction. Currently, I am not aware of any such bank service but if there was such a thing, I am sure this will solve the problem. Imagine a situation where, after the client and dev have agreed on the terms of agreement, the bank is used as a third party. The client per the terms of the contract will provide full payment for the job and produce a ticket of some sort, which the dev will use to collect payment at delivery dates. The bank through this suggested service will ensure that the dev is paid for work done hence restoring ‘trust’ in this terrain. I know this idea can be better refined by the bankers (it is their job after all)&lt;/p&gt;
+
+&lt;p&gt;Just imagine the possibilities, the opportunities something like this will create. I believe this idea has the potential to help techies build mind blowing businesses. I believe this idea has the potential to lower the much talked about graduate unemployment and inadvertently lower poverty.&lt;/p&gt;
+
+&lt;p&gt;More Vimm!&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Wangana v2.0</title>
+    <link href="http://nadjetey.github.io/2014/03/wangana-v2/"/>
+    <updated>2014-03-24T00:00:00+00:00</updated>
+    <id>http://nadjetey.github.io/2014/03/wangana-v2</id>
+    <content type="html">&lt;p&gt;Version 2.0 of the Jekyll theme - Wangana has been released. Enjoy!
+&lt;blockquote class=&quot;twitter-tweet&quot; lang=&quot;en&quot;&gt;&lt;p&gt;&lt;a href=&quot;https://twitter.com/_nadjetey&quot;&gt;@_nadjetey&lt;/a&gt; Lol you have become a ruby expert now eh?&lt;/p&gt;&amp;mdash; Edem Kumodzi (@edemkumodzi) &lt;a href=&quot;https://twitter.com/edemkumodzi/statuses/447642029594796032&quot;&gt;March 23, 2014&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&quot;//platform.twitter.com/widgets.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Selfie Olympics</title>
+    <link href="http://nadjetey.github.io/2014/03/selfie-olympics/"/>
+    <updated>2014-03-24T00:00:00+00:00</updated>
+    <id>http://nadjetey.github.io/2014/03/selfie-olympics</id>
+    <content type="html">&lt;iframe src=&quot;//instagram.com/p/lc4K1ORM8x/embed/&quot; width=&quot;612&quot; height=&quot;710&quot; frameborder=&quot;0&quot; scrolling=&quot;no&quot; allowtransparency=&quot;true&quot;&gt;&lt;/iframe&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>'Same Shit, Different Day (S.S.D.D.)' -Stephen King's Dreamcatcher</title>
+    <link href="http://nadjetey.github.io/2014/03/same-shit-different-day/"/>
+    <updated>2014-03-24T00:00:00+00:00</updated>
+    <id>http://nadjetey.github.io/2014/03/same-shit-different-day</id>
+    <content type="html">&lt;iframe src=&quot;//instagram.com/p/fuUlRwoqpi/embed/&quot; width=&quot;612&quot; height=&quot;710&quot; frameborder=&quot;0&quot; scrolling=&quot;no&quot; allowtransparency=&quot;true&quot;&gt;&lt;/iframe&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>How to run background commands</title>
+    <link href="http://nadjetey.github.io/2014/03/how-to-run-background-commands/"/>
+    <updated>2014-03-24T00:00:00+00:00</updated>
+    <id>http://nadjetey.github.io/2014/03/how-to-run-background-commands</id>
+    <content type="html">&lt;p&gt;To to run commands in the background on *nix systems:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Type &lt;code&gt;command &amp;amp;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Run your program&lt;/li&gt;
+&lt;li&gt;Type &lt;code&gt;disown&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Close the terminal&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>The newest in cup holding technology</title>
+    <link href="http://nadjetey.github.io/2014/03/the-newest-in-cup-holding-technology/"/>
+    <updated>2014-03-03T00:00:00+00:00</updated>
+    <id>http://nadjetey.github.io/2014/03/the-newest-in-cup-holding-technology</id>
+    <content type="html">&lt;iframe src=&quot;//instagram.com/p/lFYzoZIqh5/embed/&quot; width=&quot;612&quot; height=&quot;710&quot; frameborder=&quot;0&quot; scrolling=&quot;no&quot; allowtransparency=&quot;true&quot;&gt;&lt;/iframe&gt;
+</content>
+  </entry>
+  
+</feed>

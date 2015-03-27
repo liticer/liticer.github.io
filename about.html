@@ -1,0 +1,35 @@
+---
+layout: default
+title: About
+---
+<div class="col-sm-12">
+    <div class="page-title">
+        {{ page.title }}
+    </div>
+    <div class="page-content">
+        <p>
+        Hello, my name is <strong>Nii</strong>. I'm an open-minded software writer. I enjoy building for the web using Ruby on Rails (RoR). Currently working at <a href="http://skyfoxservices.com/" target="_blank">SkyFox Ltd.</a> Welcome to 'my corner of the web'.
+        </p>
+        <ul class="links">
+            <li><a href="{{ "/index.html" | prepend: site.url }}">Blog</a></li>
+            <li><a href="https://www.linkedin.com/pub/nii-adjetey-sowah/1a/147/ab8" target="_blank">Résumé</a></li>
+            <li><a href="{{ "/projects.html" | prepend: site.url }}">Portfolio</a></li>
+            <li><a href="mailto:adjetey.07@gmail.com?subject=nadjetey's_blog:Hire me">Hire me</a></li>
+        </ul>
+        <div class="tweet-block">            
+            <div class="text-block">
+                <a class="twitter-timeline" href="https://twitter.com/_nadjetey" data-widget-id="557213854145740801" height="300" data-chrome="noborders transparent">Tweets by @_nadjetey</a>
+                <script>
+                    !function(d,s,id){
+                        var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';
+                        if(!d.getElementById(id)){
+                            js=d.createElement(s);
+                            js.id=id;js.src=p+"://platform.twitter.com/widgets.js";
+                            fjs.parentNode.insertBefore(js,fjs);
+                        }
+                    }(document,"script","twitter-wjs");
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
