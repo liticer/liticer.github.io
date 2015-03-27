@@ -1,5 +1,5 @@
 name: liticer's blog
-description:  my blog on github
+description:  My blog on github
 
 sass:
   sass_dir: assets/css/_sass
