@@ -1,5 +1,5 @@
 name: liticer's blog
-description:  My conner on the world of code
+description:  My world of the code
 
 sass:
   sass_dir: assets/css/_sass
@@ -9,11 +9,11 @@ markdown: redcarpet
 redcarpet:
   extensions: ["no_intra_emphasis", "tables", "fenced_code_blocks", "autolink", "strikethrough", "superscript"]
 
-url: http://liticer.github.io
+#url: http://liticer.github.io
 permalink: /:year/:month/:title/
 owner:
     name: liticer
-    twitter: _liticer
+    twitter: liticer
     github: liticer
     disqus_shortname: liticer
 
