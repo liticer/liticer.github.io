@@ -4,11 +4,115 @@
   <title type="text" xml:lang="en">liticer's blog</title>
   <link type="application/atom+xml" href="/feed.xml" rel="self"/>
   <link type="text/html" href="" rel="alternate"/>
-  <updated>2015-03-28T18:00:59+08:00</updated>
+  <updated>2015-03-29T00:06:06+08:00</updated>
   <id>/all_feed</id>
   <author>
     <name>liticer</name>
   </author>
 
+  
+  <entry>
+    <title>GNU/Linux下使用Github搭建博客</title>
+    <link href="/2015/03/GNU-Linux%E4%B8%8B%E4%BD%BF%E7%94%A8Github%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/"/>
+    <updated>2015-03-28T00:00:00+08:00</updated>
+    <id>/2015/03/GNU-Linux下使用Github搭建博客</id>
+    <content type="html">&lt;p&gt;&lt;strong&gt;历经无数艰辛，终于开启了个人博客之路，在此深深地感谢各位网络技术大神们各种各样的博客指引。此文适合那些想使用搭建个人博客的新手们，大神可以忽略。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;一. Git Pages简介&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Github是一个具有版本管理功能的代码仓库，许多重要的项目都托管在上面。每个项目都有一个主页，列出项目的源文件。为了让人们对项目迅速上手，Github就设计了Pages功能，可以为每个项目一个简明易懂的网页来说明该项目大概情况。同时也为每个Github用户提供了一个个人主页，该主页可以让人们对该用户有一个大概的了解。我们之所以能建立博客，就是利用了可以对这两种主页随意定制的特点。&lt;/p&gt;
+
+&lt;p&gt;想建立个人博客就有两种形式，第一种是建立个人主页，可以使用形如username.github.io的链接访问博客，每个用户名下面只能建立一个这样的主页；第二种是建立项目主页，可以使用形如username.github.io/projectname的链接访问博客，每个用户名下的每个项目都可以建立一个这样的主页。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;二. 注册Github帐户和建立博客仓库&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;首先需要注册一个Github帐户，如username，建立帐户之后需要按照网站要求对注册邮箱进行验证，不然在博客建立过程中会报错(报错信息会发送至注册邮箱)。&lt;/p&gt;
+
+&lt;p&gt;然后打开Github网站，使用用户名和密码进行登录，并建立一个形如username.github.io的仓库(本教程都是使用第一种方式建立个人博客)。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;三. 上传博客源码到Github仓库&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;博主使用的系统是Ubuntu 12.04&lt;/p&gt;
+
+&lt;p&gt;1.建立目录并初始化为仓库&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ mkdir username.github.io
+$ cd username.github.io
+$ git init
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;该命令是在建立并初始化一个本地仓库，会在目录下新建一个.git的隐藏文件夹。&lt;/p&gt;
+
+&lt;p&gt;2.建立如下文件和文件夹&lt;/p&gt;
+
+&lt;p&gt;username.github.io&lt;/p&gt;
+
+&lt;p&gt;|--_includes：默认的在模板中可以引用的文件的位置&lt;/p&gt;
+
+&lt;p&gt;|--_layouts：默认的公共页面的位置&lt;/p&gt;
+
+&lt;p&gt;|--_posts：博客文章默认的存放位置&lt;/p&gt;
+
+&lt;p&gt;|--.gitignore：这个文件夹中列出的文件或文件夹，不会纳入源码管理&lt;/p&gt;
+
+&lt;p&gt;|--_config.yml：关于jekyll模板引擎的配置文件&lt;/p&gt;
+
+&lt;p&gt;`-- index.html：默认的主页&lt;/p&gt;
+
+&lt;p&gt;编辑_config.yml:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;baseurl: /username.github.io
+encoding: utf-8
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;编辑_layouts/default.html:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;http-equiv=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;content-type&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;text/html; charset=utf-8&amp;quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;title&amp;gt;&lt;/span&gt;{{ page.title }}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
+    {{ content }}
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;编辑index.html:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;---
+layout: default
+title: My blog
+---
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;h2&amp;gt;&lt;/span&gt;{{ page.title }}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h2&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;Recent articles&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;ul&amp;gt;&lt;/span&gt;
+　　{% for post in site.posts %} 
+　　　　&lt;span class=&quot;nt&quot;&gt;&amp;lt;li&amp;gt;&lt;/span&gt;{{ post.date | date_to_string }} &lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;{{ site.baseurl }}{{ post.url }}&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;{{ post.title }}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+　　{% endfor %}
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/ul&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;编辑_post/2015-03-28.test.html:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;---
+layout: default
+title: test
+---
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;h2&amp;gt;&lt;/span&gt;{{ page.title }}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h2&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;My first article&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;{{ page.date | date_to_string }}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;3.传送到Github远程仓库&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# 将当前的改动暂存在本地仓库
+$ git add .
+# 将暂存的改动提交到本地仓库，并写入本次提交的注释是”first post“
+$ git commit -m &amp;quot;first post&amp;quot;
+# 将远程仓库在本地添加一个引用origin
+$ git remote add origin https://github.com/username/username.github.io.git
+# 向origin推送master分支
+$ git push origin master
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;注1：如果是初次安装git的话，在commit的时候会提示需要配置username和email，请读者注意根据提示配置一下，至于username和email可以随便填。&lt;/p&gt;
+
+&lt;p&gt;注2：在Git中，分支(branch)的概念非常重要，Git之所以强大，很大程度上就是因为它强大的分支体系。Github规定，在个人主页类型的仓库中，只有master分支中的页面才会生成网页文件；在项目主页类型的仓库中，只有gh-pages分支中的页面才会生成网页文件。&lt;/p&gt;
+
+&lt;p&gt;大约10分钟的时间，访问
+&lt;a href=&quot;http://username.github.io&quot;&gt;http://username.github.io&lt;/a&gt;
+就可以看到自己的博客了。无论生成失败还是成功，Github会向你的邮箱发送一封邮件说明原因，请注意查收。&lt;/p&gt;
+</content>
+  </entry>
   
 </feed>
