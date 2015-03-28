@@ -9,7 +9,7 @@ This blog is powered by [Jekyll](http://jekyllrb.com/) & [Wangana](https://githu
 hosted on [Github Pages](pages.github.com)
 
 ## License
-The following directories and their contents are Copyright Liticer. 
+The following directories and their contents are Copyright Opt Liticer Software. 
 
 You may not reuse anything therein without my permission:
 ```
