@@ -31,7 +31,7 @@ Github是一个具有版本管理功能的代码仓库，许多重要的项目�
 
 <strong>三. 上传博客源码到Github仓库</strong>
 
-博主使用的系统是Ubuntu 12.04
+博主使用的系统是Ubuntu 12.04，后续所有操作均在bash命令行中完成。
 
 1.建立目录并初始化为仓库
 
@@ -130,3 +130,81 @@ $ git push origin master
  
 大约10分钟的时间，访问username.github.io就可以看到自己的博客了。无论生成失败还是成功，Github会向你的邮箱发送一封邮件说明原因，请注意查收。
 
+<strong>四. 搭建jekyll本地调试环境</strong>
+
+在编写完博客之后，可以不经调试直接上传至Github。但是其中可能存在错误，发现错误之后再修改，修改之后再上传，这个过程不但耗时而且麻烦。如果想在本地进行调试，就需要搭建jekyll环境了，下面来介绍环境搭建过程。
+
+1.安装gem
+
+```
+$ sudo apt-get install rubygems
+$ gem sources --remove https://rubygems.org/
+$ gem sources --remove http://rubygems.org/
+$ gem sources -a https://ruby.taobao.org/
+$ gem sources -l
+\*** CURRENT SOURCES ***
+
+https://ruby.taobao.org
+# 请确保只有ruby.taobao.org
+```   
+Rubygems是一个复杂的ruby安装包管理软件，具体请man gem。
+
+2.安装rvm和ruby
+
+```
+$ sudo apt-get install curl
+$ curl -L https://get.rvm.io | sudo bash -s stable  
+$ /bin/bash --login
+$ sudo rvm install ruby-2.1.2
+$ rvm use ruby-2.1.2
+```
+注：  
+a. Ubuntu 12.04源里的ruby版本太低，jekyll要求的ruby版本必须大于1.9.2。  
+b. 如果出现错误：  
+&ensp;&ensp;&ensp;`curl: (77) error setting certificate verify locations:`  
+&ensp;&ensp;&ensp;解决方法如下：  
+&ensp;&ensp;&ensp;`$ sudo apt-get install ca-certificates`  
+&ensp;&ensp;&ensp;`$ sudo mkdir -p /etc/pki/tls/certs`  
+&ensp;&ensp;&ensp;`$ sudo cp /etc/ssl/certs/ca-certificates.crt /etc/pki/tls/certs/`  
+
+3.安装nodejs和execjs
+
+```
+$ sudo apt-get install nodejs
+$ sudo gem install execjs
+```
+
+4.安装jekyll
+
+```
+sudo gem install jekyll -V
+```
+
+注：等待时间较长，-V可以显示安装过程。
+
+<strong>五. 本地jekyll调试和模板使用</strong>
+
+1.本地jekyll调试
+
+```
+$ cd username.github.io
+$ /bin/bash --login
+$ rvm use ruby-2.1.2
+$ jekyll serve --watch
+```
+
+注：运行完上述命令后，打开127.0.0.1:4000就能在本地看到博客调试的结果。
+
+2.使用jekyll模板
+
+如果你想迅速开始写博客，而不去纠结在一些简单的界面设置中，就可以直接使用[jejyl提供的模板](http://jekyllthemes.org/)。
+模板使用的方式(以jekyll-clean模板为例)如下:
+
+```
+$ git clone https://github.com/scotte/jekyll-clean.git
+$ rm -rf jekyll-clean/.git
+$ cp -r jekyll-clean username.git.io
+```
+之后就是以别人模板中的文件建立仓库、调试、上传了。最后只需要学习一些简单的Markdown语法，Html基础就可以自己写博客了。每次只需要在_post目录当中编写html或者markdown格式的博客，然后再推送到Github就可以发表自己的博客了。
+
+后记：个人博客最大的好处就是随心所欲，文字、图片、表格、公式，你想要它显示什么样，就可以什么样，一切都在自己不断地挖掘。另外，还有强大的Github给你的博客做后端，不能再放心了。
