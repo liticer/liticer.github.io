@@ -43,6 +43,13 @@ main {position: relative;}
   padding: 0 0 0 15px;
 }
 
+.blog-title {
+  font: Poly;
+  font-size: 25px;
+  font-weight: 700;
+  padding: 0 0 0 0;
+}
+
 .page-content {
   position: relative;
   overflow: hidden;
@@ -133,6 +140,7 @@ main {position: relative;}
 }
 
 .sidebar {
+  font: 17px poly;
   position: fixed;
   min-width: 139px;
   padding: 0!important;
