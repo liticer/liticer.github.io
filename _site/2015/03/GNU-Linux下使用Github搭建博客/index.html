@@ -96,7 +96,9 @@
 
 <p>Github是一个具有版本管理功能的代码仓库，许多重要的项目都托管在上面。每个项目都有一个主页，列出项目的源文件。为了让人们对项目迅速上手，Github就设计了Pages功能，可以为每个项目一个简明易懂的网页来说明该项目大概情况。同时也为每个Github用户提供了一个个人主页，该主页可以让人们对该用户有一个大概的了解。我们之所以能建立博客，就是利用了可以对这两种主页随意定制的特点。</p>
 
-<p>想建立个人博客就有两种形式，第一种是建立个人主页，可以使用形如username.github.io的链接访问博客，每个用户名下面只能建立一个这样的主页；第二种是建立项目主页，可以使用形如username.github.io/projectname的链接访问博客，每个用户名下的每个项目都可以建立一个这样的主页。</p>
+<p>建立博客有两种形式：
+第一种是建立个人主页，可以使用username.github.io进行访问，每个用户名下面只能建立一个个人主页；
+第二种是建立项目主页, 可以使用如下的链接访问username.github.io/projectname，每个项目都可以建立一个项目主页。</p>
 
 <p><strong>二. 注册Github帐户和建立博客仓库</strong></p>
 
@@ -156,7 +158,9 @@ title: My blog
 <span class="nt">&lt;p&gt;</span>Recent articles<span class="nt">&lt;/p&gt;</span>
 <span class="nt">&lt;ul&gt;</span>
 　　{% for post in site.posts %} 
-　　　　<span class="nt">&lt;li&gt;</span>{{ post.date | date_to_string }} <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;{{ site.baseurl }}{{ post.url }}&quot;</span><span class="nt">&gt;</span>{{ post.title }}<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+        <span class="nt">&lt;li&gt;</span>{{ post.date | date_to_string }} 
+            <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;{{ site.baseurl }}{{ post.url }}&quot;</span><span class="nt">&gt;</span>{{ post.title }}<span class="nt">&lt;/a&gt;</span>
+        <span class="nt">&lt;/li&gt;</span>
 　　{% endfor %}
 <span class="nt">&lt;/ul&gt;</span>
 </code></pre></div>
@@ -183,9 +187,7 @@ $ git push origin master
 
 <p>注2：在Git中，分支(branch)的概念非常重要，Git之所以强大，很大程度上就是因为它强大的分支体系。Github规定，在个人主页类型的仓库中，只有master分支中的页面才会生成网页文件；在项目主页类型的仓库中，只有gh-pages分支中的页面才会生成网页文件。</p>
 
-<p>大约10分钟的时间，访问
-<a href="http://username.github.io">http://username.github.io</a>
-就可以看到自己的博客了。无论生成失败还是成功，Github会向你的邮箱发送一封邮件说明原因，请注意查收。</p>
+<p>大约10分钟的时间，访问username.github.io就可以看到自己的博客了。无论生成失败还是成功，Github会向你的邮箱发送一封邮件说明原因，请注意查收。</p>
 
             <!-- Share & Comments -->
             <div class="share">

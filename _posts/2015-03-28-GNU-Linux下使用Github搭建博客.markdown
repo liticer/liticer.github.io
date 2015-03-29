@@ -14,7 +14,13 @@ archive: false
 
 Github是一个具有版本管理功能的代码仓库，许多重要的项目都托管在上面。每个项目都有一个主页，列出项目的源文件。为了让人们对项目迅速上手，Github就设计了Pages功能，可以为每个项目一个简明易懂的网页来说明该项目大概情况。同时也为每个Github用户提供了一个个人主页，该主页可以让人们对该用户有一个大概的了解。我们之所以能建立博客，就是利用了可以对这两种主页随意定制的特点。
 
-想建立个人博客就有两种形式，第一种是建立个人主页，可以使用形如username.github.io的链接访问博客，每个用户名下面只能建立一个这样的主页；第二种是建立项目主页，可以使用形如username.github.io/projectname的链接访问博客，每个用户名下的每个项目都可以建立一个这样的主页。
+建立博客有两种形式：
+第一种是建立个人主页，可以使用username.github.io进行访问，每个用户名下面只能建立一个个人主页；
+第二种是建立项目主页, 可以使用如下的链接访问username.github.io/projectname，每个项目都可以建立一个项目主页。
+
+
+```
+```
 
 <strong>二. 注册Github帐户和建立博客仓库</strong>
 
@@ -90,7 +96,9 @@ title: My blog
 <p>Recent articles</p>
 <ul>
 　　{% for post in site.posts %} 
-　　　　<li>{{ post.date | date_to_string }} <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
+        <li>{{ post.date | date_to_string }} 
+            <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
+        </li>
 　　{% endfor %}
 </ul>
 {% endraw %}
@@ -127,7 +135,5 @@ $ git push origin master
 
 注2：在Git中，分支(branch)的概念非常重要，Git之所以强大，很大程度上就是因为它强大的分支体系。Github规定，在个人主页类型的仓库中，只有master分支中的页面才会生成网页文件；在项目主页类型的仓库中，只有gh-pages分支中的页面才会生成网页文件。
  
-大约10分钟的时间，访问
-http://username.github.io
-就可以看到自己的博客了。无论生成失败还是成功，Github会向你的邮箱发送一封邮件说明原因，请注意查收。
+大约10分钟的时间，访问username.github.io就可以看到自己的博客了。无论生成失败还是成功，Github会向你的邮箱发送一封邮件说明原因，请注意查收。
 
