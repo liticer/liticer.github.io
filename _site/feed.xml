@@ -4,7 +4,7 @@
   <title type="text" xml:lang="en">Liticer's blog</title>
   <link type="application/atom+xml" href="/feed.xml" rel="self"/>
   <link type="text/html" href="" rel="alternate"/>
-  <updated>2015-03-29T23:30:37+08:00</updated>
+  <updated>2015-03-29T23:36:31+08:00</updated>
   <id>/all_feed</id>
   <author>
     <name>liticer</name>
@@ -133,14 +133,13 @@ $ /bin/bash --login
 $ sudo rvm install ruby-2.1.2
 $ rvm use ruby-2.1.2
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;注：&lt;br&gt;
-a. Ubuntu 12.04源里的ruby版本太低，jekyll要求的ruby版本必须大于1.9.2。&lt;br&gt;
-b. 如果出现错误：&lt;br&gt;
-&amp;ensp;&amp;ensp;&amp;ensp;&lt;code&gt;curl: (77) error setting certificate verify locations:&lt;/code&gt;&lt;br&gt;
-&amp;ensp;&amp;ensp;&amp;ensp;解决方法如下：&lt;br&gt;
-&amp;ensp;&amp;ensp;&amp;ensp;&lt;code&gt;$ sudo apt-get install ca-certificates&lt;/code&gt;&lt;br&gt;
-&amp;ensp;&amp;ensp;&amp;ensp;&lt;code&gt;$ sudo mkdir -p /etc/pki/tls/certs&lt;/code&gt;&lt;br&gt;
-&amp;ensp;&amp;ensp;&amp;ensp;&lt;code&gt;$ sudo cp /etc/ssl/certs/ca-certificates.crt /etc/pki/tls/certs/&lt;/code&gt;  &lt;/p&gt;
+&lt;p&gt;注1：Ubuntu 12.04源里的ruby版本太低，jekyll要求的ruby版本必须大于1.9.2。&lt;br&gt;
+注2：如果出现错误：&lt;br&gt;
+&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&lt;code&gt;curl: (77) error setting certificate verify locations:&lt;/code&gt;&lt;br&gt;
+&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;解决方法如下：&lt;br&gt;
+&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&lt;code&gt;$ sudo apt-get install ca-certificates&lt;/code&gt;&lt;br&gt;
+&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&lt;code&gt;$ sudo mkdir -p /etc/pki/tls/certs&lt;/code&gt;&lt;br&gt;
+&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&lt;code&gt;$ sudo cp /etc/ssl/certs/ca-certificates.crt /etc/pki/tls/certs/&lt;/code&gt;  &lt;/p&gt;
 
 &lt;p&gt;3.安装nodejs和execjs&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ sudo apt-get install nodejs

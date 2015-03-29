@@ -158,14 +158,13 @@ $ /bin/bash --login
 $ sudo rvm install ruby-2.1.2
 $ rvm use ruby-2.1.2
 ```
-注：  
-a. Ubuntu 12.04源里的ruby版本太低，jekyll要求的ruby版本必须大于1.9.2。  
-b. 如果出现错误：  
-&ensp;&ensp;&ensp;`curl: (77) error setting certificate verify locations:`  
-&ensp;&ensp;&ensp;解决方法如下：  
-&ensp;&ensp;&ensp;`$ sudo apt-get install ca-certificates`  
-&ensp;&ensp;&ensp;`$ sudo mkdir -p /etc/pki/tls/certs`  
-&ensp;&ensp;&ensp;`$ sudo cp /etc/ssl/certs/ca-certificates.crt /etc/pki/tls/certs/`  
+注1：Ubuntu 12.04源里的ruby版本太低，jekyll要求的ruby版本必须大于1.9.2。  
+注2：如果出现错误：  
+&ensp;&ensp;&ensp;&ensp;&ensp;`curl: (77) error setting certificate verify locations:`  
+&ensp;&ensp;&ensp;&ensp;&ensp;解决方法如下：  
+&ensp;&ensp;&ensp;&ensp;&ensp;`$ sudo apt-get install ca-certificates`  
+&ensp;&ensp;&ensp;&ensp;&ensp;`$ sudo mkdir -p /etc/pki/tls/certs`  
+&ensp;&ensp;&ensp;&ensp;&ensp;`$ sudo cp /etc/ssl/certs/ca-certificates.crt /etc/pki/tls/certs/`  
 
 3.安装nodejs和execjs
 

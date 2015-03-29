@@ -207,14 +207,13 @@ $ /bin/bash --login
 $ sudo rvm install ruby-2.1.2
 $ rvm use ruby-2.1.2
 </code></pre></div>
-<p>注：<br>
-a. Ubuntu 12.04源里的ruby版本太低，jekyll要求的ruby版本必须大于1.9.2。<br>
-b. 如果出现错误：<br>
-&ensp;&ensp;&ensp;<code>curl: (77) error setting certificate verify locations:</code><br>
-&ensp;&ensp;&ensp;解决方法如下：<br>
-&ensp;&ensp;&ensp;<code>$ sudo apt-get install ca-certificates</code><br>
-&ensp;&ensp;&ensp;<code>$ sudo mkdir -p /etc/pki/tls/certs</code><br>
-&ensp;&ensp;&ensp;<code>$ sudo cp /etc/ssl/certs/ca-certificates.crt /etc/pki/tls/certs/</code>  </p>
+<p>注1：Ubuntu 12.04源里的ruby版本太低，jekyll要求的ruby版本必须大于1.9.2。<br>
+注2：如果出现错误：<br>
+&ensp;&ensp;&ensp;&ensp;&ensp;<code>curl: (77) error setting certificate verify locations:</code><br>
+&ensp;&ensp;&ensp;&ensp;&ensp;解决方法如下：<br>
+&ensp;&ensp;&ensp;&ensp;&ensp;<code>$ sudo apt-get install ca-certificates</code><br>
+&ensp;&ensp;&ensp;&ensp;&ensp;<code>$ sudo mkdir -p /etc/pki/tls/certs</code><br>
+&ensp;&ensp;&ensp;&ensp;&ensp;<code>$ sudo cp /etc/ssl/certs/ca-certificates.crt /etc/pki/tls/certs/</code>  </p>
 
 <p>3.安装nodejs和execjs</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">$ sudo apt-get install nodejs
