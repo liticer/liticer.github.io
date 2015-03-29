@@ -45,20 +45,13 @@ $ git init
 
 2.建立如下文件和文件夹
 
-username.github.io
-
-|--_includes：默认的在模板中可以引用的文件的位置
-
-|--_layouts：默认的公共页面的位置
-
-|--_posts：博客文章默认的存放位置
-
-|--.gitignore：这个文件夹中列出的文件或文件夹，不会纳入源码管理
-
-|--_config.yml：关于jekyll模板引擎的配置文件
-
-`-- index.html：默认的主页
-
+username.github.io  
+|--\_includes：默认的在模板中可以引用的文件的位置  
+|--\_layouts：默认的公共页面的位置  
+|--\_posts：博客文章默认的存放位置    
+|--.gitignore：这个文件夹中列出的文件或文件夹，不会纳入源码管理  
+|--\_config.yml：关于jekyll模板引擎的配置文件  
+`-- index.html：默认的主页  
 
 编辑_config.yml:
 
