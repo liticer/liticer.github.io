@@ -4,7 +4,7 @@
   <title type="text" xml:lang="en">Liticer's blog</title>
   <link type="application/atom+xml" href="/feed.xml" rel="self"/>
   <link type="text/html" href="" rel="alternate"/>
-  <updated>2015-03-29T23:36:31+08:00</updated>
+  <updated>2015-03-30T09:50:49+08:00</updated>
   <id>/all_feed</id>
   <author>
     <name>liticer</name>
@@ -16,7 +16,7 @@
     <link href="/2015/03/GNU-Linux%E4%B8%8B%E4%BD%BF%E7%94%A8Github%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/"/>
     <updated>2015-03-28T00:00:00+08:00</updated>
     <id>/2015/03/GNU-Linux下使用Github搭建博客</id>
-    <content type="html">&lt;p&gt;历经无数艰辛，终于开启了个人博客之路，在此深深地感谢各位网络技术大神们各种各样的博客指引。此文适合那些想使用搭建个人博客的新手们，大神可以忽略。&lt;/p&gt;
+    <content type="html">&lt;p&gt;前言：历经无数艰辛，终于开启了个人博客之路，在此深深地感谢各位网络技术大神们各种各样的博客指引。此文适合那些想使用搭建个人博客的新手们，大神可以忽略。&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;一. Git Pages简介&lt;/strong&gt;&lt;/p&gt;
 
