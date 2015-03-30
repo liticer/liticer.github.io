@@ -1,6 +1,12 @@
 [
     
     {
+        "title": "计算机方面的一些网站和博客",
+        "url": "http://liticer.github.io/2015/03/Some-websites-and-blogs-on-computer-science/",
+        "date": "Monday 30 March 2015"
+    } , 
+    
+    {
         "title": "GNU/Linux下使用Jekyll搭建博客",
         "url": "http://liticer.github.io/2015/03/Build-blog-with-jekyll-under-GNU-Linux/",
         "date": "Saturday 28 March 2015"

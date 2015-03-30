@@ -196,7 +196,7 @@ $ jekyll serve --watch
 
 2.使用jekyll模板
 
-如果你想迅速开始写博客，而不去纠结在一些简单的界面设置中，就可以直接使用[jejyl提供的模板](http://jekyllthemes.org/)。
+如果你想迅速开始写博客，而不去纠结在一些简单的界面设置中，就可以直接使用<a href="http://jekyllthemes.org" target="_blank">jekyll提供的模板</a>。
 模板使用的方式(以jekyll-clean模板为例)如下:
 
 ```

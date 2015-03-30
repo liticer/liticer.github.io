@@ -4,12 +4,29 @@
   <title type="text" xml:lang="en">Liticer's blog</title>
   <link type="application/atom+xml" href="http://liticer.github.io/feed.xml" rel="self"/>
   <link type="text/html" href="http://liticer.github.io" rel="alternate"/>
-  <updated>2015-03-30T14:55:36+08:00</updated>
+  <updated>2015-03-30T23:21:29+08:00</updated>
   <id>http://liticer.github.io/all_feed</id>
   <author>
     <name>liticer</name>
   </author>
 
+  
+  <entry>
+    <title>计算机方面的一些网站和博客</title>
+    <link href="http://liticer.github.io/2015/03/Some-websites-and-blogs-on-computer-science/"/>
+    <updated>2015-03-30T00:00:00+08:00</updated>
+    <id>http://liticer.github.io/2015/03/Some-websites-and-blogs-on-computer-science</id>
+    <content type="html">&lt;p&gt;下面列举一些自己常访问的计算机方面网站和博客：&lt;/p&gt;
+
+&lt;p&gt;1.酷壳：&lt;a href=&quot;http://coolshell.cn&quot; target=&quot;_blank&quot;&gt;http:&amp;#47;&amp;#47;coolshell.cn&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&amp;ensp;&amp;ensp;注：个人最喜欢的技术博客，从中受益匪浅。&lt;/p&gt;
+
+&lt;p&gt;2.谷歌上不去的替代：&lt;/p&gt;
+
+&lt;p&gt;&amp;ensp;&amp;ensp;谷粉搜搜：&lt;a href=&quot;http://www.gfsoso.com&quot; target=&quot;_blank&quot;&gt;http:&amp;#47;&amp;#47;&amp;#119;ww.gfsoso.com&lt;/a&gt;&lt;/p&gt;
+</content>
+  </entry>
   
   <entry>
     <title>GNU/Linux下使用Jekyll搭建博客</title>
@@ -162,7 +179,7 @@ $ jekyll serve --watch
 
 &lt;p&gt;2.使用jekyll模板&lt;/p&gt;
 
-&lt;p&gt;如果你想迅速开始写博客，而不去纠结在一些简单的界面设置中，就可以直接使用&lt;a href=&quot;http://jekyllthemes.org/&quot;&gt;jejyl提供的模板&lt;/a&gt;。
+&lt;p&gt;如果你想迅速开始写博客，而不去纠结在一些简单的界面设置中，就可以直接使用&lt;a href=&quot;http://jekyllthemes.org&quot; target=&quot;_blank&quot;&gt;jekyll提供的模板&lt;/a&gt;。
 模板使用的方式(以jekyll-clean模板为例)如下:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ git clone https://github.com/scotte/jekyll-clean.git
 $ rm -rf jekyll-clean/.git
