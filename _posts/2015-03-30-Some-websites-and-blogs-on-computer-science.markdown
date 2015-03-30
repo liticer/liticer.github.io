@@ -13,6 +13,8 @@ archive: false
 
 &ensp;&ensp;注：个人最喜欢的技术博客，从中受益匪浅。
 
-2.谷歌上不去的替代：
+2.谷歌：
 
-&ensp;&ensp;谷粉搜搜：<a href="http://www.gfsoso.com" target="_blank">http:&#47;&#47;&#119;ww.gfsoso.com</a>
+&ensp;&ensp;<a href="http://www.gfsoso.com" target="_blank">http:&#47;&#47;&#119;ww.gfsoso.com</a>
+ 
+&ensp;&ensp;<a href="http://www.glgoo.com" target="_blank">http:&#47;&#47;&#119;ww.glgoo.com</a>
