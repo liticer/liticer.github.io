@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     
     <url>
-        <loc>/2015/03/Build-blog-with-jekyll-under-GNU-Linux/</loc>
+        <loc>http://liticer.github.io/2015/03/Build-blog-with-jekyll-under-GNU-Linux/</loc>
     </url>
     
 
@@ -10,7 +10,7 @@
     
     
     <url>
-        <loc>/404.html</loc>
+        <loc>http://liticer.github.io/404.html</loc>
     </url>
     
     
@@ -18,7 +18,7 @@
     
     
     <url>
-        <loc>/about.html</loc>
+        <loc>http://liticer.github.io/about.html</loc>
     </url>
     
     
@@ -26,7 +26,7 @@
     
     
     <url>
-        <loc>/archive.html</loc>
+        <loc>http://liticer.github.io/archive.html</loc>
     </url>
     
     
@@ -34,17 +34,7 @@
     
     
     <url>
-        <loc>/contact.html</loc>
-    </url>
-    
-    
-    
-    
-    
-    
-    
-    <url>
-        <loc>/</loc>
+        <loc>http://liticer.github.io/contact.html</loc>
     </url>
     
     
@@ -54,15 +44,7 @@
     
     
     <url>
-        <loc>/projects.html</loc>
-    </url>
-    
-    
-    
-    
-    
-    <url>
-        <loc>/search.html</loc>
+        <loc>http://liticer.github.io/</loc>
     </url>
     
     
@@ -71,10 +53,28 @@
     
     
     
+    <url>
+        <loc>http://liticer.github.io/projects.html</loc>
+    </url>
+    
+    
+    
     
     
     <url>
-        <loc>/tags.html</loc>
+        <loc>http://liticer.github.io/search.html</loc>
+    </url>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <url>
+        <loc>http://liticer.github.io/tags.html</loc>
     </url>
     
     
