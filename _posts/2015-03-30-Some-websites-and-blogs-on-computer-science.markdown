@@ -26,3 +26,5 @@ archive: false
 &ensp;&ensp;<a href="http://www.googleout.com" target="_blank">http:&#47;&#47;&#119;ww.googleout.com</a>
 
 &ensp;&ensp;<a href="http://g.linkscholar.org" target="_blank">http:&#47;&#47;g.linkscholar.org</a>
+
+&ensp;&ensp;<a href="https://github.com/greatfire/wiki" target="_blank">https:&#47;&#47;github.com/greatfire/wiki</a>
