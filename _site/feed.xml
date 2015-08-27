@@ -2,10 +2,10 @@
 <!DOCTYPE xsl:stylesheet [<!ENTITY mdash "&#x2014;">]>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title type="text" xml:lang="en">Liticer's blog</title>
-  <link type="application/atom+xml" href="http://127.0.0.1:4000/feed.xml" rel="self"/>
-  <link type="text/html" href="http://127.0.0.1:4000" rel="alternate"/>
-  <updated>2015-08-27T07:41:26+00:00</updated>
-  <id>http://127.0.0.1:4000/all_feed</id>
+  <link type="application/atom+xml" href="http://liticer.github.io/feed.xml" rel="self"/>
+  <link type="text/html" href="http://liticer.github.io" rel="alternate"/>
+  <updated>2015-08-27T08:42:26+00:00</updated>
+  <id>http://liticer.github.io/all_feed</id>
   <author>
     <name>liticer</name>
   </author>
@@ -13,12 +13,12 @@
   
   <entry>
     <title>KMP算法详解</title>
-    <link href="http://127.0.0.1:4000/2015/04/About-KMP-alogorithm/"/>
+    <link href="http://liticer.github.io/2015/04/About-KMP-alogorithm/"/>
     <updated>2015-04-15T00:00:00+00:00</updated>
-    <id>http://127.0.0.1:4000/2015/04/About-KMP-alogorithm</id>
+    <id>http://liticer.github.io/2015/04/About-KMP-alogorithm</id>
     <content type="html">&lt;p&gt;KMP算法是一种改进的字符串匹配算法，由D.E.Knuth、V.R.Pratt和J.H.Morris三人提出。KMP算法的关键是利用匹配失败后的信息，尽量减少模式串与主串的匹配次数以达到快速匹配的目的。以下将分三个部分对KMP算法进行阐述。&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt; 一. 暴力字符串匹配算法&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;一. 暴力字符串匹配算法&lt;/p&gt;
 
 &lt;p&gt;假设现在我们面临这样一个问题：有一个文本串S，一个模式串P，现在要在SS中查找P出现的位置，该怎么查找呢？&lt;/p&gt;
 
@@ -59,7 +59,7 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;算法流程比较清晰：对于文本串S的每个字符开始的子串依次与P进行匹配，如果匹配成功则结束；否则，跳到下一个字符开始的子串继续进行匹配。在匹配过程中，S的索引i会发生回溯，P的索引j会发生重置。KMP算法主要思想就是利用了P的索引回溯的过程，使得S的索引i不再发生回溯，从而减少了字符串匹配的复杂度。&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt; 二. KMP字符串匹配算法&lt;/strong&gt; &lt;/p&gt;
+&lt;p&gt;二. KMP字符串匹配算法&lt;/p&gt;
 
 &lt;p&gt;KMP算法的核心思想是当字符串S与模式串P进行匹配时，适当地移动j以保持i一直向前移动。要做到这样，首先必须定义一个长度与P的长度相等的next向量，next[j]表示S[i]!=P[j]时，P的索引j应该回溯的位置。首先贴出KMP算法的C++实现代码，然后对照代码对算法进行分析。&lt;/p&gt;
 
@@ -117,9 +117,9 @@
   
   <entry>
     <title>计算机方面的一些网站和博客</title>
-    <link href="http://127.0.0.1:4000/2015/03/Some-websites-and-blogs-on-computer-science/"/>
+    <link href="http://liticer.github.io/2015/03/Some-websites-and-blogs-on-computer-science/"/>
     <updated>2015-03-30T00:00:00+00:00</updated>
-    <id>http://127.0.0.1:4000/2015/03/Some-websites-and-blogs-on-computer-science</id>
+    <id>http://liticer.github.io/2015/03/Some-websites-and-blogs-on-computer-science</id>
     <content type="html">&lt;p&gt;下面列举一些自己常访问的计算机方面网站和博客：&lt;/p&gt;
 
 &lt;p&gt;1.酷壳：&lt;a href=&quot;http://coolshell.cn&quot; target=&quot;_blank&quot;&gt;http:&amp;#47;&amp;#47;coolshell.cn&lt;/a&gt;&lt;/p&gt;
@@ -146,12 +146,12 @@
   
   <entry>
     <title>GNU/Linux下使用Jekyll搭建博客</title>
-    <link href="http://127.0.0.1:4000/2015/03/Build-blog-with-jekyll-under-GNU-Linux/"/>
+    <link href="http://liticer.github.io/2015/03/Build-blog-with-jekyll-under-GNU-Linux/"/>
     <updated>2015-03-28T00:00:00+00:00</updated>
-    <id>http://127.0.0.1:4000/2015/03/Build-blog-with-jekyll-under-GNU-Linux</id>
+    <id>http://liticer.github.io/2015/03/Build-blog-with-jekyll-under-GNU-Linux</id>
     <content type="html">&lt;p&gt;前言：历经无数艰辛，终于开启了个人博客之路，在此深深地感谢各位网络技术大神们各种各样的博客指引。此文适合那些想使用搭建个人博客的新手们，大神可以忽略。&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;一. Git Pages简介&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;一. Git Pages简介&lt;/p&gt;
 
 &lt;p&gt;Github是一个具有版本管理功能的代码仓库，许多重要的项目都托管在上面。每个项目都有一个主页，列出项目的源文件。为了让人们对项目迅速上手，Github就设计了Pages功能，可以为每个项目一个简明易懂的网页来说明该项目大概情况。同时也为每个Github用户提供了一个个人主页，该主页可以让人们对该用户有一个大概的了解。我们之所以能建立博客，就是利用了可以对这两种主页随意定制的特点。&lt;/p&gt;
 
@@ -159,13 +159,13 @@
 第一种是建立个人主页，可以使用username.github.io进行访问，每个用户名下面只能建立一个个人主页；
 第二种是建立项目主页, 可以使用如下的链接访问username.github.io/projectname，每个项目都可以建立一个项目主页。&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;二. 注册Github帐户和建立博客仓库&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;二. 注册Github帐户和建立博客仓库&lt;/p&gt;
 
 &lt;p&gt;首先需要注册一个Github帐户，如username，建立帐户之后需要按照网站要求对注册邮箱进行验证，不然在博客建立过程中会报错(报错信息会发送至注册邮箱)。&lt;/p&gt;
 
 &lt;p&gt;然后打开Github网站，使用用户名和密码进行登录，并建立一个形如username.github.io的仓库(本教程都是使用第一种方式建立个人博客)。&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;三. 上传博客源码到Github仓库&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;三. 上传博客源码到Github仓库&lt;/p&gt;
 
 &lt;p&gt;博主使用的系统是Ubuntu 12.04，后续所有操作均在bash命令行中完成。&lt;/p&gt;
 
@@ -242,7 +242,7 @@ $ git push origin master
 
 &lt;p&gt;大约10分钟的时间，访问username.github.io就可以看到自己的博客了。无论生成失败还是成功，Github会向你的邮箱发送一封邮件说明原因，请注意查收。&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;四. 搭建jekyll本地调试环境&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;四. 搭建jekyll本地调试环境&lt;/p&gt;
 
 &lt;p&gt;在编写完博客之后，可以不经调试直接上传至Github。但是其中可能存在错误，发现错误之后再修改，修改之后再上传，这个过程不但耗时而且麻烦。如果想在本地进行调试，就需要搭建jekyll环境了，下面来介绍环境搭建过程。&lt;/p&gt;
 
@@ -283,7 +283,7 @@ $ sudo gem install execjs
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;注：等待时间较长，-V可以显示安装过程。&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;五. 本地jekyll调试和模板使用&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;五. 本地jekyll调试和模板使用&lt;/p&gt;
 
 &lt;p&gt;1.本地jekyll调试&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ cd username.github.io
