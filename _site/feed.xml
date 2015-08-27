@@ -2,10 +2,10 @@
 <!DOCTYPE xsl:stylesheet [<!ENTITY mdash "&#x2014;">]>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title type="text" xml:lang="en">Liticer's blog</title>
-  <link type="application/atom+xml" href="http://liticer.github.io/feed.xml" rel="self"/>
-  <link type="text/html" href="http://liticer.github.io" rel="alternate"/>
-  <updated>2015-08-27T08:50:50+00:00</updated>
-  <id>http://liticer.github.io/all_feed</id>
+  <link type="application/atom+xml" href="http://127.0.0.1:4000/feed.xml" rel="self"/>
+  <link type="text/html" href="http://127.0.0.1:4000" rel="alternate"/>
+  <updated>2015-08-27T09:31:31+00:00</updated>
+  <id>http://127.0.0.1:4000/all_feed</id>
   <author>
     <name>liticer</name>
   </author>
@@ -13,9 +13,9 @@
   
   <entry>
     <title>KMP算法详解</title>
-    <link href="http://liticer.github.io/2015/04/About-KMP-alogorithm/"/>
+    <link href="http://127.0.0.1:4000/2015/04/About-KMP-alogorithm/"/>
     <updated>2015-04-15T00:00:00+00:00</updated>
-    <id>http://liticer.github.io/2015/04/About-KMP-alogorithm</id>
+    <id>http://127.0.0.1:4000/2015/04/About-KMP-alogorithm</id>
     <content type="html">&lt;p&gt;KMP算法是一种改进的字符串匹配算法，由D.E.Knuth、V.R.Pratt和J.H.Morris三人提出。KMP算法的关键是利用匹配失败后的信息，尽量减少模式串与主串的匹配次数以达到快速匹配的目的。以下将分三个部分对KMP算法进行阐述。&lt;/p&gt;
 
 &lt;p&gt;一. 暴力字符串匹配算法&lt;/p&gt;
@@ -117,9 +117,9 @@
   
   <entry>
     <title>计算机方面的一些网站和博客</title>
-    <link href="http://liticer.github.io/2015/03/Some-websites-and-blogs-on-computer-science/"/>
+    <link href="http://127.0.0.1:4000/2015/03/Some-websites-and-blogs-on-computer-science/"/>
     <updated>2015-03-30T00:00:00+00:00</updated>
-    <id>http://liticer.github.io/2015/03/Some-websites-and-blogs-on-computer-science</id>
+    <id>http://127.0.0.1:4000/2015/03/Some-websites-and-blogs-on-computer-science</id>
     <content type="html">&lt;p&gt;下面列举一些自己常访问的计算机方面网站和博客：&lt;/p&gt;
 
 &lt;p&gt;1.酷壳：&lt;a href=&quot;http://coolshell.cn&quot; target=&quot;_blank&quot;&gt;http:&amp;#47;&amp;#47;coolshell.cn&lt;/a&gt;&lt;/p&gt;
@@ -146,9 +146,9 @@
   
   <entry>
     <title>GNU/Linux下使用Jekyll搭建博客</title>
-    <link href="http://liticer.github.io/2015/03/Build-blog-with-jekyll-under-GNU-Linux/"/>
+    <link href="http://127.0.0.1:4000/2015/03/Build-blog-with-jekyll-under-GNU-Linux/"/>
     <updated>2015-03-28T00:00:00+00:00</updated>
-    <id>http://liticer.github.io/2015/03/Build-blog-with-jekyll-under-GNU-Linux</id>
+    <id>http://127.0.0.1:4000/2015/03/Build-blog-with-jekyll-under-GNU-Linux</id>
     <content type="html">&lt;p&gt;前言：历经无数艰辛，终于开启了个人博客之路，在此深深地感谢各位网络技术大神们各种各样的博客指引。此文适合那些想使用搭建个人博客的新手们，大神可以忽略。&lt;/p&gt;
 
 &lt;p&gt;一. Git Pages简介&lt;/p&gt;
