@@ -23,31 +23,33 @@
           <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
-<body>
+<style type="text/css">
+	body {background-image:url(/assets/images/background.jpg); background-repeat:no-repeat; background-attachment:fixed} 
+</style> 
 <main>
     <span class="statusbar"></span>
     <!-- Wrap all page content here -->
-    <div id="wrap">
-        <div id="body" class="container">
-            <div class="row row-offcanvas row-offcanvas-left">
+    <div id="wrap" >
+        <div id="body" class="container" style="background-color:#FFF; border-radius:25px; margin-top:70px">
+            <div class="row row-offcanvas row-offcanvas-left" >
                 <!-- side navigation -->
-                <nav id="nav" role="navigation" class="col-sm-2 sidebar-offcanvas">
+                <nav id="nav" role="navigation" class="col-sm-2 sidebar-offcanvas" style="position:relative; left:30px; ">
                     <header id="menu" role="banner">
                         <p class="menu-title">Close</p>
                         <a href="#nav" class="close-btn">Close</a>
                     </header>
-                    <ul class="sidebar" >
+                    <ul class="sidebar" style="text-align:center; font-family:'宋体'">
 <!-- sort in alphebetical order -->
-	<div style="width:120px; height:120px; border-radius:50%; overflow:hidden;">
+	<div style="width:120px; height:120px; border-radius:50%; overflow:hidden; border: 2px solid #ddd; margin-bottom:30px">
 		<img src="/assets/images/me.jpg" height="120" width="120" />
 	</div>
-    <li><a href="http://127.0.0.1:4000/index.html">Home</a></li>    
-    <li><a href="http://127.0.0.1:4000/projects.html">Projects</a></li>
-    <li><a href="http://127.0.0.1:4000/search.html">Search</a></li>
-    <li><a href="http://127.0.0.1:4000/tags.html">Tags</a></li>
-    <li><a href="http://127.0.0.1:4000/archive.html">Archive</a></li>
-    <li><a href="http://127.0.0.1:4000/contact.html">Contact</a></li>
-    <li><a href="http://127.0.0.1:4000/about.html">About</a></li>
+    <li><a href="http://127.0.0.1:4000/index.html">主页</a></li>    
+    <li><a href="http://127.0.0.1:4000/projects.html">项目</a></li>
+    <li><a href="http://127.0.0.1:4000/search.html">搜索</a></li>
+    <li><a href="http://127.0.0.1:4000/tags.html">标签</a></li>
+    <li><a href="http://127.0.0.1:4000/archive.html">文章</a></li>
+    <li><a href="http://127.0.0.1:4000/contact.html">留言</a></li>
+    <li><a href="http://127.0.0.1:4000/about.html">关于</a></li>
 
     <a class="goto-top-link hide-on-phone" href="#top">
         <div class="goto-top text-center">
@@ -62,10 +64,10 @@
                     <a href="#nav" class="menu-btn">navigation</a>
                 </header>
                 <!-- Content -->
-                <div class="col-sm-10">
-                    <nav class="top">
-                        <font size=5><a href="/">Liticer's blog</a></font>
-                        <span class="pull-right">
+                <div class="col-sm-10" style="position:relative; padding-left:20px; padding-right:30px; ">
+                    <nav class="top" style="margin-bottom:20px; ">
+                        <font size=5><a href="/" style="font-family:'宋体'; color:#B22222"> 请君安坐，听我一言 </a></font>
+                        <span class="pull-right" style="position:relative; padding-right:15px ">
                             <a id="twitter-ic" class="link" href="https://twitter.com/liticer">
                                 <i class="fa fa-twitter fa-lg"></i>
                             </a>
@@ -79,8 +81,8 @@
                     </nav>
                     <div class="row">
                         <div class="col-sm-12">
-    <div class="page">
-    	<div class="page-title">
+    <div class="page" style="background-color:#FFF">
+    	<div class="page-title" >
     		GNU/Linux下使用Jekyll搭建博客
     		<div class="meta">    			
                 

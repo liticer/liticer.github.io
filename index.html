@@ -1,12 +1,12 @@
 ---
 layout: default
 ---
-<div class="col-sm-12">
-    <div class="page">
+<div class="col-sm-12" >
+    <div class="page" >
         {% for post in site.posts %}
             {% if post.archive == false %}
-            <div class="page-item">
-                <div class="col-sm-8">
+            <div class="page-item"  style="background-color:#FFF; ">
+                <div class="col-sm-8" >
                     <ul class="page-item-title">
                         <li><time class="timeago meta" datetime="{{ post.date |  date: "%A %-d %B %Y" }}">{{ post.date }}</time>
                         <a class="meta pull-right comments-meta" href="{{ post.url }}#disqus_thread">0 <i class="fa fa-comments-o fa-lg"></i></a></li>
@@ -31,8 +31,8 @@ layout: default
 </div>
 <script>
 $(document).ready(function() {
-    $(".page").children().first().find(".page-item-body").css( "display", "block" );
-    $(".page").children().first().find(".pib-indicator")
+    $(".page").children().find(".page-item-body").css( "display", "block" );
+    $(".page").children().find(".pib-indicator")
         .find("i").toggleClass("fa-compress").toggleClass("fa-expand");
 
     $(".page-item .pib-indicator").click(function() {

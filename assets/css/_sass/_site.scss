@@ -38,7 +38,7 @@ main {position: relative;}
 .page-item-body {display: none;}
 
 .page-title {
-  font-size: 31px;
+  font-size: 20px;
   font-weight: 700;
   padding: 0 0 0 15px;
 }
@@ -136,15 +136,15 @@ main {position: relative;}
   font-size: 20px;
   font-weight: bolder;
   position: fixed;
-  min-width: 139px;
+  min-width: 100px;
   padding: 0!important;
   a {
-	color: #FF4500;
+	color: #B22222;
     font-weight: 700!important;
     &:hover,
     &:focus {
       text-decoration: none;
-      color: $lnk-highlight-color;
+      color: #9ACD32;
     }
   }
   li {
@@ -274,7 +274,7 @@ pre {
 }
 
 .title {
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 700;
 }
 
