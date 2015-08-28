@@ -33,6 +33,14 @@ main {position: relative;}
   .fa-ellipsis-h {color: #428bca;}
   .fa-compress {color: red;}
   .fa-expand {color: #22D722;}
+  a {
+    font-weight: 300!important;
+    &:hover,
+    &:focus {
+      text-decoration: none;
+      color: #0000FF;
+    }
+  }
 }
 
 .page-item-body {display: none;}
@@ -212,7 +220,15 @@ ul {list-style-type: square;}
   background-color: white;
   font-weight: 700 !important;  
   padding-left: 15px;
-  a {color: #333;}
+  a {
+	color: #B22222;
+    font-weight: 700!important;
+    &:hover,
+    &:focus {
+      text-decoration: none;
+      color: #0000FF;
+    }
+  }
   span {
     a {padding-left: 3px;}
   }
@@ -277,6 +293,7 @@ pre {
   font-size: 18px;
   font-weight: 700;
 }
+
 
 .pib-indicator {cursor:pointer;}
 
