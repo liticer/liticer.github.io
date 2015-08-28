@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "GNU/Linux下使用Jekyll搭建博客"
-date:  2015-03-28
+date:  2015-03-28 22:11:07
 comments: true
 tags: github jekyll blog
 archive: false

@@ -4,7 +4,7 @@
   <title type="text" xml:lang="en">Liticer's blog</title>
   <link type="application/atom+xml" href="http://127.0.0.1:4000/feed.xml" rel="self"/>
   <link type="text/html" href="http://127.0.0.1:4000" rel="alternate"/>
-  <updated>2015-08-28T03:17:20+00:00</updated>
+  <updated>2015-08-28T05:09:04+00:00</updated>
   <id>http://127.0.0.1:4000/all_feed</id>
   <author>
     <name>liticer</name>
@@ -147,7 +147,7 @@
   <entry>
     <title>GNU/Linux下使用Jekyll搭建博客</title>
     <link href="http://127.0.0.1:4000/2015/03/Build-blog-with-jekyll-under-GNU-Linux/"/>
-    <updated>2015-03-28T00:00:00+00:00</updated>
+    <updated>2015-03-28T22:11:07+00:00</updated>
     <id>http://127.0.0.1:4000/2015/03/Build-blog-with-jekyll-under-GNU-Linux</id>
     <content type="html">&lt;p&gt;前言：历经无数艰辛，终于开启了个人博客之路，在此深深地感谢各位网络技术大神们各种各样的博客指引。此文适合那些想使用搭建个人博客的新手们，大神可以忽略。&lt;/p&gt;
 
