@@ -7,7 +7,7 @@ tags: blogs websites computer
 archive: false
 ---
 
-下面列举一些自己常访问的计算机方面网站和博客：
+下面列举一些自己常访问的计算机方面网站和博客：（其实，我只是想做个网络书签，因为书签同步很麻烦，真的很麻烦...）
 
 1.酷壳：<a href="http://coolshell.cn" target="_blank">http:&#47;&#47;coolshell.cn</a>
 
