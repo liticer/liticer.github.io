@@ -1,23 +1,34 @@
-name: Liticer's blog
-description:  The world of code
+# This is the default format.
+# For more see: http://jekyllrb.com/docs/permalinks/
+permalink: /:title
+# https://help.github.com/articles/migrating-your-pages-site-from-maruku
+markdown: kramdown
 
-sass:
-  sass_dir: assets/css/_sass
-  style: :compressed
+highlighter: pygments
+paginate: 20 # pagination based on number of posts
+paginate_path: "page/:num"
 
-markdown: redcarpet
-redcarpet:
-  extensions: ["no_intra_emphasis", "tables", "fenced_code_blocks", "autolink", "strikethrough", "superscript"]
+# These paths are to the main pages Jekyll-Bootstrap ships with.
+# Some JB helpers refer to these paths; change them here if needed.
+#
+categories_path : categories.html
+tags_path : tags.html
 
-url: http://liticer.github.io
-permalink: /:year/:month/:title/
-owner:
-    name: liticer
-    twitter: liticer
-    github: liticer
-    disqus_shortname: liticer
+#BASE_PATH : 127.0.0.1:4000
+# BASE_PATH : http://blog.ankanbiswas.in/uno-dbyll
 
-ga_id: UA-48177899-1
-ga_username: liticer.github.io
 
-timezone: Asia/Shanghai
+title : uno-dbyll
+
+
+
+author:
+  name: Ankan Biswas
+  role: Jekyll Theme
+  email: support@ankanbiswas.in
+  github: talk2ankan
+  twitter: talk2ankan
+  facebook: talk2ankan
+  googleplus: +AnkanBiswasWorkspace
+  bio: "Simple, clean, responsive and stylist theme for jekyll. "
+  uno-dbyll: https://raw.githubusercontent.com/talk2ankan/uno-dbyll/gh-pages/uno-dbyll.png
