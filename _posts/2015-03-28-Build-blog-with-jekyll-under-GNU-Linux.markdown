@@ -57,14 +57,14 @@ username.github.io
 编辑_config.yml:
 
 
-```
+{% highlight html%}
 baseurl: /username.github.io
 encoding: utf-8
-```
+{% endhighlight %}
 
 编辑_layouts/default.html:
 
-```html
+{% highlight html%}
 {% raw %}
 <!DOCTYPE html>
 <html>
@@ -77,10 +77,11 @@ encoding: utf-8
 </body>
 </html>
 {% endraw %}
-```
+{% endhighlight %}
+
 编辑index.html:
 
-```html
+{% highlight html%}
 {% raw %}
 ---
 layout: default
@@ -96,11 +97,11 @@ title: My blog
 　　{% endfor %}
 </ul>
 {% endraw %}
-```
+{% endhighlight %}
 
 编辑_post/2015-03-28.test.html:
 
-```html
+{% highlight html%}
 {% raw %}
 ---
 layout: default
@@ -110,11 +111,11 @@ title: test
 <p>My first article</p>
 <p>{{ page.date | date_to_string }}</p>
 {% endraw %}
-```
+{% endhighlight %}
 
 3.传送到Github远程仓库
 
-```
+{% highlight c++%}
 # 将当前的改动暂存在本地仓库
 $ git add .
 # 将暂存的改动提交到本地仓库，并写入本次提交的注释是”first post“
@@ -123,7 +124,7 @@ $ git commit -m "first post"
 $ git remote add origin https://github.com/username/username.github.io.git
 # 向origin推送master分支
 $ git push origin master
-```
+{% endhighlight %}
 
 注1：如果是初次安装git的话，在commit的时候会提示需要配置username和email，请读者注意根据提示配置一下，至于username和email可以随便填。
 
@@ -137,7 +138,7 @@ $ git push origin master
 
 1.安装gem
 
-```
+{% highlight c++%}
 $ sudo apt-get install rubygems
 $ gem sources --remove https://rubygems.org/
 $ gem sources --remove http://rubygems.org/
@@ -147,18 +148,20 @@ $ gem sources -l
 
 https://ruby.taobao.org
 # 请确保只有ruby.taobao.org
-```   
+{% endhighlight %}
+
 Rubygems是一个复杂的ruby安装包管理软件，具体请man gem。
 
 2.安装rvm和ruby
 
-```
+{% highlight c++%}
 $ sudo apt-get install curl
 $ curl -L https://get.rvm.io | sudo bash -s stable  
 $ /bin/bash --login
 $ sudo rvm install ruby-2.1.2
 $ rvm use ruby-2.1.2
-```
+{% endhighlight %}
+
 注1：Ubuntu 12.04源里的ruby版本太低，jekyll要求的ruby版本必须大于1.9.2。  
 注2：如果出现错误：  
 &ensp;&ensp;&ensp;&ensp;&ensp;`curl: (77) error setting certificate verify locations:`  
@@ -169,16 +172,16 @@ $ rvm use ruby-2.1.2
 
 3.安装nodejs和execjs
 
-```
+{% highlight c++%}
 $ sudo apt-get install nodejs
 $ sudo gem install execjs
-```
+{% endhighlight %}
 
 4.安装jekyll
 
-```
+{% highlight c++%}
 sudo gem install jekyll -V
-```
+{% endhighlight %}
 
 注：等待时间较长，-V可以显示安装过程。
 
@@ -186,12 +189,12 @@ sudo gem install jekyll -V
 
 1.本地jekyll调试
 
-```
+{% highlight c++%}
 $ cd username.github.io
 $ /bin/bash --login
 $ rvm use ruby-2.1.2
 $ jekyll serve --watch
-```
+{% endhighlight %}
 
 注：运行完上述命令后，打开127.0.0.1:4000就能在本地看到博客调试的结果。
 
@@ -200,11 +203,12 @@ $ jekyll serve --watch
 如果你想迅速开始写博客，而不去纠结在一些简单的界面设置中，就可以直接使用<a href="http://jekyllthemes.org" target="_blank">jekyll提供的模板</a>。
 模板使用的方式(以jekyll-clean模板为例)如下:
 
-```
+{% highlight c++%}
 $ git clone https://github.com/scotte/jekyll-clean.git
 $ rm -rf jekyll-clean/.git
 $ cp -r jekyll-clean username.git.io
-```
+{% endhighlight %}
+
 之后就是以别人模板中的文件建立仓库、调试、上传了。最后只需要学习一些简单的Markdown语法，Html基础就可以自己写博客了。每次只需要在_post目录当中编写html或者markdown格式的博客，然后再推送到Github就可以发表自己的博客了。
 
 后记：个人博客最大的好处就是随心所欲，文字、图片、表格、公式，你想要它显示什么样，就可以什么样，一切都在自己不断地挖掘。另外，还有强大的Github给你的博客做后端，不能再放心了。
