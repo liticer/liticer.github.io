@@ -5,7 +5,8 @@ permalink: /:title
 markdown: kramdown
 
 highlighter: pygments
-paginate: 20 # pagination based on number of posts
+gems: [jekyll-paginate]
+paginate: 8 # pagination based on number of posts
 paginate_path: "page/:num"
 
 # These paths are to the main pages Jekyll-Bootstrap ships with.
@@ -13,22 +14,23 @@ paginate_path: "page/:num"
 #
 categories_path : categories.html
 tags_path : tags.html
+me_path : me.html
 
-#BASE_PATH : 127.0.0.1:4000
-# BASE_PATH : http://blog.ankanbiswas.in/uno-dbyll
+#BASE_PATH : http://yeahyangliu.github.io
+BASE_PATH : http://liticer.github.io
 
 
-title : uno-dbyll
+title : Alex Yang
 
 
 
 author:
-  name: Ankan Biswas
-  role: Jekyll Theme
-  email: support@ankanbiswas.in
-  github: talk2ankan
-  twitter: talk2ankan
-  facebook: talk2ankan
+  name: Alex Yang
+  role: Developer
+  email: yangliualex@gmail.com
+  github: yeahyangliu
+  weixin: test
+  facebook: yeahyangliu
   googleplus: +AnkanBiswasWorkspace
-  bio: "Simple, clean, responsive and stylist theme for jekyll. "
-  uno-dbyll: https://raw.githubusercontent.com/talk2ankan/uno-dbyll/gh-pages/uno-dbyll.png
+  bio: "任何编程语言中都没有什么魔法或者万灵丹药，使其使用者成为好的程序员"
+  uno-dbyll: ../assets/media/alex.png
