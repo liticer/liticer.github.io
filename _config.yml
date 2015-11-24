@@ -16,21 +16,20 @@ categories_path : categories.html
 tags_path : tags.html
 me_path : me.html
 
-#BASE_PATH : http://yeahyangliu.github.io
 BASE_PATH : http://liticer.github.io
 
 
-title : Alex Yang
+title : MiKi Shi
 
 
 
 author:
-  name: Alex Yang
-  role: Developer
-  email: yangliualex@gmail.com
-  github: yeahyangliu
+  name: MiKi Shi
+  role: Programmer
+  email: shijh09@sina.com
+  github: liticer
   weixin: test
-  facebook: yeahyangliu
-  googleplus: +AnkanBiswasWorkspace
-  bio: "任何编程语言中都没有什么魔法或者万灵丹药，使其使用者成为好的程序员"
-  uno-dbyll: ../assets/media/alex.png
+  facebook: liticer
+  #googleplus: 
+  bio: "Talk is cheap, show me the code!"
+  uno-dbyll: ../assets/media/me.jpg

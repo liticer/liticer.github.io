@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+	<head>
+
+		<title>I am best | Moco</title>
+
+	
+
+	<meta name="author" content="Mico Shi">
+
+		<!-- Enable responsive viewport -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+<link rel="stylesheet" type="text/css" href="/assets/resources/syntax/syntax.css">
+<link rel="stylesheet" type="text/css" href="/assets/resources/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/assets/resources/font-awesome/css/font-awesome.min.css">
+<link rel="icon" href="../assets/media/favicon.jpg">
+
+<link href='http://fonts.googleapis.com/css?family=Raleway:300' rel='stylesheet' type='text/css'>
+
+<script type="text/javascript" src="/assets/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/assets/js/app.js"></script>
+	<script type="text/javascript" src="/assets/resources/bootstrap/js/bootstrap.js"></script>
+
+
+	</head>
+<body>
+
+<nav class="navbar navbar-default visible-xs" role="navigation">
+
+
+ <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarHeaderCollapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+      <a type="button" class="navbar-toggle nav-link" href="http://github.com/liticer">
+        <i class="fa fa-github"></i>
+      </a>
+      
+      
+       
+      <a type="button" class="navbar-toggle nav-link" href="mailto:shijh09@sina.com">
+        <i class="fa fa-envelope"></i>
+      </a>
+      
+
+
+
+      <a class="navbar-brand" href="">
+        <img src="../assets/media/me.jpg" class="img-circle" style="height:35px;width:35px"/>
+        Mico Shi
+      </a>
+    </div>
+
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="navbarHeaderCollapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="">Home</a></li>
+        <li><a href="/categories.html">Categories</a></li>
+        <li><a href="/tags.html">Tags</a></li>
+        <li><a href="/me.html">About Me</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+
+</nav>
+
+  <!-- nav-menu-dropdown -->
+  <div class="btn-group hidden-xs" id="nav-menu">
+   <button type="button" class="btn btn-default dropdown-toggle pull-right" data-toggle="dropdown">
+     <i class="fa fa-bars"></i>
+   </button>
+   <ul class="dropdown-menu pull-right" role="menu">
+     <li><a href=""><i class="fa fa-home"></i> Home</a></li>
+     <li><a href="/categories.html"><i class="fa fa-folder"></i> Categories</a></li>
+     <li><a href="/tags.html"><i class="fa fa-tags"></i> Tags</a></li>
+     <li class="divider"></li>
+     <li><a href="#"><i class="fa fa-arrow-up"></i> Top of Page</a></li>
+   </ul>
+ </div>
+
+<div class="col-sm-4 sidebar hidden-xs" id="sidebar">
+		<! -- sidebar.html -->
+<header class="sidebar-header" role="banner">
+    <a href="">
+        <img src="../assets/media/me.jpg" class="img-circle" style="border-radius: 50%;
+border: 3px solid #FFF; height:150px;width:150px"/>
+    </a>
+
+    <h3 class="title">
+        <a href="/me.html">Mico Shi</a>
+
+        <p style="font-size:20px;">Coder</p>
+    </h3>
+
+    <hr class="hr-line">
+    <h5 class="title">
+        <a type="button" class="social2" id="btnblog" href="/#blog">
+            <i class="fa"
+            style="letter-spacing:0; position:relative; top:-5px; left: -5px; font-size:20px;font-family:arial,sans-serif">博客</i>
+        </a>
+    </h5>
+
+    <hr class="hr-line1">
+    <h3 class="title" style="font-size:30px;">
+
+        <a type="button" class="social1" href="http://github.com/liticer">
+            <i class="fa fa-github"></i>
+        </a>
+
+        <a type="button" class="social1" href="https://www.facebook.com/liticer">
+            <i class="fa fa-facebook"></i>
+        </a>
+        <a type="button" class="social1" href="https://cn.linkedin.com/pub/liticer"
+                style="padding-right: 10px">
+            <i class="fa fa-linkedin"></i>
+        </a>
+
+    </h3>
+
+</header>
+
+
+<! -- sidebar.html end -->
+
+	</div>
+
+<div class="col-sm-8 col-sm-offset-4" id="container">
+  
+<div class="page-header">
+  <h1>GNU/Linux下使用Jekyll搭建博客 </h1>
+</div>
+
+<article>
+
+  <div class="col-sm-10">
+   <span class="post-date">
+     
+     March 
+     29th,
+     
+     2015
+      
+   </span>
+    <div class="article_body" id="article_body">
+    <p>前言：经过几番折腾，终于开启了个人博客之路，在此深深地感谢各位网络技术大神们各种各样的博客指引。此文适合那些想使用Github搭建个人博客的新手们，大神可以忽略。（他们说我这样的开头有点装B，好吧，我也觉得有点装B，哈哈…）</p>
+
+<p>一. Git Pages简介</p>
+
+<p>Github是一个具有版本管理功能的代码仓库，许多重要的项目都托管在上面。每个项目都有一个主页，列出项目的源文件。为了让人们对项目迅速上手，Github就设计了Pages功能，可以为每个项目一个简明易懂的网页来说明该项目大概情况。同时也为每个Github用户提供了一个个人主页，该主页可以让人们对该用户有一个大概的了解。我们之所以能建立博客，就是利用了可以对这两种主页随意定制的特点。</p>
+
+<p>建立博客有两种形式：
+第一种是建立个人主页，可以使用username.github.io进行访问，每个用户名下面只能建立一个个人主页；
+第二种是建立项目主页, 可以使用如下的链接访问username.github.io/projectname，每个项目都可以建立一个项目主页。</p>
+
+<p><code>
+</code></p>
+
+<p>二. 注册Github帐户和建立博客仓库</p>
+
+<p>首先需要注册一个Github帐户，如username，建立帐户之后需要按照网站要求对注册邮箱进行验证，不然在博客建立过程中会报错(报错信息会发送至注册邮箱)。</p>
+
+<p>然后打开Github网站，使用用户名和密码进行登录，并建立一个形如username.github.io的仓库(本教程都是使用第一种方式建立个人博客)。</p>
+
+<p>三. 上传博客源码到Github仓库</p>
+
+<p>博主使用的系统是Ubuntu 12.04，后续所有操作均在bash命令行中完成。</p>
+
+<p>1.建立目录并初始化为仓库</p>
+
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="err">$</span> <span class="n">mkdir</span> <span class="n">username</span><span class="p">.</span><span class="n">github</span><span class="p">.</span><span class="n">io</span>
+<span class="err">$</span> <span class="n">cd</span> <span class="n">username</span><span class="p">.</span><span class="n">github</span><span class="p">.</span><span class="n">io</span>
+<span class="err">$</span> <span class="n">git</span> <span class="n">init</span></code></pre></div>
+
+<p>该命令是在建立并初始化一个本地仓库，会在目录下新建一个.git的隐藏文件夹。</p>
+
+<p>2.建立如下文件和文件夹</p>
+
+<p>username.github.io<br />
+|–_includes：默认的在模板中可以引用的文件的位置<br />
+|–_layouts：默认的公共页面的位置<br />
+|–_posts：博客文章默认的存放位置  <br />
+|–.gitignore：这个文件夹中列出的文件或文件夹，不会纳入源码管理<br />
+|–_config.yml：关于jekyll模板引擎的配置文件<br />
+`– index.html：默认的主页</p>
+
+<p>编辑_config.yml:</p>
+
+<p><code>
+baseurl: /username.github.io
+encoding: utf-8
+</code></p>
+
+<p>编辑_layouts/default.html:</p>
+
+<p>```html</p>
+
+<p>&lt;!DOCTYPE html&gt;</p>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>{{ page.title }}</title>
+</head>
+<body>
+    {{ content }}
+</body>
+</html>
+
+<p>```
+编辑index.html:</p>
+
+<p>```html</p>
+
+<hr />
+<p>layout: default
+title: My blog
+—</p>
+<h2>{{ page.title }}</h2>
+<p>Recent articles</p>
+<ul>
+　　{% for post in site.posts %} 
+        <li>{{ post.date | date_to_string }} 
+            <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
+        </li>
+　　{% endfor %}
+</ul>
+
+<p>```</p>
+
+<p>编辑_post/2015-03-28.test.html:</p>
+
+<p>```html</p>
+
+<hr />
+<p>layout: default
+title: test
+—</p>
+<h2>{{ page.title }}</h2>
+<p>My first article</p>
+<p>{{ page.date | date_to_string }}</p>
+
+<p>```</p>
+
+<p>3.传送到Github远程仓库</p>
+
+<p><code>
+# 将当前的改动暂存在本地仓库
+$ git add .
+# 将暂存的改动提交到本地仓库，并写入本次提交的注释是”first post“
+$ git commit -m "first post"
+# 将远程仓库在本地添加一个引用origin
+$ git remote add origin https://github.com/username/username.github.io.git
+# 向origin推送master分支
+$ git push origin master
+</code></p>
+
+<p>注1：如果是初次安装git的话，在commit的时候会提示需要配置username和email，请读者注意根据提示配置一下，至于username和email可以随便填。</p>
+
+<p>注2：在Git中，分支(branch)的概念非常重要，Git之所以强大，很大程度上就是因为它强大的分支体系。Github规定，在个人主页类型的仓库中，只有master分支中的页面才会生成网页文件；在项目主页类型的仓库中，只有gh-pages分支中的页面才会生成网页文件。</p>
+
+<p>大约10分钟的时间，访问username.github.io就可以看到自己的博客了。无论生成失败还是成功，Github会向你的邮箱发送一封邮件说明原因，请注意查收。</p>
+
+<p>四. 搭建jekyll本地调试环境</p>
+
+<p>在编写完博客之后，可以不经调试直接上传至Github。但是其中可能存在错误，发现错误之后再修改，修改之后再上传，这个过程不但耗时而且麻烦。如果想在本地进行调试，就需要搭建jekyll环境了，下面来介绍环境搭建过程。</p>
+
+<p>1.安装gem</p>
+
+<p>```
+$ sudo apt-get install rubygems
+$ gem sources –remove https://rubygems.org/
+$ gem sources –remove http://rubygems.org/
+$ gem sources -a https://ruby.taobao.org/
+$ gem sources -l
+*** CURRENT SOURCES ***</p>
+
+<p>https://ruby.taobao.org
+# 请确保只有ruby.taobao.org
+``` <br />
+Rubygems是一个复杂的ruby安装包管理软件，具体请man gem。</p>
+
+<p>2.安装rvm和ruby</p>
+
+<p><code>
+$ sudo apt-get install curl
+$ curl -L https://get.rvm.io | sudo bash -s stable  
+$ /bin/bash --login
+$ sudo rvm install ruby-2.1.2
+$ rvm use ruby-2.1.2
+</code>
+注1：Ubuntu 12.04源里的ruby版本太低，jekyll要求的ruby版本必须大于1.9.2。<br />
+注2：如果出现错误：<br />
+     <code>curl: (77) error setting certificate verify locations:</code><br />
+     解决方法如下：<br />
+     <code>$ sudo apt-get install ca-certificates</code><br />
+     <code>$ sudo mkdir -p /etc/pki/tls/certs</code><br />
+     <code>$ sudo cp /etc/ssl/certs/ca-certificates.crt /etc/pki/tls/certs/</code></p>
+
+<p>3.安装nodejs和execjs</p>
+
+<p><code>
+$ sudo apt-get install nodejs
+$ sudo gem install execjs
+</code></p>
+
+<p>4.安装jekyll</p>
+
+<p><code>
+sudo gem install jekyll -V
+</code></p>
+
+<p>注：等待时间较长，-V可以显示安装过程。</p>
+
+<p>五. 本地jekyll调试和模板使用</p>
+
+<p>1.本地jekyll调试</p>
+
+<p><code>
+$ cd username.github.io
+$ /bin/bash --login
+$ rvm use ruby-2.1.2
+$ jekyll serve --watch
+</code></p>
+
+<p>注：运行完上述命令后，打开127.0.0.1:4000就能在本地看到博客调试的结果。</p>
+
+<p>2.使用jekyll模板</p>
+
+<p>如果你想迅速开始写博客，而不去纠结在一些简单的界面设置中，就可以直接使用<a href="http://jekyllthemes.org" target="_blank">jekyll提供的模板</a>。
+模板使用的方式(以jekyll-clean模板为例)如下:</p>
+
+<p><code>
+$ git clone https://github.com/scotte/jekyll-clean.git
+$ rm -rf jekyll-clean/.git
+$ cp -r jekyll-clean username.git.io
+</code>
+之后就是以别人模板中的文件建立仓库、调试、上传了。最后只需要学习一些简单的Markdown语法，Html基础就可以自己写博客了。每次只需要在_post目录当中编写html或者markdown格式的博客，然后再推送到Github就可以发表自己的博客了。</p>
+
+<p>后记：个人博客最大的好处就是随心所欲，文字、图片、表格、公式，你想要它显示什么样，就可以什么样，一切都在自己不断地挖掘。另外，还有强大的Github给你的博客做后端，不能再放心了。</p>
+
+    </div>
+
+    
+
+    
+    <ul class="list-inline">
+      <li><i class="fa fa-tags"></i></li>
+      
+      
+      
+        <li>
+          <a href="/tags.html#github-ref">
+          github <span>(1)</span>
+          ,
+          </a>
+        </li>
+      
+        <li>
+          <a href="/tags.html#jekyll-ref">
+          jekyll <span>(1)</span>
+          ,
+          </a>
+        </li>
+      
+        <li>
+          <a href="/tags.html#blog-ref">
+          blog <span>(1)</span>
+          
+          </a>
+        </li>
+      
+      
+      
+    </ul>
+    
+
+    <hr>
+
+    <div>
+      <section class="share col-sm-6">
+        <h4 class="section-title">Share Post</h4>
+        <a class="btn btn-default btn-sm twitter" href="http://twitter.com/share?text=GNU/Linux下使用Jekyll搭建博客"
+           onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+          <i class="fa fa-weixin fa-lg"></i>
+          Wechat
+        </a>
+        <a class="btn btn-default btn-sm facebook" href="https://www.facebook.com/sharer/sharer.php"
+           onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+          <i class="fa fa-facebook fa-lg"></i>
+          Facebook
+        </a>
+        <a class="btn btn-default btn-sm gplus"
+           onclick="window.open('https://plus.google.com/share?url='+window.location.href, 'google-plus-share', 'width=490,height=530');return false;">
+          <i class="fa fa-google-plus fa-lg"></i>
+          Google+
+        </a>
+      </section>
+
+      <section class="col-sm-6 author">
+        <img src="../assets/media/me.jpg" style="height:100px;width:100px;" class="img-rounded author-image" />
+        <h4 class="section-title author-name"><b>Mico Shi</b><br/><p style="color:#888;font-size:13px;">Coder</p></h4>
+        <p class="author-bio">Talk is cheap, show me the code!</p>
+      </section>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <ul class="pager">
+      
+      <li class="previous"><a href="/%E7%8E%A9%E8%BD%AC%20JavaScript%20Callback%E5%87%BD%E6%95%B0" title="玩转JavaScript Callback函数">&larr; 上一篇</a></li>
+      
+      
+      <li class="next"><a href="/Some-websites-and-blogs-on-computer-science" title="计算机方面的一些网站和博客">下一篇 &rarr;</a></li>
+      
+    </ul>
+
+  </div>
+    <!-- UY BEGIN -->
+    <div id="uyan_frame"></div>
+    <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2063602"></script>
+    <!-- UY END -->
+
+</article>
+<div class="clearfix"></div>
+
+
+<footer class="navbar navbar-default">
+    <div class="container">
+      <p class="navbar-text pull-left">Some rights reserved &copy; 2015 Mico Shi. </br>
+      想加入ThoughtWorks请将简历发送至 <a class="navbar-button" href="http://gmail.google.com/">liuyang@thoughtworks.com</a></p>
+ </div>
+  </footer>
+</div>
+
+</body>
+</html>

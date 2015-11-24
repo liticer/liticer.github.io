@@ -5,8 +5,6 @@
 		<title>I am best | Moco</title>
 
 	
-	<meta name="description" content="CSS中pseudo的介绍和用法">
-	
 
 	<meta name="author" content="Mico Shi">
 
@@ -135,7 +133,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 <div class="col-sm-8 col-sm-offset-4" id="container">
   
 <div class="page-header">
-  <h1>CSS玩转伪元素 </h1>
+  <h1>计算机方面的一些网站和博客 </h1>
 </div>
 
 <article>
@@ -143,62 +141,37 @@ border: 3px solid #FFF; height:150px;width:150px"/>
   <div class="col-sm-10">
    <span class="post-date">
      
-     November 
-     12th,
+     March 
+     30th,
      
      2015
       
    </span>
     <div class="article_body" id="article_body">
-    <p><img src="/assets/image/css-pseudo.jpg" alt="pseudo" /></p>
+    <p>下面列举一些自己常访问的计算机方面网站和博客：（其实，我只是想做个网络书签，因为书签同步很麻烦，真的很麻烦…）</p>
 
-<p><br />
-伪类大家可能都不陌生，例如大家熟悉的<code>:hover</code>, <code>:link</code>等等，伪类是用来指定一个或者与其相关的选择符的状态。那么有多少人知道伪元素是干嘛的呢？
-我会给大家详细介绍伪类中的<code>:before</code>， <code>:after</code>， 并带大家使用伪类来制作上面这张图片。</p>
+<p>1.酷壳：<a href="http://coolshell.cn" target="_blank">http://coolshell.cn</a></p>
 
-<p>所谓<code>伪元素</code>，就是本身不存在的页面元素，HTML代码里并没有这样的元素。但在页面显示时，你却能看到这些本来不存在的元素发挥着作用。它会改变页面的渲染树，但是不会给页面的DOM树添加任何只用于展示的DOM。</p>
+<p>  注：个人最喜欢的技术博客，从中受益匪浅。</p>
 
-<p>可能大家已经开始困惑了，什么是无用的DOM，为什么不存在的元素却能够让显示发生变化。OK，我们先从用法开始讲起。</p>
+<p>2.谷歌：</p>
 
-<p><code>:before</code>， <code>:after</code>用法十分简单，它的作用是在元素前后插入新的内容，必须有content属性，外加一些样式。比如：</p>
+<p>  <a href="http://www.gfsoso.com" target="_blank">http://www.gfsoso.com</a></p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">div</span><span class="o">:</span><span class="nx">before</span> <span class="p">{</span>
-        <span class="nx">content</span><span class="o">:</span> <span class="nx">open</span><span class="o">-</span><span class="nx">quote</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="nx">div</span><span class="o">:</span><span class="nx">after</span> <span class="p">{</span>
-        <span class="nx">content</span><span class="o">:</span> <span class="nx">open</span><span class="o">-</span><span class="nx">quote</span><span class="p">;</span>
-    <span class="p">}</span>
+<p>  <a href="http://www.glgoo.com" target="_blank">http://www.glgoo.com</a></p>
 
-    <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span><span class="nx">This</span> <span class="nx">is</span> <span class="nx">Alex</span><span class="o">&lt;</span><span class="err">/div&gt;</span></code></pre></div>
+<p>  <a href="http://www.clonegoogle.com" target="_blank">http://www.clonegoogle.com</a></p>
 
-<p>你会看到“This is Alex”，前后两个引号就是通过before和after添加上去的，如果你审查元素，你会发现DOM中找不到这两个引号的HTML。</p>
+<p>  <a href="http://www.fqgoogle.com" target="_blank">http://www.fqgoogle.com</a></p>
 
-<p>伪元素一般用于改变它们的前景颜色，增加背景色/图，调整字体大小，调整对齐方式等等。那么对于上图而言，我们可以采用两种方式实现：</p>
+<p>  <a href="http://www.googleout.com" target="_blank">http://www.googleout.com</a></p>
 
-<ul>
-  <li>使用两个div，一个放背景图，一个放黑色背景，然后让两个重叠，产生这种效果</li>
-  <li>使用一个黑色背景，然后使用伪元素，把图片背景添加上去</li>
-</ul>
+<p>  <a href="http://g.linkscholar.org" target="_blank">http://g.linkscholar.org</a></p>
 
-<p>如果你能还不能知道如何使用着两种方案实现这样的效果，<a href="https://jsfiddle.net/Alex___Yang/g0o1u6nb/1/">可以参考我的做法</a>。
-对于这两种方案，你是否有自己的看法呢，很明显，第一种做法会有一些没有意义的HTML，像这种时候，我们就该考虑使用伪元素啦。</p>
-
+<p>  <a href="https://github.com/greatfire/wiki" target="_blank">https://github.com/greatfire/wiki</a></p>
 
     </div>
 
-    
-    <ul class="tag_box list-unstyled list-inline">
-      <li><i class="fa fa-folder-open"></i></li>
-      
-      
-      
-        <li><a href="/categories.html#前端-ref">
-          前端 <span>(6)</span>
-          
-        </a></li>
-      
-      
-    </ul>
     
 
     
@@ -208,8 +181,22 @@ border: 3px solid #FFF; height:150px;width:150px"/>
       
       
         <li>
-          <a href="/tags.html#CSS-ref">
-          CSS <span>(2)</span>
+          <a href="/tags.html#blogs-ref">
+          blogs <span>(1)</span>
+          ,
+          </a>
+        </li>
+      
+        <li>
+          <a href="/tags.html#websites-ref">
+          websites <span>(1)</span>
+          ,
+          </a>
+        </li>
+      
+        <li>
+          <a href="/tags.html#computer-ref">
+          computer <span>(1)</span>
           
           </a>
         </li>
@@ -224,7 +211,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
     <div>
       <section class="share col-sm-6">
         <h4 class="section-title">Share Post</h4>
-        <a class="btn btn-default btn-sm twitter" href="http://twitter.com/share?text=CSS玩转伪元素"
+        <a class="btn btn-default btn-sm twitter" href="http://twitter.com/share?text=计算机方面的一些网站和博客"
            onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
           <i class="fa fa-weixin fa-lg"></i>
           Wechat
@@ -252,10 +239,10 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 
     <ul class="pager">
       
-      <li class="previous"><a href="/CSS%E7%8E%A9%E8%BD%ACPosition" title="CSS玩转Position">&larr; 上一篇</a></li>
+      <li class="previous"><a href="/Build-blog-with-jekyll-under-GNU-Linux" title="GNU/Linux下使用Jekyll搭建博客">&larr; 上一篇</a></li>
       
       
-      <li class="next disabled"><a>下一篇 &rarr;</a>
+      <li class="next"><a href="/About-KMP-alogorithm" title="KMP算法详解">下一篇 &rarr;</a></li>
       
     </ul>
 
