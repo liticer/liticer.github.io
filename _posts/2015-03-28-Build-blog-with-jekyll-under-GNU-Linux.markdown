@@ -3,6 +3,7 @@ layout: post
 title:  "GNU/Linux下使用Jekyll搭建博客"
 date:  2015-03-28 22:11:07
 comments: true
+categories: [Linux]
 tags: github jekyll blog
 archive: false
 ---
@@ -164,11 +165,15 @@ $ rvm use ruby-2.1.2
 
 注1：Ubuntu 12.04源里的ruby版本太低，jekyll要求的ruby版本必须大于1.9.2。  
 注2：如果出现错误：  
-&ensp;&ensp;&ensp;&ensp;&ensp;`curl: (77) error setting certificate verify locations:`  
+{% highlight c++%}
+curl: (77) error setting certificate verify locations:  
+{% endhighlight %}
 &ensp;&ensp;&ensp;&ensp;&ensp;解决方法如下：  
-&ensp;&ensp;&ensp;&ensp;&ensp;`$ sudo apt-get install ca-certificates`  
-&ensp;&ensp;&ensp;&ensp;&ensp;`$ sudo mkdir -p /etc/pki/tls/certs`  
-&ensp;&ensp;&ensp;&ensp;&ensp;`$ sudo cp /etc/ssl/certs/ca-certificates.crt /etc/pki/tls/certs/`  
+{% highlight c++%}
+$ sudo apt-get install ca-certificates
+$ sudo mkdir -p /etc/pki/tls/certs
+$ sudo cp /etc/ssl/certs/ca-certificates.crt /etc/pki/tls/certs/
+{% endhighlight %}
 
 3.安装nodejs和execjs
 
