@@ -193,73 +193,58 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 
 <p>编辑_config.yml:</p>
 
-<p><code>
-baseurl: /username.github.io
-encoding: utf-8
-</code></p>
+<div class="highlight"><pre><code class="language-html" data-lang="html">baseurl: /username.github.io
+encoding: utf-8</code></pre></div>
 
 <p>编辑_layouts/default.html:</p>
 
-<p>```html</p>
-
-<p>&lt;!DOCTYPE html&gt;</p>
-<html>
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>{{ page.title }}</title>
-</head>
-<body>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">&quot;content-type&quot;</span> <span class="na">content=</span><span class="s">&quot;text/html; charset=utf-8&quot;</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;title&gt;</span>{{ page.title }}<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
     {{ content }}
-</body>
-</html>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span></code></pre></div>
 
-<p>```
-编辑index.html:</p>
+<p>编辑index.html:</p>
 
-<p>```html</p>
-
-<hr />
-<p>layout: default
+<div class="highlight"><pre><code class="language-html" data-lang="html">---
+layout: default
 title: My blog
-—</p>
-<h2>{{ page.title }}</h2>
-<p>Recent articles</p>
-<ul>
+---
+<span class="nt">&lt;h2&gt;</span>{{ page.title }}<span class="nt">&lt;/h2&gt;</span>
+<span class="nt">&lt;p&gt;</span>Recent articles<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;ul&gt;</span>
 　　{% for post in site.posts %} 
-        <li>{{ post.date | date_to_string }} 
-            <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
-        </li>
+        <span class="nt">&lt;li&gt;</span>{{ post.date | date_to_string }} 
+            <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;{{ site.baseurl }}{{ post.url }}&quot;</span><span class="nt">&gt;</span>{{ post.title }}<span class="nt">&lt;/a&gt;</span>
+        <span class="nt">&lt;/li&gt;</span>
 　　{% endfor %}
-</ul>
-
-<p>```</p>
+<span class="nt">&lt;/ul&gt;</span></code></pre></div>
 
 <p>编辑_post/2015-03-28.test.html:</p>
 
-<p>```html</p>
-
-<hr />
-<p>layout: default
+<div class="highlight"><pre><code class="language-html" data-lang="html">---
+layout: default
 title: test
-—</p>
-<h2>{{ page.title }}</h2>
-<p>My first article</p>
-<p>{{ page.date | date_to_string }}</p>
-
-<p>```</p>
+---
+<span class="nt">&lt;h2&gt;</span>{{ page.title }}<span class="nt">&lt;/h2&gt;</span>
+<span class="nt">&lt;p&gt;</span>My first article<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p&gt;</span>{{ page.date | date_to_string }}<span class="nt">&lt;/p&gt;</span></code></pre></div>
 
 <p>3.传送到Github远程仓库</p>
 
-<p><code>
-# 将当前的改动暂存在本地仓库
-$ git add .
-# 将暂存的改动提交到本地仓库，并写入本次提交的注释是”first post“
-$ git commit -m "first post"
-# 将远程仓库在本地添加一个引用origin
-$ git remote add origin https://github.com/username/username.github.io.git
-# 向origin推送master分支
-$ git push origin master
-</code></p>
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="cp"># 将当前的改动暂存在本地仓库</span>
+<span class="err">$</span> <span class="n">git</span> <span class="n">add</span> <span class="p">.</span>
+<span class="cp"># 将暂存的改动提交到本地仓库，并写入本次提交的注释是”first post“</span>
+<span class="err">$</span> <span class="n">git</span> <span class="n">commit</span> <span class="o">-</span><span class="n">m</span> <span class="s">&quot;first post&quot;</span>
+<span class="cp"># 将远程仓库在本地添加一个引用origin</span>
+<span class="err">$</span> <span class="n">git</span> <span class="n">remote</span> <span class="n">add</span> <span class="n">origin</span> <span class="nl">https</span><span class="p">:</span><span class="c1">//github.com/username/username.github.io.git</span>
+<span class="cp"># 向origin推送master分支</span>
+<span class="err">$</span> <span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="n">master</span></code></pre></div>
 
 <p>注1：如果是初次安装git的话，在commit的时候会提示需要配置username和email，请读者注意根据提示配置一下，至于username和email可以随便填。</p>
 
@@ -273,48 +258,45 @@ $ git push origin master
 
 <p>1.安装gem</p>
 
-<p>```
-$ sudo apt-get install rubygems
-$ gem sources –remove https://rubygems.org/
-$ gem sources –remove http://rubygems.org/
-$ gem sources -a https://ruby.taobao.org/
-$ gem sources -l
-*** CURRENT SOURCES ***</p>
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="err">$</span> <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">rubygems</span>
+<span class="err">$</span> <span class="n">gem</span> <span class="n">sources</span> <span class="o">--</span><span class="n">remove</span> <span class="nl">https</span><span class="p">:</span><span class="c1">//rubygems.org/</span>
+<span class="err">$</span> <span class="n">gem</span> <span class="n">sources</span> <span class="o">--</span><span class="n">remove</span> <span class="nl">http</span><span class="p">:</span><span class="c1">//rubygems.org/</span>
+<span class="err">$</span> <span class="n">gem</span> <span class="n">sources</span> <span class="o">-</span><span class="n">a</span> <span class="nl">https</span><span class="p">:</span><span class="c1">//ruby.taobao.org/</span>
+<span class="err">$</span> <span class="n">gem</span> <span class="n">sources</span> <span class="o">-</span><span class="n">l</span>
+<span class="err">\</span><span class="o">***</span> <span class="n">CURRENT</span> <span class="n">SOURCES</span> <span class="o">***</span>
 
-<p>https://ruby.taobao.org
-# 请确保只有ruby.taobao.org
-``` <br />
-Rubygems是一个复杂的ruby安装包管理软件，具体请man gem。</p>
+<span class="nl">https</span><span class="p">:</span><span class="c1">//ruby.taobao.org</span>
+<span class="cp"># 请确保只有ruby.taobao.org</span></code></pre></div>
+
+<p>Rubygems是一个复杂的ruby安装包管理软件，具体请man gem。</p>
 
 <p>2.安装rvm和ruby</p>
 
-<p><code>
-$ sudo apt-get install curl
-$ curl -L https://get.rvm.io | sudo bash -s stable  
-$ /bin/bash --login
-$ sudo rvm install ruby-2.1.2
-$ rvm use ruby-2.1.2
-</code>
-注1：Ubuntu 12.04源里的ruby版本太低，jekyll要求的ruby版本必须大于1.9.2。<br />
-注2：如果出现错误：<br />
-     <code>curl: (77) error setting certificate verify locations:</code><br />
-     解决方法如下：<br />
-     <code>$ sudo apt-get install ca-certificates</code><br />
-     <code>$ sudo mkdir -p /etc/pki/tls/certs</code><br />
-     <code>$ sudo cp /etc/ssl/certs/ca-certificates.crt /etc/pki/tls/certs/</code></p>
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="err">$</span> <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">curl</span>
+<span class="err">$</span> <span class="n">curl</span> <span class="o">-</span><span class="n">L</span> <span class="nl">https</span><span class="p">:</span><span class="c1">//get.rvm.io | sudo bash -s stable  </span>
+<span class="err">$</span> <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span> <span class="o">--</span><span class="n">login</span>
+<span class="err">$</span> <span class="n">sudo</span> <span class="n">rvm</span> <span class="n">install</span> <span class="n">ruby</span><span class="o">-</span><span class="mf">2.1.2</span>
+<span class="err">$</span> <span class="n">rvm</span> <span class="n">use</span> <span class="n">ruby</span><span class="o">-</span><span class="mf">2.1.2</span></code></pre></div>
+
+<p>注1：Ubuntu 12.04源里的ruby版本太低，jekyll要求的ruby版本必须大于1.9.2。<br />
+注2：如果出现错误：</p>
+
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="nl">curl</span><span class="p">:</span> <span class="p">(</span><span class="mi">77</span><span class="p">)</span> <span class="n">error</span> <span class="n">setting</span> <span class="n">certificate</span> <span class="n">verify</span> <span class="nl">locations</span><span class="p">:</span></code></pre></div>
+
+<p>     解决方法如下：</p>
+
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="err">$</span> <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">ca</span><span class="o">-</span><span class="n">certificates</span>
+<span class="err">$</span> <span class="n">sudo</span> <span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">pki</span><span class="o">/</span><span class="n">tls</span><span class="o">/</span><span class="n">certs</span>
+<span class="err">$</span> <span class="n">sudo</span> <span class="n">cp</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">ssl</span><span class="o">/</span><span class="n">certs</span><span class="o">/</span><span class="n">ca</span><span class="o">-</span><span class="n">certificates</span><span class="p">.</span><span class="n">crt</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">pki</span><span class="o">/</span><span class="n">tls</span><span class="o">/</span><span class="n">certs</span><span class="o">/</span></code></pre></div>
 
 <p>3.安装nodejs和execjs</p>
 
-<p><code>
-$ sudo apt-get install nodejs
-$ sudo gem install execjs
-</code></p>
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="err">$</span> <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">nodejs</span>
+<span class="err">$</span> <span class="n">sudo</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">execjs</span></code></pre></div>
 
 <p>4.安装jekyll</p>
 
-<p><code>
-sudo gem install jekyll -V
-</code></p>
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="n">sudo</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">jekyll</span> <span class="o">-</span><span class="n">V</span></code></pre></div>
 
 <p>注：等待时间较长，-V可以显示安装过程。</p>
 
@@ -322,12 +304,10 @@ sudo gem install jekyll -V
 
 <p>1.本地jekyll调试</p>
 
-<p><code>
-$ cd username.github.io
-$ /bin/bash --login
-$ rvm use ruby-2.1.2
-$ jekyll serve --watch
-</code></p>
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="err">$</span> <span class="n">cd</span> <span class="n">username</span><span class="p">.</span><span class="n">github</span><span class="p">.</span><span class="n">io</span>
+<span class="err">$</span> <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span> <span class="o">--</span><span class="n">login</span>
+<span class="err">$</span> <span class="n">rvm</span> <span class="n">use</span> <span class="n">ruby</span><span class="o">-</span><span class="mf">2.1.2</span>
+<span class="err">$</span> <span class="n">jekyll</span> <span class="n">serve</span> <span class="o">--</span><span class="n">watch</span></code></pre></div>
 
 <p>注：运行完上述命令后，打开127.0.0.1:4000就能在本地看到博客调试的结果。</p>
 
@@ -336,17 +316,29 @@ $ jekyll serve --watch
 <p>如果你想迅速开始写博客，而不去纠结在一些简单的界面设置中，就可以直接使用<a href="http://jekyllthemes.org" target="_blank">jekyll提供的模板</a>。
 模板使用的方式(以jekyll-clean模板为例)如下:</p>
 
-<p><code>
-$ git clone https://github.com/scotte/jekyll-clean.git
-$ rm -rf jekyll-clean/.git
-$ cp -r jekyll-clean username.git.io
-</code>
-之后就是以别人模板中的文件建立仓库、调试、上传了。最后只需要学习一些简单的Markdown语法，Html基础就可以自己写博客了。每次只需要在_post目录当中编写html或者markdown格式的博客，然后再推送到Github就可以发表自己的博客了。</p>
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="err">$</span> <span class="n">git</span> <span class="n">clone</span> <span class="nl">https</span><span class="p">:</span><span class="c1">//github.com/scotte/jekyll-clean.git</span>
+<span class="err">$</span> <span class="n">rm</span> <span class="o">-</span><span class="n">rf</span> <span class="n">jekyll</span><span class="o">-</span><span class="n">clean</span><span class="o">/</span><span class="p">.</span><span class="n">git</span>
+<span class="err">$</span> <span class="n">cp</span> <span class="o">-</span><span class="n">r</span> <span class="n">jekyll</span><span class="o">-</span><span class="n">clean</span> <span class="n">username</span><span class="p">.</span><span class="n">git</span><span class="p">.</span><span class="n">io</span></code></pre></div>
+
+<p>之后就是以别人模板中的文件建立仓库、调试、上传了。最后只需要学习一些简单的Markdown语法，Html基础就可以自己写博客了。每次只需要在_post目录当中编写html或者markdown格式的博客，然后再推送到Github就可以发表自己的博客了。</p>
 
 <p>后记：个人博客最大的好处就是随心所欲，文字、图片、表格、公式，你想要它显示什么样，就可以什么样，一切都在自己不断地挖掘。另外，还有强大的Github给你的博客做后端，不能再放心了。</p>
 
     </div>
 
+    
+    <ul class="tag_box list-unstyled list-inline">
+      <li><i class="fa fa-folder-open"></i></li>
+      
+      
+      
+        <li><a href="/categories.html#linux-ref">
+          linux <span>(1)</span>
+          
+        </a></li>
+      
+      
+    </ul>
     
 
     
