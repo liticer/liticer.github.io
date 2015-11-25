@@ -1,15 +1,18 @@
 ---
 layout: post
-title:  "知乎Python API"
-date:  2015-11-25 15:39:10
-comments: true
+title: 知乎Python API
+description: 为知乎的Python API及详细解释
 categories: Python
 tags: 知乎
-archive: false
+
 ---
 
+检查是否已经登录，如果登录继续运行，否则提示其先登录:
 
 {% highlight python %}
+#!/usr/bin/python
+# -*- encoding: utf-8 -*-
+
 # Build-in / Std
 import os, sys, time, platform, random
 import re, json, cookielib
@@ -29,7 +32,7 @@ from auth import Logging
         3. 'requests' 对象可以直接使用，身份信息已经自动加载。
     By Luozijun (https://github.com/LuoZijun), 09/09 2015
 """
- 
+
 # 加载Cookies
 requests = requests.Session()
 requests.cookies = cookielib.LWPCookieJar('cookies')
@@ -49,6 +52,9 @@ sys.setdefaultencoding('utf8')
 {% endhighlight %}
 
 
+抽象一个问题类:
+
+{% highlight python %}
 # 抽象一个问题类
 class Question:
     url = None
@@ -317,8 +323,12 @@ class Question:
             self.parser()
         soup = self.soup
         return int(soup.find("meta", itemprop="visitsCount")["content"])
+{% endhighlight %}
 
 
+抽象一个用户类:
+
+{% highlight python %}
 
 # 抽象一个用户类
 class User:
@@ -1025,3 +1035,4 @@ class Collection:
             if j > n:
                 break
             yield answer
+{% endhighlight %}
