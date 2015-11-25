@@ -103,6 +103,7 @@ hr {
 }
 pre {
   overflow: auto;
+  overflow-y: hidden;
 }
 code,
 kbd,

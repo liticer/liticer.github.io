@@ -5,7 +5,7 @@
 		<title>You are best | MiKi</title>
 
 	
-	<meta name="description" content="为知乎的Python API及详细解释">
+	<meta name="description" content="为知乎写的Python API，有全部代码及详细解释">
 	
 
 	<meta name="uyan_auth" content="d1688267ba" />
@@ -152,7 +152,12 @@ border: 3px solid #FFF; height:150px;width:150px"/>
       
    </span>
     <div class="article_body" id="article_body">
-    <p>检查是否已经登录，如果登录继续运行，否则提示其先登录:</p>
+    <p>刚学会Python不久，想着做点东西。偶然看到Github上一个为知乎写的Python API，就对其代码做了部分更改并加了详细注释。
+下面对代码进行了分析，可以从中体会一下Python中的面向对象编程。
+<br /></p>
+
+<h3 id="section">1. 模拟登录</h3>
+<p>检查是否已经登录，如果登录继续运行，否则提示其先登录:</p>
 
 <div class="highlight"><pre><code class="language-python" data-lang="python"><span class="c">#!/usr/bin/python</span>
 <span class="c"># -*- encoding: utf-8 -*-</span>
@@ -194,7 +199,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 <span class="nb">reload</span><span class="p">(</span><span class="n">sys</span><span class="p">)</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">setdefaultencoding</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span></code></pre></div>
 
-<p>抽象一个问题类:</p>
+<h3 id="section-1">2. 抽象一个问题类</h3>
 
 <div class="highlight"><pre><code class="language-python" data-lang="python"><span class="c"># 抽象一个问题类</span>
 <span class="k">class</span> <span class="nc">Question</span><span class="p">:</span>

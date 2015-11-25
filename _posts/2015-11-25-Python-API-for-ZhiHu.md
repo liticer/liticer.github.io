@@ -1,12 +1,18 @@
 ---
 layout: post
 title: 知乎Python API
-description: 为知乎的Python API及详细解释
+description: 为知乎写的Python API，有全部代码及详细解释
 categories: Python
 tags: 知乎
 
 ---
 
+刚学会Python不久，想着做点东西。偶然看到Github上一个为知乎写的Python API，就对其代码做了部分更改并加了详细注释。
+下面对代码进行了分析，可以从中体会一下Python中的面向对象编程。
+<br/>
+
+
+### 1. 模拟登录
 检查是否已经登录，如果登录继续运行，否则提示其先登录:
 
 {% highlight python %}
@@ -51,8 +57,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 {% endhighlight %}
 
-
-抽象一个问题类:
+### 2. 抽象一个问题类
 
 {% highlight python %}
 # 抽象一个问题类
