@@ -3,6 +3,7 @@ layout: post
 title:  "计算机方面的一些网站和博客"
 date:  2015-03-30
 comments: true
+categories: Web
 tags: blogs websites computer 
 archive: false
 ---
