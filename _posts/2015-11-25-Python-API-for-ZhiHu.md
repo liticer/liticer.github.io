@@ -14,8 +14,7 @@ tags: 知乎
 
 ### 1. 模拟登录
 检查是否已经登录，如果登录继续运行，否则提示其先登录:
-
-{% highlight python %}
+<pre class="prettyPrint">
 #!/usr/bin/python
 # -*- encoding: utf-8 -*-
 # Build-in / Std
@@ -60,13 +59,12 @@ if islogin() != True:
 # 设置文本默认编码为utf8
 reload(sys)
 sys.setdefaultencoding('utf8')
-{% endhighlight %}
-
+</pre>
 
 
 ### 2. 抽象一个问题类
 
-{% highlight python %}
+<pre class="prettyPrint">
 # 抽象一个问题类
 class Question:
     url = None
@@ -376,5 +374,5 @@ class Question:
             self.parser()
         soup = self.soup
         return int(soup.find("meta", itemprop="visitsCount")["content"])
-{% endhighlight %}
+</pre>
 

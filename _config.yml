@@ -4,7 +4,7 @@ permalink: /:title
 # https://help.github.com/articles/migrating-your-pages-site-from-maruku
 markdown: kramdown
 
-highlighter: pygments
+# highlighter: pygments
 gems: [jekyll-paginate]
 paginate: 8 # pagination based on number of posts
 paginate_path: "page/:num"
@@ -16,7 +16,7 @@ categories_path : categories.html
 tags_path : tags.html
 me_path : me.html
 
-BASE_PATH : http://liticer.github.io
+#BASE_PATH : http://liticer.github.io
 #BASE_PATH : 127.0.0.1:4000
 
 

@@ -19,6 +19,7 @@
 <link rel="stylesheet" type="text/css" href="/assets/resources/syntax/syntax.css">
 <link rel="stylesheet" type="text/css" href="/assets/resources/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/assets/resources/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="/assets/themes/prettify/prettify.css" media="all">
 <link rel="icon" href="../assets/media/favicon.jpg">
 
 <link href='http://fonts.googleapis.com/css?family=Raleway:300' rel='stylesheet' type='text/css'>
@@ -158,364 +159,368 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 
 <h3 id="section">1. 模拟登录</h3>
 <p>检查是否已经登录，如果登录继续运行，否则提示其先登录:</p>
+<pre class="prettyPrint">
+#!/usr/bin/python
+# -*- encoding: utf-8 -*-
+# Build-in / Std
+import os, sys, time, platform, random, functools
+import re, json, cookielib
+# Requirements
+import requests, termcolor, html2text
+try:
+    from bs4 import BeautifulSoup
+except:
+    import BeautifulSoup
+# Some modules written by us
+from auth import islogin
+from auth import Logging
+"""
+    Note:
+        1. 身份验证由 `auth.py` 完成。
+        2. 身份信息保存在当前目录的 `cookies` 文件中。
+        3. `requests` 对象可以直接使用，身份信息已经自动加载。
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="c">#!/usr/bin/python</span>
-<span class="c"># -*- encoding: utf-8 -*-</span>
-<span class="c"># Build-in / Std</span>
-<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">platform</span><span class="o">,</span> <span class="nn">random</span><span class="o">,</span> <span class="nn">functools</span>
-<span class="kn">import</span> <span class="nn">re</span><span class="o">,</span> <span class="nn">json</span><span class="o">,</span> <span class="nn">cookielib</span>
-<span class="c"># Requirements</span>
-<span class="kn">import</span> <span class="nn">requests</span><span class="o">,</span> <span class="nn">termcolor</span><span class="o">,</span> <span class="nn">html2text</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
-<span class="k">except</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">BeautifulSoup</span>
-<span class="c"># Some modules written by us</span>
-<span class="kn">from</span> <span class="nn">auth</span> <span class="kn">import</span> <span class="n">islogin</span>
-<span class="kn">from</span> <span class="nn">auth</span> <span class="kn">import</span> <span class="n">Logging</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Note:</span>
-<span class="sd">        1. 身份验证由 `auth.py` 完成。</span>
-<span class="sd">        2. 身份信息保存在当前目录的 `cookies` 文件中。</span>
-<span class="sd">        3. `requests` 对象可以直接使用，身份信息已经自动加载。</span>
+    By Luozijun (https://github.com/LuoZijun), 09/09 2015
 
-<span class="sd">    By Luozijun (https://github.com/LuoZijun), 09/09 2015</span>
+"""
 
-<span class="sd">&quot;&quot;&quot;</span>
-
-<span class="c"># 指示是否运行调试</span>
-<span class="n">DEBUG</span> <span class="o">=</span> <span class="bp">True</span>
+# 指示是否运行调试
+DEBUG = True
 
 
-<span class="c"># 加载Cookies</span>
-<span class="n">requests</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
-<span class="n">requests</span><span class="o">.</span><span class="n">cookies</span> <span class="o">=</span> <span class="n">cookielib</span><span class="o">.</span><span class="n">LWPCookieJar</span><span class="p">(</span><span class="s">&#39;cookies&#39;</span><span class="p">)</span>
-<span class="c"># 检查是否已经登陆成功</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="n">requests</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">ignore_discard</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="k">except</span><span class="p">:</span>
-    <span class="n">Logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">u&quot;你还没有登录知乎哦 ...&quot;</span><span class="p">)</span>
-    <span class="n">Logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">u&quot;执行 `python auth.py` 即可以完成登录。&quot;</span><span class="p">)</span>
-    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;无权限(403)&quot;</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">islogin</span><span class="p">()</span> <span class="o">!=</span> <span class="bp">True</span><span class="p">:</span>
-    <span class="n">Logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">u&quot;你的身份信息已经失效，请重新生成身份信息( `python auth.py` )。&quot;</span><span class="p">)</span>
-    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;无权限(403)&quot;</span><span class="p">)</span>
-<span class="c"># 设置文本默认编码为utf8</span>
-<span class="nb">reload</span><span class="p">(</span><span class="n">sys</span><span class="p">)</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">setdefaultencoding</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span></code></pre></div>
+# 加载Cookies
+requests = requests.Session()
+requests.cookies = cookielib.LWPCookieJar('cookies')
+# 检查是否已经登陆成功
+try:
+    requests.cookies.load(ignore_discard=True)
+except:
+    Logging.error(u"你还没有登录知乎哦 ...")
+    Logging.info(u"执行 `python auth.py` 即可以完成登录。")
+    raise Exception("无权限(403)")
+if islogin() != True:
+    Logging.error(u"你的身份信息已经失效，请重新生成身份信息( `python auth.py` )。")
+    raise Exception("无权限(403)")
+# 设置文本默认编码为utf8
+reload(sys)
+sys.setdefaultencoding('utf8')
+</pre>
 
 <h3 id="section-1">2. 抽象一个问题类</h3>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="c"># 抽象一个问题类</span>
-<span class="k">class</span> <span class="nc">Question</span><span class="p">:</span>
-    <span class="n">url</span> <span class="o">=</span> <span class="bp">None</span>
-    <span class="n">soup</span> <span class="o">=</span> <span class="bp">None</span>
+<pre class="prettyPrint">
+# 抽象一个问题类
+class Question:
+    url = None
+    soup = None
 
-    <span class="c"># 初始化该问题的url、title</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="c"># 所有问题的url前面都相同，后8位是问题的编号</span>
-        <span class="k">if</span> <span class="n">url</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="o">-</span> <span class="mi">8</span><span class="p">]</span> <span class="o">!=</span> <span class="s">&quot;http://www.zhihu.com/question/&quot;</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">&quot;</span> <span class="o">+</span> <span class="n">url</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">&quot;</span> <span class="o">+</span> <span class="s">&quot; : it isn&#39;t a question url.&quot;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">url</span>
-        <span class="k">if</span> <span class="n">title</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
+    # 初始化该问题的url、title
+    def __init__(self, url, title=None):
+        # 所有问题的url前面都相同，后8位是问题的编号
+        if url[0:len(url) - 8] != "http://www.zhihu.com/question/":
+            raise ValueError("\"" + url + "\"" + " : it isn't a question url.")
+        else:
+            self.url = url
+        if title != None: self.title = title
 
-    <span class="c"># 获取网页并解析</span>
-    <span class="k">def</span> <span class="nf">parser</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c"># 获取该问题的网页</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
-        <span class="c"># 对问题网页进行解析</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-        <span class="c"># 调试--&gt;将soup结果输出到文件</span>
-        <span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span>
-            <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;log/question_soup.txt&#39;</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">soup</span><span class="o">.</span><span class="n">prettify</span><span class="p">())</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    # 获取网页并解析
+    def parser(self):
+        # 获取该问题的网页
+        r = requests.get(self.url)
+        # 对问题网页进行解析
+        self.soup = BeautifulSoup(r.content)
+        # 调试--&gt;将soup结果输出到文件
+        if DEBUG:
+            f = open('log/question_soup.txt', 'w')
+            f.writelines(self.soup.prettify())
+            f.close()
 
-    <span class="c"># 装饰器处理Windows下默认的字符编码问题</span>
-    <span class="k">def</span> <span class="nf">encode_on_windows</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Decorator for encode result of func on Windows.</span>
-<span class="sd">        @encode_on_windows</span>
-<span class="sd">        def func:</span>
-<span class="sd">            ...</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="nd">@functools.wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">_wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
-            <span class="n">result</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;Windows&#39;</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;gbk&#39;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">result</span>
-        <span class="k">return</span> <span class="n">_wrapper</span>
+    # 装饰器处理Windows下默认的字符编码问题
+    def encode_on_windows(func):
+        '''
+        Decorator for encode result of func on Windows.
+        @encode_on_windows
+        def func:
+            ...
+        '''
+        @functools.wraps(func)
+        def _wrapper(*args, **kw):
+            result = func(*args, **kw)
+            if platform.system() == 'Windows':
+                return result.decode('utf-8').encode('gbk')
+            return result
+        return _wrapper
 
-    <span class="c"># 获取网页的标题</span>
-    <span class="nd">@encode_on_windows</span>
-    <span class="k">def</span> <span class="nf">get_title</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;title&quot;</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">soup</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="p">()</span>
-        <span class="n">soup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">soup</span>
-        <span class="n">title</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;h2&quot;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s">&quot;zm-item-title&quot;</span><span class="p">)</span>\
-                    <span class="o">.</span><span class="n">string</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&quot;utf-8&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span>
+    # 获取网页的标题
+    @encode_on_windows
+    def get_title(self):
+        if hasattr(self, "title"):
+            return self.title
+        if self.soup == None:
+            self.parser()
+        soup = self.soup
+        title = soup.find("h2", class_="zm-item-title")\
+                    .string.encode("utf-8").replace("\n", "")
+        self.title = title
+        return self.title
 
-    <span class="c"># 获取问题的详细描述</span>
-    <span class="nd">@encode_on_windows</span>
-    <span class="k">def</span> <span class="nf">get_detail</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">soup</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="p">()</span>
-        <span class="n">soup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">soup</span>
-        <span class="n">detail</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;div&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s">&quot;zh-question-detail&quot;</span><span class="p">)</span>\
-                     <span class="o">.</span><span class="n">div</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&quot;utf-8&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">detail</span>
+    # 获取问题的详细描述
+    @encode_on_windows
+    def get_detail(self):
+        if self.soup == None:
+            self.parser()
+        soup = self.soup
+        detail = soup.find("div", id="zh-question-detail")\
+                     .div.get_text().encode("utf-8")
+        return detail
 
-    <span class="c"># 获取答案的数目</span>
-    <span class="k">def</span> <span class="nf">get_answers_num</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">soup</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="p">()</span>
-        <span class="n">soup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">soup</span>
-        <span class="n">answers_num</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">answers_num_label</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;h3&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s">&quot;zh-question-answer-num&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">answers_num_label</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">answers_num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">answers_num_label</span><span class="p">[</span><span class="s">&quot;data-num&quot;</span><span class="p">])</span>
-        <span class="k">else</span><span class="p">:</span> 
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Unexcepted label when get_answer_num&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">answers_num</span>
+    # 获取答案的数目
+    def get_answers_num(self):
+        if self.soup == None:
+            self.parser()
+        soup = self.soup
+        answers_num = 0
+        answers_num_label = soup.find("h3", id="zh-question-answer-num")
+        if answers_num_label != None:
+            answers_num = int(answers_num_label["data-num"])
+        else: 
+            raise ValueError('Unexcepted label when get_answer_num')
+        return answers_num
 
-    <span class="c"># 获取问题的关注者数目</span>
-    <span class="k">def</span> <span class="nf">get_followers_num</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">soup</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="p">()</span>
-        <span class="n">soup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">soup</span>
-        <span class="n">followers_num</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">followers_num_label</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;div&quot;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s">&quot;zg-gray-normal&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">followers_num_label</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">followers_num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">followers_num_label</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">strong</span><span class="o">.</span><span class="n">string</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span> 
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Unexcepted label when get_followers_num&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">followers_num</span>
+    # 获取问题的关注者数目
+    def get_followers_num(self):
+        if self.soup == None:
+            self.parser()
+        soup = self.soup
+        followers_num = 0
+        followers_num_label = soup.find("div", class_="zg-gray-normal")
+        if followers_num_label != None:
+            followers_num = int(followers_num_label.a.strong.string)
+        else: 
+            raise ValueError('Unexcepted label when get_followers_num')
+        return followers_num
 
-    <span class="c"># 获取问题所属的话题</span>
-    <span class="k">def</span> <span class="nf">get_topics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">soup</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="p">()</span>
-        <span class="n">soup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">soup</span>
-        <span class="n">topic_list</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s">&quot;zm-item-tag&quot;</span><span class="p">)</span>
-        <span class="n">topics</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">topic_list</span><span class="p">:</span>
-            <span class="n">topic</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">contents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&quot;utf-8&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;Windows&#39;</span><span class="p">:</span>
-                <span class="n">topic</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;gbk&#39;</span><span class="p">)</span>
-            <span class="n">topics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">topic</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">topics</span>
+    # 获取问题所属的话题
+    def get_topics(self):
+        if self.soup == None:
+            self.parser()
+        soup = self.soup
+        topic_list = soup.find_all("a", class_="zm-item-tag")
+        topics = []
+        for i in topic_list:
+            topic = i.contents[0].encode("utf-8").replace("\n", "")
+            if platform.system() == 'Windows':
+                topic = topic.decode('utf-8').encode('gbk')
+            topics.append(topic)
+        return topics
 
-    <span class="c"># 获取该问题对应的所有答案</span>
-    <span class="k">def</span> <span class="nf">get_all_answers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">answers_num</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_answers_num</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">answers_num</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="c"># print &quot;No answer.&quot;</span>
-            <span class="k">return</span>
-        <span class="n">error_answer_count</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">my_answer_count</span> <span class="o">=</span> <span class="mi">0</span>
+    # 获取该问题对应的所有答案
+    def get_all_answers(self):
+        answers_num = self.get_answers_num()
+        if answers_num == 0:
+            # print "No answer."
+            return
+        error_answer_count = 0
+        my_answer_count = 0
 
-        <span class="c"># 每一次请求会返回50个答案</span>
-        <span class="c"># 前50个答案，只要抓取对应的URL就可以获得答案</span>
-        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">answers_num</span><span class="p">,</span> <span class="mi">50</span><span class="p">)):</span>
-            <span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span>
-                <span class="k">print</span> <span class="n">j</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">soup</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="p">()</span>
-            <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">soup</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&quot;utf-8&quot;</span><span class="p">))</span>
-            <span class="c"># DEBUG，输出中间结果</span>
-            <span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span>
-                <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;log/question_soup_x.txt&#39;</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
-                <span class="n">f</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">soup</span><span class="o">.</span><span class="n">prettify</span><span class="p">())</span>
-                <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-                <span class="c"># raw_input(&quot;Pause, press &lt;Enter&gt; to continue...&quot;)</span>
-            <span class="c"># 这个答案是自己写的</span>
-            <span class="n">is_my_answer</span> <span class="o">=</span> <span class="bp">False</span>
-            <span class="n">item_answer</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">&quot;div&quot;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s">&quot;zm-item-answer&quot;</span><span class="p">)[</span><span class="n">j</span><span class="p">]</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">item_answer</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;span&quot;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s">&quot;count&quot;</span><span class="p">):</span>
-                <span class="n">my_answer_count</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="n">is_my_answer</span> <span class="o">=</span> <span class="bp">True</span>
-            <span class="c"># 这个答案有问题</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">item_answer</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;div&quot;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s">&quot;zm-editable-content clearfix&quot;</span><span class="p">):</span>
-                <span class="n">error_answer_count</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="k">continue</span>
-            <span class="n">author</span> <span class="o">=</span> <span class="bp">None</span>
-            <span class="c"># 这个答案是匿名用户写的</span>
-            <span class="n">author_class</span> <span class="o">=</span> <span class="s">&quot;zm-item-answer-author-info&quot;</span>
-            <span class="n">author_info</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">&quot;div&quot;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="n">author_class</span><span class="p">)[</span><span class="n">j</span><span class="p">]</span>
-            <span class="n">anoy_name</span> <span class="o">=</span> <span class="n">author_info</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;span&quot;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s">&quot;name&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">anoy_name</span> <span class="ow">and</span> <span class="n">anoy_name</span><span class="o">.</span><span class="n">string</span> <span class="o">==</span> <span class="s">u&quot;匿名用户&quot;</span><span class="p">:</span>
-                <span class="n">author_url</span> <span class="o">=</span> <span class="bp">None</span>
-                <span class="n">author</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">author_url</span><span class="p">)</span>
-            <span class="c"># 这个答案是非匿名用户写的</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">author_tag</span> <span class="o">=</span> <span class="n">author_info</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-                <span class="n">author_id</span> <span class="o">=</span> <span class="n">author_tag</span><span class="o">.</span><span class="n">string</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&quot;utf-8&quot;</span><span class="p">)</span>
-                <span class="n">author_url</span> <span class="o">=</span> <span class="s">&quot;http://www.zhihu.com&quot;</span> <span class="o">+</span> <span class="n">author_tag</span><span class="p">[</span><span class="s">&quot;href&quot;</span><span class="p">]</span>
-                <span class="n">author</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">author_url</span><span class="p">,</span> <span class="n">author_id</span><span class="p">)</span>
-            <span class="c"># 这个答案有多少赞</span>
-            <span class="n">count</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
-            <span class="k">if</span> <span class="n">is_my_answer</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
-                <span class="n">count</span> <span class="o">=</span> <span class="n">item_answer</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s">&quot;zm-item-vote-count&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">string</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">count</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">&quot;span&quot;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s">&quot;count&quot;</span><span class="p">)</span>\
-                            <span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="n">my_answer_count</span><span class="p">]</span><span class="o">.</span><span class="n">string</span>
-            <span class="k">if</span> <span class="n">count</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;K&quot;</span><span class="p">:</span>
-                <span class="n">upvote</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">count</span><span class="p">[</span><span class="mi">0</span><span class="p">:(</span><span class="nb">len</span><span class="p">(</span><span class="n">count</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)])</span> <span class="o">*</span> <span class="mi">1000</span>
-            <span class="k">elif</span> <span class="n">count</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;W&quot;</span><span class="p">:</span>
-                <span class="n">upvote</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">count</span><span class="p">[</span><span class="mi">0</span><span class="p">:(</span><span class="nb">len</span><span class="p">(</span><span class="n">count</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)])</span> <span class="o">*</span> <span class="mi">10000</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">upvote</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
-            <span class="c"># 这个答案的URL和内容</span>
-            <span class="n">answer_id</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s">&quot;answer-date-link&quot;</span><span class="p">)[</span><span class="n">j</span><span class="p">][</span><span class="s">&quot;href&quot;</span><span class="p">]</span>
-            <span class="n">answer_url</span> <span class="o">=</span> <span class="s">&quot;http://www.zhihu.com&quot;</span> <span class="o">+</span> <span class="n">answer_id</span>
-            <span class="n">answer</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">&quot;div&quot;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span>\
-                         <span class="s">&quot;zm-editable-content clearfix&quot;</span><span class="p">)[</span><span class="n">j</span> <span class="o">-</span> <span class="n">error_answer_count</span><span class="p">]</span>
-            <span class="n">soup</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span> <span class="c"># 删除soup中网页的body部分并加入一个新的body</span>
-            <span class="n">soup</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">insert_after</span><span class="p">(</span><span class="n">soup</span><span class="o">.</span><span class="n">new_tag</span><span class="p">(</span><span class="s">&quot;body&quot;</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="s">&#39;class&#39;</span><span class="p">:</span> <span class="s">&#39;zhi&#39;</span><span class="p">}))</span>
-            <span class="n">soup</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">answer</span><span class="p">)</span> <span class="c"># 添加Answer的内容到body部分</span>
-            <span class="c"># 这个答案中的图片，修改每张图片的URL，并删除一些不必要的代码</span>
-            <span class="n">img_list</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">&quot;img&quot;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s">&quot;content_image lazy&quot;</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">img_list</span><span class="p">:</span>
-                <span class="n">img</span><span class="p">[</span><span class="s">&quot;src&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="s">&quot;data-actualsrc&quot;</span><span class="p">]</span>
-            <span class="n">img_list</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">&quot;img&quot;</span><span class="p">,</span> \
-                           <span class="n">class_</span><span class="o">=</span><span class="s">&quot;origin_image zh-lightbox-thumb lazy&quot;</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">img_list</span><span class="p">:</span>
-                <span class="n">img</span><span class="p">[</span><span class="s">&quot;src&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="s">&quot;data-actualsrc&quot;</span><span class="p">]</span>
-            <span class="n">noscript_list</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">&quot;noscript&quot;</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">noscript</span> <span class="ow">in</span> <span class="n">noscript_list</span><span class="p">:</span>
-                <span class="n">noscript</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>
-            <span class="n">content</span> <span class="o">=</span> <span class="n">soup</span>
-            <span class="c"># 用生成器返回一个Answer，这样避免了一次生成耗时间耗内存的问题</span>
-            <span class="n">answer</span> <span class="o">=</span> <span class="n">Answer</span><span class="p">(</span><span class="n">answer_url</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">author</span><span class="p">,</span> <span class="n">upvote</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
-            <span class="k">yield</span> <span class="n">answer</span>
+        # 每一次请求会返回50个答案
+        # 前50个答案，只要抓取对应的URL就可以获得答案
+        for j in xrange(min(answers_num, 50)):
+            if DEBUG:
+                print j
+            if self.soup == None:
+                self.parser()
+            soup = BeautifulSoup(self.soup.encode("utf-8"))
+            # DEBUG，输出中间结果
+            if DEBUG:
+                f = open('log/question_soup_x.txt', 'w')
+                f.writelines(soup.prettify())
+                f.close()
+                # raw_input("Pause, press <enter> to continue...")
+            # 这个答案是自己写的
+            is_my_answer = False
+            item_answer = soup.find_all("div", class_="zm-item-answer")[j]
+            if not item_answer.find("span", class_="count"):
+                my_answer_count += 1
+                is_my_answer = True
+            # 这个答案有问题
+            if not item_answer.find("div", class_="zm-editable-content clearfix"):
+                error_answer_count += 1
+                continue
+            author = None
+            # 这个答案是匿名用户写的
+            author_class = "zm-item-answer-author-info"
+            author_info = soup.find_all("div", class_=author_class)[j]
+            anoy_name = author_info.find("span", class_="name")
+            if anoy_name and anoy_name.string == u"匿名用户":
+                author_url = None
+                author = User(author_url)
+            # 这个答案是非匿名用户写的
+            else:
+                author_tag = author_info.find_all("a")[1]
+                author_id = author_tag.string.encode("utf-8")
+                author_url = "http://www.zhihu.com" + author_tag["href"]
+                author = User(author_url, author_id)
+            # 这个答案有多少赞
+            count = ""
+            if is_my_answer == True:
+                count = item_answer.find("a", class_="zm-item-vote-count").string
+            else:
+                count = soup.find_all("span", class_="count")\
+                            [j - my_answer_count].string
+            if count[-1] == "K":
+                upvote = int(count[0:(len(count) - 1)]) * 1000
+            elif count[-1] == "W":
+                upvote = int(count[0:(len(count) - 1)]) * 10000
+            else:
+                upvote = int(count)
+            # 这个答案的URL和内容
+            answer_id = soup.find_all("a", class_="answer-date-link")[j]["href"]
+            answer_url = "http://www.zhihu.com" + answer_id
+            answer = soup.find_all("div", class_=\
+                         "zm-editable-content clearfix")[j - error_answer_count]
+            soup.body.extract() # 删除soup中网页的body部分并加入一个新的body
+            soup.head.insert_after(soup.new_tag("body", **{'class': 'zhi'}))
+            soup.body.append(answer) # 添加Answer的内容到body部分
+            # 这个答案中的图片，修改每张图片的URL，并删除一些不必要的代码
+            img_list = soup.find_all("img", class_="content_image lazy")
+            for img in img_list:
+                img["src"] = img["data-actualsrc"]
+            img_list = soup.find_all("img", \
+                           class_="origin_image zh-lightbox-thumb lazy")
+            for img in img_list:
+                img["src"] = img["data-actualsrc"]
+            noscript_list = soup.find_all("noscript")
+            for noscript in noscript_list:
+                noscript.extract()
+            content = soup
+            # 用生成器返回一个Answer，这样避免了一次生成耗时间耗内存的问题
+            answer = Answer(answer_url, self, author, upvote, content)
+            yield answer
 
-        <span class="c"># 超过50个答案，需要点击“加载更多”的情况</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">((</span><span class="n">answers_num</span><span class="o">-</span><span class="mi">51</span><span class="p">)</span><span class="o">/</span><span class="mi">50</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="c"># 下标应该从1开始记起</span>
-            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="c"># 从浏览器中按F12，可以看到是一个post请求，对应的URL如下：</span>
-            <span class="n">post_url</span> <span class="o">=</span> <span class="s">&quot;http://www.zhihu.com/node/QuestionAnswerListV2&quot;</span>
-            <span class="c"># 从该问题的URL中可以找到_xsrf的值</span>
-            <span class="n">_xsrf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;input&quot;</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;_xsrf&#39;</span><span class="p">})[</span><span class="s">&quot;value&quot;</span><span class="p">]</span>
-            <span class="c"># 这是一个偏移量，指示这次请求需要跳过前面多少个答案</span>
-            <span class="n">offset</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="mi">50</span>
-            <span class="c"># 发送post请求参数的一部分</span>
-            <span class="n">params</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s">&quot;url_token&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">[</span><span class="o">-</span><span class="mi">8</span><span class="p">:]),</span>\
-                                 <span class="s">&quot;pagesize&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>\
-                                 <span class="s">&quot;offset&quot;</span><span class="p">:</span> <span class="n">offset</span><span class="p">})</span>
-            <span class="c"># 发送post请求的表单数据</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s">&#39;_xsrf&#39;</span><span class="p">:</span> <span class="n">_xsrf</span><span class="p">,</span>
-                <span class="s">&#39;method&#39;</span><span class="p">:</span> <span class="s">&quot;next&quot;</span><span class="p">,</span>
-                <span class="s">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span>
-            <span class="p">}</span>
-            <span class="c"># 发送post请求的消息头</span>
-            <span class="n">header</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="s">&quot;Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:34.0)&quot;</span>\
-                              <span class="o">+</span> <span class="s">&quot; Gecko/20100101 Firefox/34.0&quot;</span><span class="p">,</span>
-                <span class="s">&#39;Host&#39;</span><span class="p">:</span> <span class="s">&quot;www.zhihu.com&quot;</span><span class="p">,</span>
-                <span class="s">&#39;Referer&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span>
-            <span class="p">}</span>
-            <span class="c"># 发送post请求</span>
-            <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">post_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">header</span><span class="p">)</span>
+        # 超过50个答案，需要点击“加载更多”的情况
+        for i in xrange((answers_num-51)/50 + 1):
+            # 下标应该从1开始记起
+            i += 1
+            # 从浏览器中按F12，可以看到是一个post请求，对应的URL如下：
+            post_url = "http://www.zhihu.com/node/QuestionAnswerListV2"
+            # 从该问题的URL中可以找到_xsrf的值
+            _xsrf = self.soup.find("input", attrs={'name': '_xsrf'})["value"]
+            # 这是一个偏移量，指示这次请求需要跳过前面多少个答案
+            offset = i * 50
+            # 发送post请求参数的一部分
+            params = json.dumps({"url_token": int(self.url[-8:]),\
+                                 "pagesize": 50,\
+                                 "offset": offset})
+            # 发送post请求的表单数据
+            data = {
+                '_xsrf': _xsrf,
+                'method': "next",
+                'params': params
+            }
+            # 发送post请求的消息头
+            header = {
+                'User-Agent': "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:34.0)"\
+                              + " Gecko/20100101 Firefox/34.0",
+                'Host': "www.zhihu.com",
+                'Referer': self.url
+            }
+            # 发送post请求
+            r = requests.post(post_url, data=data, headers=header)
 
-            <span class="c"># 对这次请求得到的答案进行解析，并返回</span>
-            <span class="n">answer_list</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s">&quot;msg&quot;</span><span class="p">]</span>
-            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">answers_num</span><span class="o">-</span><span class="n">i</span><span class="o">*</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">)):</span>
-                <span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span>
-                    <span class="k">print</span> <span class="n">i</span><span class="o">*</span><span class="mi">50</span><span class="o">+</span><span class="n">j</span>
-                <span class="c"># 该问题URL的soup解析</span>
-                <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">soup</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&quot;utf-8&quot;</span><span class="p">))</span>
-                <span class="c"># 这次请求中的一个答案的soup解析</span>
-                <span class="n">answer_soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">answer_list</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
-                <span class="c"># DEBUG，输出中间结果</span>
-                <span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span>
-                    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;log/question_soup_x.txt&#39;</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
-                    <span class="n">f</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">answer_soup</span><span class="o">.</span><span class="n">prettify</span><span class="p">())</span>
-                    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-                    <span class="c"># raw_input(&quot;Pause, press &lt;Enter&gt; to continue...&quot;)</span>
-                <span class="c"># 这个答案有问题，直接跳过</span>
-                <span class="k">if</span> <span class="n">answer_soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;div&quot;</span><span class="p">,</span>\
-                    <span class="n">class_</span><span class="o">=</span><span class="s">&quot;zm-editable-content clearfix&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-                    <span class="k">continue</span>
-                <span class="c"># 这个答案的作者</span>
-                <span class="n">author</span> <span class="o">=</span> <span class="bp">None</span>
-                <span class="n">author_class</span> <span class="o">=</span> <span class="s">&quot;zm-item-answer-author-info&quot;</span>
-                <span class="n">author_info</span> <span class="o">=</span> <span class="n">answer_soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;div&quot;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="n">author_class</span><span class="p">)</span>
-                <span class="n">anoy_name</span> <span class="o">=</span> <span class="n">author_info</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;span&quot;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s">&quot;name&quot;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">anoy_name</span> <span class="ow">and</span> <span class="n">anoy_name</span><span class="o">.</span><span class="n">string</span> <span class="o">==</span> <span class="s">u&quot;匿名用户&quot;</span><span class="p">:</span>
-                    <span class="n">author_url</span> <span class="o">=</span> <span class="bp">None</span>
-                    <span class="n">author</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">author_url</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">author_tag</span> <span class="o">=</span> <span class="n">author_info</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-                    <span class="n">author_id</span> <span class="o">=</span> <span class="n">author_tag</span><span class="o">.</span><span class="n">string</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&quot;utf-8&quot;</span><span class="p">)</span>
-                    <span class="n">author_url</span> <span class="o">=</span> <span class="s">&quot;http://www.zhihu.com&quot;</span> <span class="o">+</span> <span class="n">author_tag</span><span class="p">[</span><span class="s">&quot;href&quot;</span><span class="p">]</span>
-                    <span class="n">author</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">author_url</span><span class="p">,</span> <span class="n">author_id</span><span class="p">)</span>
-                <span class="c"># 这个答案的赞数</span>
-                <span class="n">count</span> <span class="o">=</span> <span class="n">answer_soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;span&quot;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s">&quot;count&quot;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-                    <span class="n">count</span> <span class="o">=</span> <span class="n">answer_soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">,</span> \
-                                <span class="n">class_</span><span class="o">=</span><span class="s">&quot;zm-item-vote-count&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">string</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">count</span> <span class="o">=</span> <span class="n">count</span><span class="o">.</span><span class="n">string</span>
-                <span class="k">if</span> <span class="n">count</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;K&quot;</span><span class="p">:</span>
-                    <span class="n">upvote</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">count</span><span class="p">[</span><span class="mi">0</span><span class="p">:(</span><span class="nb">len</span><span class="p">(</span><span class="n">count</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)])</span> <span class="o">*</span> <span class="mi">1000</span>
-                <span class="k">elif</span> <span class="n">count</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;W&quot;</span><span class="p">:</span>
-                    <span class="n">upvote</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">count</span><span class="p">[</span><span class="mi">0</span><span class="p">:(</span><span class="nb">len</span><span class="p">(</span><span class="n">count</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)])</span> <span class="o">*</span> <span class="mi">10000</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">upvote</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
-                <span class="c"># 这个答案的URL和内容</span>
-                <span class="n">answer_id</span> <span class="o">=</span> <span class="n">answer_soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s">&quot;answer-date-link&quot;</span><span class="p">)[</span><span class="s">&quot;href&quot;</span><span class="p">]</span>
-                <span class="n">answer_url</span> <span class="o">=</span> <span class="s">&quot;http://www.zhihu.com&quot;</span> <span class="o">+</span> <span class="n">answer_id</span>
-                <span class="n">answer</span> <span class="o">=</span> <span class="n">answer_soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;div&quot;</span><span class="p">,</span> \
-                             <span class="n">class_</span><span class="o">=</span><span class="s">&quot;zm-editable-content clearfix&quot;</span><span class="p">)</span>
-                <span class="n">soup</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span> <span class="c"># 删除soup中网页的body部分并加入一个新的body</span>
-                <span class="n">soup</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">insert_after</span><span class="p">(</span><span class="n">soup</span><span class="o">.</span><span class="n">new_tag</span><span class="p">(</span><span class="s">&quot;body&quot;</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="s">&#39;class&#39;</span><span class="p">:</span> <span class="s">&#39;zhi&#39;</span><span class="p">}))</span>
-                <span class="n">soup</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">answer</span><span class="p">)</span> <span class="c"># 添加Answer的内容到body部分</span>
-                <span class="c"># 这个答案中的图片，修改每张图片的URL，并删除一些不必要的代码</span>
-                <span class="n">img_list</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">&quot;img&quot;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s">&quot;content_image lazy&quot;</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">img_list</span><span class="p">:</span>
-                    <span class="n">img</span><span class="p">[</span><span class="s">&quot;src&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="s">&quot;data-actualsrc&quot;</span><span class="p">]</span>
-                <span class="n">img_list</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">&quot;img&quot;</span><span class="p">,</span> \
-                               <span class="n">class_</span><span class="o">=</span><span class="s">&quot;origin_image zh-lightbox-thumb lazy&quot;</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">img_list</span><span class="p">:</span>
-                    <span class="n">img</span><span class="p">[</span><span class="s">&quot;src&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="s">&quot;data-actualsrc&quot;</span><span class="p">]</span>
-                <span class="n">noscript_list</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">&quot;noscript&quot;</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">noscript</span> <span class="ow">in</span> <span class="n">noscript_list</span><span class="p">:</span>
-                    <span class="n">noscript</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>
-                <span class="n">content</span> <span class="o">=</span> <span class="n">soup</span>
-                <span class="c"># 用生成器返回一个Answer，这样避免了一次生成耗时间耗内存的问题</span>
-                <span class="n">answer</span> <span class="o">=</span> <span class="n">Answer</span><span class="p">(</span><span class="n">answer_url</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">author</span><span class="p">,</span> <span class="n">upvote</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
-                <span class="k">yield</span> <span class="n">answer</span>
+            # 对这次请求得到的答案进行解析，并返回
+            answer_list = r.json()["msg"]
+            for j in xrange(min(answers_num-i*50, 50)):
+                if DEBUG:
+                    print i*50+j
+                # 该问题URL的soup解析
+                soup = BeautifulSoup(self.soup.encode("utf-8"))
+                # 这次请求中的一个答案的soup解析
+                answer_soup = BeautifulSoup(answer_list[j])
+                # DEBUG，输出中间结果
+                if DEBUG:
+                    f = open('log/question_soup_x.txt', 'w')
+                    f.writelines(answer_soup.prettify())
+                    f.close()
+                    # raw_input("Pause, press <enter> to continue...")
+                # 这个答案有问题，直接跳过
+                if answer_soup.find("div",\
+                    class_="zm-editable-content clearfix") == None:
+                    continue
+                # 这个答案的作者
+                author = None
+                author_class = "zm-item-answer-author-info"
+                author_info = answer_soup.find("div", class_=author_class)
+                anoy_name = author_info.find("span", class_="name")
+                if anoy_name and anoy_name.string == u"匿名用户":
+                    author_url = None
+                    author = User(author_url)
+                else:
+                    author_tag = author_info.find_all("a")[1]
+                    author_id = author_tag.string.encode("utf-8")
+                    author_url = "http://www.zhihu.com" + author_tag["href"]
+                    author = User(author_url, author_id)
+                # 这个答案的赞数
+                count = answer_soup.find("span", class_="count")
+                if count == None:
+                    count = answer_soup.find("a", \
+                                class_="zm-item-vote-count").string
+                else:
+                    count = count.string
+                if count[-1] == "K":
+                    upvote = int(count[0:(len(count) - 1)]) * 1000
+                elif count[-1] == "W":
+                    upvote = int(count[0:(len(count) - 1)]) * 10000
+                else:
+                    upvote = int(count)
+                # 这个答案的URL和内容
+                answer_id = answer_soup.find("a", class_="answer-date-link")["href"]
+                answer_url = "http://www.zhihu.com" + answer_id
+                answer = answer_soup.find("div", \
+                             class_="zm-editable-content clearfix")
+                soup.body.extract() # 删除soup中网页的body部分并加入一个新的body
+                soup.head.insert_after(soup.new_tag("body", **{'class': 'zhi'}))
+                soup.body.append(answer) # 添加Answer的内容到body部分
+                # 这个答案中的图片，修改每张图片的URL，并删除一些不必要的代码
+                img_list = soup.find_all("img", class_="content_image lazy")
+                for img in img_list:
+                    img["src"] = img["data-actualsrc"]
+                img_list = soup.find_all("img", \
+                               class_="origin_image zh-lightbox-thumb lazy")
+                for img in img_list:
+                    img["src"] = img["data-actualsrc"]
+                noscript_list = soup.find_all("noscript")
+                for noscript in noscript_list:
+                    noscript.extract()
+                content = soup
+                # 用生成器返回一个Answer，这样避免了一次生成耗时间耗内存的问题
+                answer = Answer(answer_url, self, author, upvote, content)
+                yield answer
 
-    <span class="c"># 获取前i个答案</span>
-    <span class="k">def</span> <span class="nf">get_top_i_answers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-        <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">answers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_answers</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">answer</span> <span class="ow">in</span> <span class="n">answers</span><span class="p">:</span>
-            <span class="n">j</span> <span class="o">=</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span>
-            <span class="k">if</span> <span class="n">j</span> <span class="o">&gt;</span> <span class="n">n</span><span class="p">:</span>
-                <span class="k">break</span>
-            <span class="k">yield</span> <span class="n">answer</span>
+    # 获取前i个答案
+    def get_top_i_answers(self, n):
+        j = 0
+        answers = self.get_all_answers()
+        for answer in answers:
+            j = j + 1
+            if j &gt; n:
+                break
+            yield answer
 
-    <span class="c"># 获取第1个答案</span>
-    <span class="k">def</span> <span class="nf">get_top_answer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">answer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_top_i_answers</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">answer</span>
+    # 获取第1个答案
+    def get_top_answer(self):
+        for answer in self.get_top_i_answers(1):
+            return answer
 
-    <span class="c"># 获取该问题被浏览的次数</span>
-    <span class="k">def</span> <span class="nf">get_visit_times</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">soup</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="p">()</span>
-        <span class="n">soup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">soup</span>
-        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;meta&quot;</span><span class="p">,</span> <span class="n">itemprop</span><span class="o">=</span><span class="s">&quot;visitsCount&quot;</span><span class="p">)[</span><span class="s">&quot;content&quot;</span><span class="p">])</span></code></pre></div>
+    # 获取该问题被浏览的次数
+    def get_visit_times(self):
+        if self.soup == None:
+            self.parser()
+        soup = self.soup
+        return int(soup.find("meta", itemprop="visitsCount")["content"])
 
+
+</enter></enter></pre>
 
     </div>
 
@@ -609,6 +614,15 @@ border: 3px solid #FFF; height:150px;width:150px"/>
  </div>
   </footer>
 </div>
+
+<script type="text/javascript" src="/assets/themes/prettify/prettify.js"></script>
+<script type="text/javascript">
+    // 需要引入jQuery
+    $(document).ready(function() {
+        $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
+        prettyPrint();
+    });
+</script>
 
 </body>
 </html>

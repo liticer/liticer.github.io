@@ -17,6 +17,7 @@
 <link rel="stylesheet" type="text/css" href="/assets/resources/syntax/syntax.css">
 <link rel="stylesheet" type="text/css" href="/assets/resources/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/assets/resources/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="/assets/themes/prettify/prettify.css" media="all">
 <link rel="icon" href="../assets/media/favicon.jpg">
 
 <link href='http://fonts.googleapis.com/css?family=Raleway:300' rel='stylesheet' type='text/css'>
@@ -226,6 +227,15 @@ border: 3px solid #FFF; height:150px;width:150px"/>
  </div>
   </footer>
 </div>
+
+<script type="text/javascript" src="/assets/themes/prettify/prettify.js"></script>
+<script type="text/javascript">
+    // 需要引入jQuery
+    $(document).ready(function() {
+        $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
+        prettyPrint();
+    });
+</script>
 
 </body>
 </html>
