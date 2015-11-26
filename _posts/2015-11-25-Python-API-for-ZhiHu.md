@@ -14,6 +14,7 @@ tags: 知乎
 
 ### 1. 模拟登录
 检查是否已经登录，如果登录继续运行，否则提示其先登录:
+
 <pre class="prettyPrint">
 #!/usr/bin/python
 # -*- encoding: utf-8 -*-
