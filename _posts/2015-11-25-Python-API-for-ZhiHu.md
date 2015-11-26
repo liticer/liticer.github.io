@@ -331,7 +331,8 @@ class Question:
                 else:
                     upvote = int(count)
                 # 这个答案的URL和内容
-                answer_id = answer_soup.find("a", class_="answer-date-link")["href"]
+                answer_id = answer_soup.find("a", \
+                                class_="answer-date-link")["href"]
                 answer_url = "http://www.zhihu.com" + answer_id
                 answer = answer_soup.find("div", \
                              class_="zm-editable-content clearfix")
