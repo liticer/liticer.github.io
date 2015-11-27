@@ -26,7 +26,7 @@
 
 <script type="text/javascript" src="/assets/js/jquery-1.11.3.min.js"></script>
 <script type="text/javascript" src="/assets/js/app.js"></script>
-	<script type="text/javascript" src="/assets/resources/bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript" src="/assets/resources/bootstrap/js/bootstrap.js"></script>
 
 
 	</head>
@@ -475,7 +475,8 @@ class Question:
                 else:
                     upvote = int(count)
                 # 这个答案的URL和内容
-                answer_id = answer_soup.find("a", class_="answer-date-link")["href"]
+                answer_id = answer_soup.find("a", \
+                                class_="answer-date-link")["href"]
                 answer_url = "http://www.zhihu.com" + answer_id
                 answer = answer_soup.find("div", \
                              class_="zm-editable-content clearfix")
@@ -532,7 +533,7 @@ class Question:
       
       
         <li><a href="/categories.html#python-ref">
-          python <span>(1)</span>
+          python <span>(2)</span>
           
         </a></li>
       
@@ -548,7 +549,7 @@ class Question:
       
         <li>
           <a href="/tags.html#知乎-ref">
-          知乎 <span>(1)</span>
+          知乎 <span>(2)</span>
           
           </a>
         </li>
@@ -594,7 +595,7 @@ class Question:
       <li class="previous"><a href="/About-KMP-alogorithm" title="KMP算法详解">&larr; 上一篇</a></li>
       
       
-      <li class="next disabled"><a>下一篇 &rarr;</a>
+      <li class="next"><a href="/Login-ZhiHu-with-Python" title="Python爬虫遇上知乎(一)">下一篇 &rarr;</a></li>
       
     </ul>
 

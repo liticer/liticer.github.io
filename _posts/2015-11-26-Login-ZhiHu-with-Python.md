@@ -13,13 +13,11 @@ tags: 知乎
 
 
 ### 1. 模拟登录
-话不多说，先贴代码:
-\(以下代码原来出自: <br/>
-  <https://github.com/egrcc/zhihu-python> <br/>
-  我对代码进行修改，并加了详细的注释：<br/>
-  <https://github.com/liticer/zhihu_python> <br/>
-  应该比较容易阅读，如发现问题可以
-\)
+话不多说，先贴代码。以下代码原来出自: <br/>
+<https://github.com/egrcc/zhihu-python> <br/>
+我对代码进行修改，并加了详细的注释：<br/>
+<https://github.com/liticer/zhihu_python> <br/>
+应该比较容易阅读，如发现问题可以及时留言。
 
 <pre class="prettyPrint lang=python">
 #!/usr/bin/env python
