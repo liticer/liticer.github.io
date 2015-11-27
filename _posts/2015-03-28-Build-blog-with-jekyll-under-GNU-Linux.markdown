@@ -20,9 +20,6 @@ Github是一个具有版本管理功能的代码仓库，许多重要的项目�
 第二种是建立项目主页, 可以使用如下的链接访问username.github.io/projectname，每个项目都可以建立一个项目主页。
 
 
-```
-```
-
 二. 注册Github帐户和建立博客仓库
 
 首先需要注册一个Github帐户，如username，建立帐户之后需要按照网站要求对注册邮箱进行验证，不然在博客建立过程中会报错(报错信息会发送至注册邮箱)。
@@ -36,11 +33,11 @@ Github是一个具有版本管理功能的代码仓库，许多重要的项目�
 
 1.建立目录并初始化为仓库
 
-{% highlight c++%}
+<pre class="prettyPrint lang=bash">
 $ mkdir username.github.io
 $ cd username.github.io
 $ git init
-{% endhighlight %}
+</pre>
 
 该命令是在建立并初始化一个本地仓库，会在目录下新建一个.git的隐藏文件夹。
 
