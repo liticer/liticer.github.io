@@ -3,7 +3,7 @@ layout: post
 title: 知乎Python API
 description: 为知乎写的Python API，有全部代码及详细解释
 categories: Python
-tags: 知乎
+tags: Python
 
 ---
 

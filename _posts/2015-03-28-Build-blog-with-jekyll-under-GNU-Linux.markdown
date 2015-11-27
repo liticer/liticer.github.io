@@ -5,7 +5,7 @@ date:  2015-03-28 22:11:07
 description: 在GNU/Linux下使用Jekyll在Github上搭建博客
 comments: true
 categories: [Linux]
-tags: github jekyll blog
+tags: Jekyll
 archive: false
 ---
 
