@@ -16,7 +16,7 @@ categories_path : categories.html
 tags_path : tags.html
 me_path : me.html
 
-BASE_PATH : http://liticer.github.io
+#BASE_PATH : http://liticer.github.io
 #BASE_PATH : 127.0.0.1:4000
 
 

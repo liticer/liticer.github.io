@@ -1,7 +1,7 @@
 ---
 layout: post
-title: 知乎Python API
-description: 为知乎写的Python API，有全部代码及详细解释
+title: Python爬虫遇上知乎(二)
+description: 使用简单的Python脚本登录知乎，轻松地进行一些监控、搜索、备份工作
 categories: Python
 tags: Python
 
