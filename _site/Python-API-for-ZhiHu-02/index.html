@@ -328,7 +328,7 @@ class User:
             # 准备发送该post请求的参数
             _xsrf = soup.find("input", attrs={'name': '_xsrf'})["value"]
             offset = i * 20
-            hash_id = re.findall("hash_id&quot;: &quot;(.*)&quot;},", r.text)[0]
+            hash_id = re.findall('hash_id&quot;: &quot;(.*)&quot;},', r.text)[0]
             dumps_p = {
                 "offset": offset, 
                 "order_by": "created", 
