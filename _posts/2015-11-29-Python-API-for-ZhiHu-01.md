@@ -1,217 +1,33 @@
-<!DOCTYPE html>
-<html>
-	<head>
+---
+layout: post
+title: Python爬虫遇上知乎(三)
+description: 使用简单的Python脚本登录知乎，轻松地进行一些监控、搜索、备份工作
+categories: Python
+tags: Requests Termcolor
 
-		<title>You are best | MiKi</title>
+---
 
-	
-	<meta name="description" content="使用简单的Python脚本登录知乎，轻松地进行一些监控、搜索、备份工作">
-	
-
-	<meta name="uyan_auth" content="d1688267ba" />
-	<meta name="ujianVerification" content="a95a574e56de0fa5e1eaafdd30f676aa" />
-	<meta name="author" content="MiKi Shi">
-
-		<!-- Enable responsive viewport -->
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
-<link rel="stylesheet" type="text/css" href="/assets/resources/syntax/syntax.css">
-<link rel="stylesheet" type="text/css" href="/assets/resources/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="/assets/resources/font-awesome/css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" href="/assets/themes/prettify/prettify.css" media="all">
-<link rel="icon" href="../assets/media/favicon.jpg">
-
-<link href='http://fonts.googleapis.com/css?family=Raleway:300' rel='stylesheet' type='text/css'>
-
-<script type="text/javascript" src="/assets/js/jquery-1.11.3.min.js"></script>
-<script type="text/javascript" src="/assets/js/app.js"></script>
-<script type="text/javascript" src="/assets/resources/bootstrap/js/bootstrap.js"></script>
+<p>
+使用Python爬虫登录知乎，就可以轻松地进行一些监控、搜索、备份工作。慢慢地，你会发现Python真的很强大。
+<font color="blue"><strong>
+本文主要介绍在模拟登录知乎之后，如何用Python为知乎写一些API。主要是采用面向对象编程的思想，分别对Question、User、Answer、Collection
+进行抽象，先从Question开始介绍。
+</strong></font>
+</p>
 
 
-	</head>
-<body>
+最后贴上源代码。以下代码原来出自: <br/>
+<https://github.com/egrcc/zhihu-python> <br/>
+我对代码进行修改，并加了详细的注释：<br/>
+<https://github.com/liticer/zhihu_python> <br/>
+应该比较容易阅读，如发现问题可以及时留言。
+<p/>
+<br/>
 
-<nav class="navbar navbar-default visible-xs" role="navigation">
+<strong>附: zhihu.py</strong>
 
+<pre class="prettyPrint lang=python">
 
- <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarHeaderCollapse">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      
-      <a type="button" class="navbar-toggle nav-link" href="http://github.com/liticer">
-        <i class="fa fa-github"></i>
-      </a>
-      
-      
-       
-      <a type="button" class="navbar-toggle nav-link" href="mailto:shijh09@sina.com">
-        <i class="fa fa-envelope"></i>
-      </a>
-      
-
-
-
-      <a class="navbar-brand" href="">
-        <img src="../assets/media/me.jpg" class="img-circle" style="height:35px;width:35px"/>
-        MiKi Shi
-      </a>
-    </div>
-
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="navbarHeaderCollapse">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="">Home</a></li>
-        <li><a href="/categories.html">Categories</a></li>
-        <li><a href="/tags.html">Tags</a></li>
-        <li><a href="/me.html">About Me</a></li>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-
-</nav>
-
-  <!-- nav-menu-dropdown -->
-  <div class="btn-group hidden-xs" id="nav-menu">
-   <button type="button" class="btn btn-default dropdown-toggle pull-right" data-toggle="dropdown">
-     <i class="fa fa-bars"></i>
-   </button>
-   <ul class="dropdown-menu pull-right" role="menu">
-     <li><a href=""><i class="fa fa-home"></i> Home</a></li>
-	 <li><a href="/#blog"><i class="fa fa-bars"></i> Blog</a></li>
-     <li><a href="/categories.html"><i class="fa fa-folder"></i> Categories</a></li>
-     <li><a href="/tags.html"><i class="fa fa-tags"></i> Tags</a></li>
-     <li><a href="/me.html"><i class="fa fa-envelope"></i> About Me</a></li>
-     <li class="divider"></li>
-     <li><a href="#"><i class="fa fa-arrow-up"></i> Top of Page</a></li>
-   </ul>
- </div>
-
-<div class="col-sm-4 sidebar hidden-xs" id="sidebar">
-		<! -- sidebar.html -->
-<header class="sidebar-header" role="banner">
-    <a href="">
-        <img src="../assets/media/me.jpg" class="img-circle" style="border-radius: 50%;
-border: 3px solid #FFF; height:150px;width:150px"/>
-    </a>
-
-    <h3 class="title">
-        <a href="/me.html">MiKi Shi</a>
-
-        <p style="font-size:20px;">Programmer</p>
-    </h3>
-
-    <hr class="hr-line">
-    <h5 class="title">
-        <a type="button" class="social2" id="btnblog" href="/#blog">
-            <i class="fa"
-            style="letter-spacing:0; position:relative; top:-5px; left: -5px; font-size:20px;font-family:arial,sans-serif">博客</i>
-        </a>
-    </h5>
-
-    <hr class="hr-line1">
-    <h3 class="title" style="font-size:30px;">
-
-        <a type="button" class="social1" href="http://github.com/liticer">
-            <i class="fa fa-github"></i>
-        </a>
-
-        <a type="button" class="social1" href="https://www.facebook.com/liticer">
-            <i class="fa fa-facebook"></i>
-        </a>
-        <a type="button" class="social1" href="https://cn.linkedin.com/pub/liticer"
-                style="padding-right: 10px">
-            <i class="fa fa-linkedin"></i>
-        </a>
-
-    </h3>
-
-</header>
-
-
-<! -- sidebar.html end -->
-
-	</div>
-
-<div class="col-sm-8 col-sm-offset-4" id="container">
-  
-<div class="page-header">
-  <h1>Python爬虫遇上知乎(二) </h1>
-</div>
-
-<article>
-
-  <div class="col-sm-10">
-   <span class="post-date">
-     
-     November 
-     26th,
-     
-     2015
-      
-   </span>
-    <div class="article_body" id="article_body">
-    <p>刚学会Python不久，想着做点东西。偶然看到Github上一个为知乎写的Python API，就对其代码做了部分更改并加了详细注释。
-下面对代码进行了分析，可以从中体会一下Python中的面向对象编程。
-<br /></p>
-
-<h3 id="section">1. 模拟登录</h3>
-<p>检查是否已经登录，如果登录继续运行，否则提示其先登录:</p>
-
-<pre class="prettyPrint">
-#!/usr/bin/python
-# -*- encoding: utf-8 -*-
-# Build-in / Std
-import os, sys, time, platform, random, functools
-import re, json, cookielib
-# Requirements
-import requests, termcolor, html2text
-try:
-    from bs4 import BeautifulSoup
-except:
-    import BeautifulSoup
-# Some modules written by us
-from auth import islogin
-from auth import Logging
-"""
-    Note:
-        1. 身份验证由 `auth.py` 完成。
-        2. 身份信息保存在当前目录的 `cookies` 文件中。
-        3. `requests` 对象可以直接使用，身份信息已经自动加载。
-
-    By Luozijun (https://github.com/LuoZijun), 09/09 2015
-
-"""
-
-# 指示是否运行调试
-DEBUG = True
-
-
-# 加载Cookies
-requests = requests.Session()
-requests.cookies = cookielib.LWPCookieJar('cookies')
-# 检查是否已经登陆成功
-try:
-    requests.cookies.load(ignore_discard=True)
-except:
-    Logging.error(u"你还没有登录知乎哦 ...")
-    Logging.info(u"执行 `python auth.py` 即可以完成登录。")
-    raise Exception("无权限(403)")
-if islogin() != True:
-    Logging.error(u"你的身份信息已经失效，请重新生成身份信息( `python auth.py` )。")
-    raise Exception("无权限(403)")
-# 设置文本默认编码为utf8
-reload(sys)
-sys.setdefaultencoding('utf8')
-</pre>
-
-<h3 id="section-1">2. 抽象一个问题类</h3>
-
-<pre class="prettyPrint">
 # 抽象一个问题类
 class Question:
     url = None
@@ -232,7 +48,7 @@ class Question:
         r = requests.get(self.url)
         # 对问题网页进行解析
         self.soup = BeautifulSoup(r.content)
-        # 调试--&gt;将soup结果输出到文件
+        # 调试-->将soup结果输出到文件
         if DEBUG:
             f = open('log/question_soup.txt', 'w')
             f.writelines(self.soup.prettify())
@@ -339,7 +155,7 @@ class Question:
                 f = open('log/question_soup_x.txt', 'w')
                 f.writelines(soup.prettify())
                 f.close()
-                # raw_input("Pause, press <enter> to continue...")
+                # raw_input("Pause, press <Enter> to continue...")
             # 这个答案是自己写的
             is_my_answer = False
             item_answer = soup.find_all("div", class_="zm-item-answer")[j]
@@ -378,8 +194,8 @@ class Question:
             else:
                 upvote = int(count)
             # 这个答案的URL和内容
-            answer_id = soup.find_all("a", class_="answer-date-link")[j]["href"]
-            answer_url = "http://www.zhihu.com" + answer_id
+            answer_id = soup.find_all("a", class_="answer-date-link")
+            answer_url = "http://www.zhihu.com" + answer_id[j]["href"]
             answer = soup.find_all("div", class_=\
                          "zm-editable-content clearfix")[j - error_answer_count]
             soup.body.extract() # 删除soup中网页的body部分并加入一个新的body
@@ -445,7 +261,7 @@ class Question:
                     f = open('log/question_soup_x.txt', 'w')
                     f.writelines(answer_soup.prettify())
                     f.close()
-                    # raw_input("Pause, press <enter> to continue...")
+                    # raw_input("Pause, press <Enter> to continue...")
                 # 这个答案有问题，直接跳过
                 if answer_soup.find("div",\
                     class_="zm-editable-content clearfix") == None:
@@ -477,9 +293,8 @@ class Question:
                 else:
                     upvote = int(count)
                 # 这个答案的URL和内容
-                answer_id = answer_soup.find("a", \
-                                class_="answer-date-link")["href"]
-                answer_url = "http://www.zhihu.com" + answer_id
+                answer_id = answer_soup.find("a", class_="answer-date-link")
+                answer_url = "http://www.zhihu.com" + answer_id["href"]
                 answer = answer_soup.find("div", \
                              class_="zm-editable-content clearfix")
                 soup.body.extract() # 删除soup中网页的body部分并加入一个新的body
@@ -507,7 +322,7 @@ class Question:
         answers = self.get_all_answers()
         for answer in answers:
             j = j + 1
-            if j &gt; n:
+            if j > n:
                 break
             yield answer
 
@@ -523,117 +338,5 @@ class Question:
         soup = self.soup
         return int(soup.find("meta", itemprop="visitsCount")["content"])
 
+</pre>
 
-</enter></enter></pre>
-
-    </div>
-
-    
-    <ul class="tag_box list-unstyled list-inline">
-      <li><i class="fa fa-folder-open"></i></li>
-      
-      
-      
-        <li><a href="/categories.html#python-ref">
-          python <span>(6)</span>
-          
-        </a></li>
-      
-      
-    </ul>
-    
-
-    
-    <ul class="list-inline">
-      <li><i class="fa fa-tags"></i></li>
-      
-      
-      
-        <li>
-          <a href="/tags.html#BeatifulSoup-ref">
-          BeatifulSoup <span>(1)</span>
-          ,
-          </a>
-        </li>
-      
-        <li>
-          <a href="/tags.html#Requests-ref">
-          Requests <span>(6)</span>
-          
-          </a>
-        </li>
-      
-      
-      
-    </ul>
-    
-
-    <hr>
-
-    <div>
-      <section class="share col-sm-6">
-        <h4 class="section-title">Share Post</h4>
-        <a class="btn btn-default btn-sm twitter" href="http://twitter.com/share?text=Python爬虫遇上知乎(二)"
-           onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
-          <i class="fa fa-weixin fa-lg"></i>
-          Wechat
-        </a>
-        <a class="btn btn-default btn-sm facebook" href="https://www.facebook.com/sharer/sharer.php"
-           onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
-          <i class="fa fa-facebook fa-lg"></i>
-          Facebook
-        </a>
-        <a class="btn btn-default btn-sm gplus"
-           onclick="window.open('https://plus.google.com/share?url='+window.location.href, 'google-plus-share', 'width=490,height=530');return false;">
-          <i class="fa fa-google-plus fa-lg"></i>
-          Google+
-        </a>
-      </section>
-
-      <section class="col-sm-6 author">
-        <img src="../assets/media/me.jpg" style="height:100px;width:100px;" class="img-rounded author-image" />
-        <h4 class="section-title author-name"><b>MiKi Shi</b><br/><p style="color:#888;font-size:13px;">Programmer</p></h4>
-        <p class="author-bio">Talk is cheap, show me the code!</p>
-      </section>
-    </div>
-
-    <div class="clearfix"></div>
-
-    <ul class="pager">
-      
-      <li class="previous"><a href="/Login-ZhiHu-with-Python" title="Python爬虫遇上知乎(一)">&larr; 上一篇</a></li>
-      
-      
-      <li class="next"><a href="/Python-API-for-ZhiHu-01" title="Python爬虫遇上知乎(三)">下一篇 &rarr;</a></li>
-      
-    </ul>
-
-  </div>
-    <!-- UY BEGIN -->
-    <div id="uyan_frame"></div>
-    <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2072524"></script>
-    <!-- UY END -->
-
-</article>
-<div class="clearfix"></div>
-
-
-<footer class="navbar navbar-default">
-    <div class="container">
-      <p class="navbar-text pull-left">Some rights reserved &copy; 2015 MiKi Shi. </br>
-      如有任何疑问请发送邮件至 <a class="navbar-button" href="http://gmail.google.com/">shijh09@gmail.com</a></p>
- </div>
-  </footer>
-</div>
-
-<script type="text/javascript" src="/assets/themes/prettify/prettify.js"></script>
-<script type="text/javascript">
-    // 需要引入jQuery
-    $(document).ready(function() {
-        $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
-        prettyPrint();
-    });
-</script>
-
-</body>
-</html>

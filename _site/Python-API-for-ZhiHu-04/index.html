@@ -5,7 +5,7 @@
 		<title>You are best | MiKi</title>
 
 	
-	<meta name="description" content="计算机方面的一些网址，其实就是个网络书签">
+	<meta name="description" content="使用简单的Python脚本登录知乎，轻松地进行一些监控、搜索、备份工作">
 	
 
 	<meta name="uyan_auth" content="d1688267ba" />
@@ -140,7 +140,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 <div class="col-sm-8 col-sm-offset-4" id="container">
   
 <div class="page-header">
-  <h1>计算机方面的一些网站和博客 </h1>
+  <h1>Python爬虫遇上知乎(六) </h1>
 </div>
 
 <article>
@@ -148,34 +148,122 @@ border: 3px solid #FFF; height:150px;width:150px"/>
   <div class="col-sm-10">
    <span class="post-date">
      
-     March 
-     30th,
+     November 
+     29th,
      
      2015
       
    </span>
     <div class="article_body" id="article_body">
-    <p>下面列举一些自己常访问的计算机方面网站和博客：（其实，我只是想做个网络书签，因为书签同步很麻烦，真的很麻烦…）</p>
+    <p>
+使用Python爬虫登录知乎，就可以轻松地进行一些监控、搜索、备份工作。慢慢地，你会发现Python真的很强大。
+<font color="blue"><strong>
+本文主要介绍在模拟登录知乎之后，如何用Python为知乎写一些API。主要是采用面向对象编程的思想，分别对Question、User、Answer、Collection
+进行抽象，接前面开始介绍Collection类。
+</strong></font>
+</p>
 
-<p>1.酷壳：<a href="http://coolshell.cn" target="_blank">http://coolshell.cn</a></p>
+<p>最后贴上源代码。以下代码原来出自: <br />
+<a href="https://github.com/egrcc/zhihu-python">https://github.com/egrcc/zhihu-python</a> <br />
+我对代码进行修改，并加了详细的注释：<br />
+<a href="https://github.com/liticer/zhihu_python">https://github.com/liticer/zhihu_python</a> <br />
+应该比较容易阅读，如发现问题可以及时留言。</p>
+<p />
 
-<p>  注：个人最喜欢的技术博客，从中受益匪浅。</p>
+<p><br /></p>
 
-<p>2.谷歌：</p>
+<p><strong>附: zhihu.py</strong></p>
 
-<p>  <a href="http://www.gfsoso.com" target="_blank">http://www.gfsoso.com</a></p>
+<pre class="prettyPrint lang=python">
+# 抽象一个收藏夹类
+class Collection:
+    url = None
+    soup = None
 
-<p>  <a href="http://www.glgoo.com" target="_blank">http://www.glgoo.com</a></p>
+    # 初始化url、name、creator变量
+    def __init__(self, url, name=None, creator=None):
+        if url[0:len(url) - 8] != "http://www.zhihu.com/collection/":
+            raise ValueError("\""+url+"\""+" : it isn't a collection url.")
+        else:
+            self.url = url
+            if name != None:
+                self.name = name
+            if creator != None:
+                self.creator = creator
 
-<p>  <a href="http://www.clonegoogle.com" target="_blank">http://www.clonegoogle.com</a></p>
+    # 获取该收藏夹对应的网页并解析
+    def parser(self):
+        r = requests.get(self.url)
+        soup = BeautifulSoup(r.content)
+        self.soup = soup
 
-<p>  <a href="http://www.fqgoogle.com" target="_blank">http://www.fqgoogle.com</a></p>
+    # 获取该收藏夹的名字
+    def get_name(self):
+        if not hasattr(self, 'name'):
+            if self.soup == None:
+                self.parser()
+            soup = self.soup
+            name_l = self.soup.find("h2", id="zh-fav-head-title")
+            self.name = name_l.string.encode("utf-8").strip()
+        if platform.system() == 'Windows':
+            return self.name.decode('utf-8').encode('gbk')
+        return self.name
 
-<p>  <a href="http://www.googleout.com" target="_blank">http://www.googleout.com</a></p>
+    # 获取该收藏夹的创建者
+    def get_creator(self):
+        if not hasattr(self, 'creator'):
+            if self.soup == None:
+                self.parser()
+            creator_l = self.soup.find("h2", class_="zm-list-content-title")
+            creator_id = creator_l.a.string.encode("utf-8")
+            creator_url = "http://www.zhihu.com" + creator_l.a["href"]
+            creator = User(creator_url, creator_id)
+            self.creator = creator
+        return creator
 
-<p>  <a href="http://g.linkscholar.org" target="_blank">http://g.linkscholar.org</a></p>
+    # 获取该收藏夹下的所有答案
+    def get_all_answers(self):
+        i = 1
+        while True:
+            r = requests.get(self.url + "?page=" + str(i))
+            answer_soup = BeautifulSoup(r.content)
+            answer_list = answer_soup.find_all("div", class_="zm-item")
+            if len(answer_list) == 0:
+                break
+            for answer in answer_list:
+                if answer.find("p", class_="note"):
+                    continue
+                question_l= answer.find("h2")
+                if question_l != None:
+                    question_u = "http://www.zhihu.com" + question_l.a["href"]
+                    question_t = question_l.a.string.encode("utf-8")
+                question = Question(question_u, question_t)
+                answer_l = answer.find("span", class_="answer-date-link-wrap")
+                answer_url = "http://www.zhihu.com" + answer_l.a["href"]
+                author = None
+                amswer_l = answer.find("h3", class_="zm-item-answer-author-wrap")
+                if answer_l.string == u"匿名用户":
+                    author_url = None
+                    author = User(author_url)
+                else:
+                    author_tag = answer_l.find_all("a")[0]
+                    author_id = author_tag.string.encode("utf-8")
+                    author_url = "http://www.zhihu.com" + author_tag["href"]
+                    author = User(author_url, author_id)
+                yield Answer(answer_url, question, author)
+        i = i + 1
 
-<p>  <a href="https://github.com/greatfire/wiki" target="_blank">https://github.com/greatfire/wiki</a></p>
+    # 获取该收藏夹下前n个答案
+    def get_top_i_answers(self, n):
+        j = 0
+        answers = self.get_all_answers()
+        for answer in answers:
+            j = j + 1
+            if j &gt; n:
+                break
+            yield answer
+</pre>
+
 
     </div>
 
@@ -185,8 +273,8 @@ border: 3px solid #FFF; height:150px;width:150px"/>
       
       
       
-        <li><a href="/categories.html#web-ref">
-          web <span>(1)</span>
+        <li><a href="/categories.html#python-ref">
+          python <span>(6)</span>
           
         </a></li>
       
@@ -201,8 +289,15 @@ border: 3px solid #FFF; height:150px;width:150px"/>
       
       
         <li>
-          <a href="/tags.html#Website-ref">
-          Website <span>(1)</span>
+          <a href="/tags.html#Requests-ref">
+          Requests <span>(6)</span>
+          ,
+          </a>
+        </li>
+      
+        <li>
+          <a href="/tags.html#Termcolor-ref">
+          Termcolor <span>(5)</span>
           
           </a>
         </li>
@@ -217,7 +312,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
     <div>
       <section class="share col-sm-6">
         <h4 class="section-title">Share Post</h4>
-        <a class="btn btn-default btn-sm twitter" href="http://twitter.com/share?text=计算机方面的一些网站和博客"
+        <a class="btn btn-default btn-sm twitter" href="http://twitter.com/share?text=Python爬虫遇上知乎(六)"
            onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
           <i class="fa fa-weixin fa-lg"></i>
           Wechat
@@ -245,10 +340,10 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 
     <ul class="pager">
       
-      <li class="previous"><a href="/Build-blog-with-jekyll-under-GNU-Linux" title="GNU/Linux下使用Jekyll搭建博客">&larr; 上一篇</a></li>
+      <li class="previous"><a href="/Python-API-for-ZhiHu-03" title="Python爬虫遇上知乎(五)">&larr; 上一篇</a></li>
       
       
-      <li class="next"><a href="/Login-ZhiHu-with-Python" title="Python爬虫遇上知乎(一)">下一篇 &rarr;</a></li>
+      <li class="next disabled"><a>下一篇 &rarr;</a>
       
     </ul>
 
