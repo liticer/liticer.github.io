@@ -381,7 +381,7 @@ class User:
             # 发送post请求的参数
             _xsrf = soup.find("input", attrs={'name': '_xsrf'})["value"]
             offset = i * 20
-            hash_id = re.findall("hash_id&quot;: &quot;(.*)&quot;},", r.text)[0]
+            hash_id = re.findall('hash_id&quot;: &quot;(.*)&quot;},', r.text)[0]
             dumps_p = {
                 "offset": offset, 
                 "order_by": "created", 
@@ -551,7 +551,7 @@ class User:
 
   </div>
     <!-- UY BEGIN -->
-    <div id="uyan_frame"></div>
+    <div id="uyan_frame" class="col-sm-10"></div>
     <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2072524"></script>
     <!-- UY END -->
 
