@@ -99,6 +99,13 @@ footer {
 .img-3 {
 	background-image: url("/assets/media/background-cover-3.jpg");
 }
+.img-4 {
+	background-image: url("/assets/media/background-cover-4.jpg");
+}
+.img-5 {
+	background-image: url("/assets/media/background-cover-5.jpg");
+}
+
 
 .sidebar-header {
 	text-align: center;
