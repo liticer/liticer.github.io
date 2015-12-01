@@ -36,7 +36,7 @@ font-family: 'Raleway', sans-serif;
 	color: #e74c3c;
 	text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);
 	padding: 0 5% 40px;
-	font-family: ubuntu;
+	font-family: 'Comic Sans MS',Verdana,Consolas,'Hiragino Sans GB',SimSun,Arial;
 }
 
 
@@ -62,7 +62,7 @@ article {
 }
 
 #article_body{
-	font-family: 'Raleway', sans-serif;
+	font-family: 'Comic Sans MS',Verdana,Consolas,'Hiragino Sans GB',SimSun,Arial;
 	font-size: large;
 }
 
