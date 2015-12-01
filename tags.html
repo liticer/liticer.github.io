@@ -7,7 +7,7 @@ title: Tags
 {% assign tag_words = site_tags | split:',' | sort %}
 
 
-<div class="col-sm-3 col-xs-9">
+<div class="col-sm-3 col-xs-9" style="padding: 0 5% 0;">
     <ul class="nav nav-tabs-vertical">
     {% for item in (0..site.tags.size) %}{% unless forloop.last %}
       {% capture this_word %}{{ tag_words[item] | strip_newlines }}{% endcapture %}
