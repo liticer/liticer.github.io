@@ -5,7 +5,7 @@
 		<title>You are best | MiKi</title>
 
 	
-	<meta name="description" content="使用简单的Python脚本登录知乎，轻松地进行一些监控、搜索、备份工作">
+	<meta name="description" content="阅读侯捷老师翻译的Lippman大作《Inside the C++ Object Mode》过程中，在自己理解和体会的基础上做了一些笔记。">
 	
 
 	<meta name="uyan_auth" content="d1688267ba" />
@@ -142,7 +142,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 <div class="col-sm-8 col-sm-offset-4" id="container">
   
 <div class="page-header">
-  <h1>Python爬虫遇上知乎(六) </h1>
+  <h1>深度探索C++对象模型学习笔记 </h1>
 </div>
 
 <article>
@@ -150,14 +150,90 @@ border: 3px solid #FFF; height:150px;width:150px"/>
   <div class="col-sm-10">
    <span class="post-date" style="font-family: 'Comic Sans MS',Verdana,Consolas,'Hiragino Sans GB',SimSun,Arial;">
      
-     November 
-     29th,
-     
+     December 
+     2nd,
+       
      2015
       
    </span>
     <div class="article_body" id="article_body">
-    <p>
+    <p><strong>第1章 关于对象</strong></p>
+
+<p>1. C++对象的布局成本<br /></p>
+
+<ul>
+  <li>C++中单纯地使用封装和继承，并不会增加存取时间和存储空间上的成本。</li>
+  <li>C++真正需要的额外成本是由Virtual引起的(包括Virtual function和Virtual base class)。</li>
+</ul>
+
+<p>2. C++对象模型<br /></p>
+
+<ul>
+  <li>数据成员：Nonstatic data members被配置于每一个class object之内；Static data members 被存放在个别的class object之外。</li>
+  <li>非虚函数成员：Nostatic/Static function members均被置于个别的class object 之外，同一般的非成员函数处理机制类似。</li>
+  <li>虚函数成员：
+    <ul>
+      <li>每一个class产生出一堆指向virtual functions的指针，存放在一个叫做virtual table(vtbl)的表格之中。通常一个class所关联的type_info object被存放在该表格的第一个slot中。</li>
+      <li>每一个class object被安插一个叫做virtual pointer(vptr)的指针，指向相关的virtual table。通常vptr会被每一个class的constructor、destructor和copy assignment等函数自动地进行设定和重置。</li>
+    </ul>
+  </li>
+</ul>
+
+<p>3. C++对象模型<br /></p>
+
+<p><br /></p>
+
+<p><strong>第2章 构造函数语意学</strong></p>
+
+<p>1. Default Constructor的构造操作<br /></p>
+
+<p>  对于一个类，如果没有任何user-declared constructor，那么在编译器有需要的时候，会为它合成一个nontrival default constructor。通常，有如下4种情况需要合成constructor:</p>
+
+<ul>
+  <li>该class有”带Default Constructor”的Data member
+    <ul>
+      <li>需要在构造函数中调用该Data member的默认构造函数初始化该成员。</li>
+    </ul>
+  </li>
+  <li>该class有”带Default Constructor”的Base class
+    <ul>
+      <li>需要在构造函数中调用Base class的默认构造函数初始化Base class subobject。</li>
+    </ul>
+  </li>
+  <li>该class有”Virtual Function”
+    <ul>
+      <li>需要在构造函数中生成或维护vtbl，并设置或修改vptr。</li>
+    </ul>
+  </li>
+  <li>该class有”Virtual base class”
+    <ul>
+      <li>需要在构造函数中维护vtbl和vptr，保证virtual base class在每一个derived class object中的位置在执行期准备妥当。</li>
+    </ul>
+  </li>
+</ul>
+
+<p>  至于没有存在上述4种情况且没有声明任何constructor的class，我们说它拥有的是implicit trivial default constructor，它们实际上不会被合成出来。</p>
+
+<p>  C++新手一般有两个常见的误解：</p>
+
+<ul>
+  <li>任何class，如果没有定义default constructor，就会被合成出来一个。</li>
+  <li>编译器默认合成出来的default constructor会显式地设定”class内每一个data member的默认值”。</li>
+</ul>
+
+<p>2. Copy Constructor的构造操作<br /></p>
+
+<p>  调用Copy constructor三种情况分别是：初始化、传参和返回值。和default construtor一样，copy constructor也分为trivial和nontrivial两种，只有nontrivial的class才会合成它。倘若一个class展现出所谓的”bitwise copy semantics”，那么它的copy constructor就是trivival的。一个class不展现出”bitwise copy semantics”的4种情况如下：<br /></p>
+
+<ul>
+  <li>当class内含有一个member object，而后者的class声明有一个copy constructor时(不论是被class设计者显式声明，还是被编译器合成都算)，该class的copy constructor需要调用该member object的copy constructor完成该成员的拷贝构造。</li>
+  <li>当class继承自一个base class，而后者存在一个显式声明的copy constructor时，该class的copy constructor需要调用base class的copy constructor完成base class subobject的拷贝构造。</li>
+  <li>当class声明了一个或多个virtual functions时，该class的copy constructor需要维护vptr指针，保证其指向对应的class的vtbl。</li>
+  <li>当class派生于一个继承串链，其中有一个或多个virtual base classes时，该class的copy constructor需要拷贝构造virtual base subobject，同时维护vptr指针确保其指向对应的class的vtbl。</li>
+</ul>
+
+<p>
+
 使用Python爬虫登录知乎，就可以轻松地进行一些监控、搜索、备份工作。慢慢地，你会发现Python真的很强大。
 <font color="blue"><strong>
 本文主要介绍在模拟登录知乎之后，如何用Python为知乎写一些API。主要是采用面向对象编程的思想，分别对Question、User、Answer、Collection
@@ -314,7 +390,7 @@ class Collection:
     <div>
       <section class="share col-sm-6">
         <h4 class="section-title" style="font-family: 'Comic Sans MS',Verdana,Consolas,'Hiragino Sans GB',SimSun,Arial;">Share Post</h4>
-        <a class="btn btn-default btn-sm twitter" href="http://twitter.com/share?text=Python爬虫遇上知乎(六)"
+        <a class="btn btn-default btn-sm twitter" href="http://twitter.com/share?text=深度探索C++对象模型学习笔记"
            onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
           <i class="fa fa-weixin fa-lg"></i>
           Wechat
@@ -342,10 +418,10 @@ class Collection:
 
     <ul class="pager">
       
-      <li class="previous"><a href="/Python-API-for-ZhiHu-03" title="Python爬虫遇上知乎(五)">&larr; 上一篇</a></li>
+      <li class="previous"><a href="/Python-API-for-ZhiHu-04" title="Python爬虫遇上知乎(六)">&larr; 上一篇</a></li>
       
       
-      <li class="next"><a href="/Inside-the-C++-Object-Model-note" title="深度探索C++对象模型学习笔记">下一篇 &rarr;</a></li>
+      <li class="next disabled"><a>下一篇 &rarr;</a>
       
     </ul>
 
