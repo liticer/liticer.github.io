@@ -24,7 +24,7 @@ tags: BeatifulSoup Requests
 <p/>
 <br/>
 
-<strong>附: zhihu.py</strong>
+<strong>附: <a href="{{ site.BASE_PATH}}/assets/source/zhihu.py" download>zhihu.py</a> </strong>
 
 <pre class="prettyPrint">
 #!/usr/bin/python

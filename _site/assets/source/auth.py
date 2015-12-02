@@ -1,51 +1,3 @@
----
-layout: post
-title: Python爬虫遇上知乎(一)
-description: 使用简单的Python脚本登录知乎，轻松地进行一些监控、搜索、备份工作
-categories: Python
-tags: Requests Termcolor
-
----
-
-<p>
-使用Python爬虫登录知乎，就可以轻松地进行一些监控、搜索、备份工作。慢慢地，你会发现Python真的很强大。
-<font color="blue"><strong>
-本文主要介绍如何使用Python登录知乎，然后还会介绍一些使用Python为知乎写的API，最后你想做什么就做什么吧，不要不好意思。
-</strong></font>
-</p>
-
-
-<p>
-要想使用Python爬虫去做一些自动化的管理工作，首先需要写一段脚本模拟登录过程。就像你要上知乎之前需要登录一样，
-这部分工作当然得由脚本自己完成。其实，Python模拟登录知乎的代码可以在100行之内，甚至50行之内完成。
-不过要是考虑到出错处理、交互友好、代码可读性等因素，可能代码量要稍微大些。
-不过一段优雅的代码还是值得你用心去看的，尽管下面这代码跟完美还有一段距离。
-</p>
-
-
-<br/>
-<p>
-<font color="#B22222"><strong>
-登录过程主要可以分为三步：<br/>
-1. 获取将要post的表单中的参数：如用户名、密码、验证码等。<br/>
-2. 根据参数构造表单，发送post请求上传表单。<br/>
-3. 解析表单返回结果，保存Cookies，这样就不用每次访问都登录了。<br/>
-</strong></font>
-要理解登录过程可能需要一点Web基础，不过幸运的是这些知识都比较简单。打开Firefox，按下F12，一边登录，一边去看，
-很快就明白了。
-</p>
-
-最后贴上源代码。以下代码原来出自: <br/>
-<https://github.com/egrcc/zhihu-python> <br/>
-我对代码进行修改，并加了详细的注释：<br/>
-<https://github.com/liticer/zhihu_python> <br/>
-应该比较容易阅读，如发现问题可以及时留言。
-<p/>
-<br/>
-
-<strong>附: <a href="{{ site.BASE_PATH}}/assets/source/auth.py" download>auth.py</a> </strong>
-
-<pre class="prettyPrint lang=python">
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
 
@@ -280,5 +232,3 @@ def login(account=None, password=None):
 if __name__ == "__main__":
     # login(account="xxxx@email.com", password="xxxxx")
     login()
-</pre>
-
