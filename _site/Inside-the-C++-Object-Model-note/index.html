@@ -157,7 +157,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
       
    </span>
     <div class="article_body" id="article_body">
-    <p><strong>第1章 关于对象</strong></p>
+    <h2 id="font-colorblue1-font"><font color="blue">第1章 关于对象</font></h2>
 
 <p>1. C++对象的布局成本<br /></p>
 
@@ -181,13 +181,11 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 
 <p>3. C++对象模型<br /></p>
 
-<p><br /></p>
-
-<p><strong>第2章 构造函数语意学</strong></p>
+<h2 id="font-colorblue2-font"><font color="blue">第2章 构造函数语意学</font></h2>
 
 <p>1. Default Constructor的构造操作<br /></p>
 
-<p>  对于一个类，如果没有任何user-declared constructor，那么在编译器有需要的时候，会为它合成一个nontrival default constructor。通常，有如下4种情况需要合成constructor:</p>
+<p>  对于一个类，如果没有任何user-declared constructor，那么在编译器有需要的时候，会为它合成一个nontrival default constructor。通常，有如下4种情况需要合成copy constructor:</p>
 
 <ul>
   <li>该class有”带Default Constructor”的Data member
@@ -232,8 +230,28 @@ border: 3px solid #FFF; height:150px;width:150px"/>
   <li>当class派生于一个继承串链，其中有一个或多个virtual base classes时，该class的copy constructor需要拷贝构造virtual base subobject，同时维护vptr指针确保其指向对应的class的vtbl。</li>
 </ul>
 
-<p>
+<p>3. 程序转化语意学<br /></p>
 
+<ul>
+  <li>参数初始化：在非引用参数传入之前，可能会先创建一个临时变量存储参数。然后在调用函数时以引用方式传入这个临时变量，当然函数的声明也会做相应的修改。</li>
+  <li>返回值初始化：如果函数的返回值不是引用变量，会在函数调用前创建一个临时变量存储返回值。然后在调用函数时以引用方式传入这个临时变量，当然函数的声明也会作相应的修改。</li>
+  <li>使用者层面的优化：如果函数的返回值不是引用变量，则在函数return时创建临时变量比在函数开始处创建临时变量要好，有可能会减少一次copy constructor的调用。如果不懂，可以联系上一条结论理解。</li>
+  <li>编译器层面的优化：如果函数中所有return指令传回相同的变量，编译器有可能会以返回值result参数取代named return value, 这个过程也被叫做NRV优化。</li>
+  <li>Copy constructor的取舍：当class的default copy constructor被时为trivial的时候，一般情况下不需要为其提供emplicit的copy constructor。然而如果class需要大量的memberwise的初始化操作，那么就可以给它提供一个copy constructor；一方面结合编译器作NRV优化，另一方面可以用memcpy函数提高拷贝效率。</li>
+</ul>
+
+<p>4. 成员初始化<br /></p>
+
+<ul>
+  <li>Member initialization list必需的情况：初始化一个reference member；初始化一个const member；初始化member object时需要调用含参构造函数；初始化base class时需要调用含参构造函数。</li>
+  <li>Member initialization list的初始化顺序：一个object的构造总是先构造其base subobject部分，而member的初始化总是要按顺序被安插在任何explicit user code之前。在每一个constrctor中的member初始化时，需要先调用base class的constructor，然后在按成员在class中的顺序逐一初始化各个成员，最后执行explicit user code
+。</li>
+  <li>初始化的一些特殊情况：以member function的结果初始化member; 以member function的结果作为base class constructor的参数。Member function的调用是合法的，因为在object相关的this指针在构建时已经准备妥当，但还是要尽量避免上述情况。具体原因时，构造函数调用前，object的data member有可能还未被全部初始化；而在调用构造base class subobject时，通过this指针调用虚函数时将有可能发生异常的动态绑定过程。</li>
+</ul>
+
+<h2 id="font-colorblue3-datafont"><font color="blue">第3章 Data语意学</font></h2>
+
+<p>
 使用Python爬虫登录知乎，就可以轻松地进行一些监控、搜索、备份工作。慢慢地，你会发现Python真的很强大。
 <font color="blue"><strong>
 本文主要介绍在模拟登录知乎之后，如何用Python为知乎写一些API。主要是采用面向对象编程的思想，分别对Question、User、Answer、Collection
@@ -253,93 +271,6 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 <p><strong>附: <a href="/assets/source/zhihu.py" download="">zhihu.py</a> </strong></p>
 
 <pre class="prettyPrint lang=python">
-# 抽象一个收藏夹类
-class Collection:
-    url = None
-    soup = None
-
-    # 初始化url、name、creator变量
-    def __init__(self, url, name=None, creator=None):
-        if url[0:len(url) - 8] != "http://www.zhihu.com/collection/":
-            raise ValueError("\""+url+"\""+" : it isn't a collection url.")
-        else:
-            self.url = url
-            if name != None:
-                self.name = name
-            if creator != None:
-                self.creator = creator
-
-    # 获取该收藏夹对应的网页并解析
-    def parser(self):
-        r = requests.get(self.url)
-        soup = BeautifulSoup(r.content)
-        self.soup = soup
-
-    # 获取该收藏夹的名字
-    def get_name(self):
-        if not hasattr(self, 'name'):
-            if self.soup == None:
-                self.parser()
-            soup = self.soup
-            name_l = self.soup.find("h2", id="zh-fav-head-title")
-            self.name = name_l.string.encode("utf-8").strip()
-        if platform.system() == 'Windows':
-            return self.name.decode('utf-8').encode('gbk')
-        return self.name
-
-    # 获取该收藏夹的创建者
-    def get_creator(self):
-        if not hasattr(self, 'creator'):
-            if self.soup == None:
-                self.parser()
-            creator_l = self.soup.find("h2", class_="zm-list-content-title")
-            creator_id = creator_l.a.string.encode("utf-8")
-            creator_url = "http://www.zhihu.com" + creator_l.a["href"]
-            creator = User(creator_url, creator_id)
-            self.creator = creator
-        return creator
-
-    # 获取该收藏夹下的所有答案
-    def get_all_answers(self):
-        i = 1
-        while True:
-            r = requests.get(self.url + "?page=" + str(i))
-            answer_soup = BeautifulSoup(r.content)
-            answer_list = answer_soup.find_all("div", class_="zm-item")
-            if len(answer_list) == 0:
-                break
-            for answer in answer_list:
-                if answer.find("p", class_="note"):
-                    continue
-                question_l= answer.find("h2")
-                if question_l != None:
-                    question_u = "http://www.zhihu.com" + question_l.a["href"]
-                    question_t = question_l.a.string.encode("utf-8")
-                question = Question(question_u, question_t)
-                answer_l = answer.find("span", class_="answer-date-link-wrap")
-                answer_url = "http://www.zhihu.com" + answer_l.a["href"]
-                author = None
-                amswer_l = answer.find("h3", class_="zm-item-answer-author-wrap")
-                if answer_l.string == u"匿名用户":
-                    author_url = None
-                    author = User(author_url)
-                else:
-                    author_tag = answer_l.find_all("a")[0]
-                    author_id = author_tag.string.encode("utf-8")
-                    author_url = "http://www.zhihu.com" + author_tag["href"]
-                    author = User(author_url, author_id)
-                yield Answer(answer_url, question, author)
-        i = i + 1
-
-    # 获取该收藏夹下前n个答案
-    def get_top_i_answers(self, n):
-        j = 0
-        answers = self.get_all_answers()
-        for answer in answers:
-            j = j + 1
-            if j &gt; n:
-                break
-            yield answer
 </pre>
 
 
@@ -351,8 +282,8 @@ class Collection:
       
       
       
-        <li><a href="/categories.html#python-ref" style="font-family: 'Comic Sans MS',Verdana,Consolas,'Hiragino Sans GB',SimSun,Arial;">
-          python <span>(7)</span>
+        <li><a href="/categories.html#c++-ref" style="font-family: 'Comic Sans MS',Verdana,Consolas,'Hiragino Sans GB',SimSun,Arial;">
+          c++ <span>(1)</span>
           
         </a></li>
       
@@ -367,15 +298,15 @@ class Collection:
       
       
         <li>
-          <a href="/tags.html#Requests-ref" style="font-family: 'Comic Sans MS',Verdana,Consolas,'Hiragino Sans GB',SimSun,Arial;">
-          Requests <span>(7)</span>
+          <a href="/tags.html#Object-ref" style="font-family: 'Comic Sans MS',Verdana,Consolas,'Hiragino Sans GB',SimSun,Arial;">
+          Object <span>(1)</span>
           ,
           </a>
         </li>
       
         <li>
-          <a href="/tags.html#Termcolor-ref" style="font-family: 'Comic Sans MS',Verdana,Consolas,'Hiragino Sans GB',SimSun,Arial;">
-          Termcolor <span>(6)</span>
+          <a href="/tags.html#Model-ref" style="font-family: 'Comic Sans MS',Verdana,Consolas,'Hiragino Sans GB',SimSun,Arial;">
+          Model <span>(1)</span>
           
           </a>
         </li>
