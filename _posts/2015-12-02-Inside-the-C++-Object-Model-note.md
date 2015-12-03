@@ -22,13 +22,12 @@ tags: Object Model
     * 每一个class产生出一堆指向virtual functions的指针，存放在一个叫做virtual table(vtbl)的表格之中。通常一个class所关联的type_info object被存放在该表格的第一个slot中。
     * 每一个class object被安插一个叫做virtual pointer(vptr)的指针，指向相关的virtual table。通常vptr会被每一个class的constructor、destructor和copy assignment等函数自动地进行设定和重置。
 
-3.&ensp;C++对象模型<br/>
 
 ##<font color="blue">第2章 构造函数语意学</font>##
 
 1.&ensp;Default Constructor的构造操作<br/>
 
-&ensp;&ensp;对于一个类，如果没有任何user-declared constructor，那么在编译器有需要的时候，会为它合成一个nontrival default constructor。通常，有如下4种情况需要合成copy constructor:
+&ensp;&ensp;&ensp;&ensp;对于一个类，如果没有任何user-declared constructor，那么在编译器有需要的时候，会为它合成一个nontrival default constructor。通常，有如下4种情况需要合成copy constructor:
 
   * 该class有"带Default Constructor"的Data member
     * 需要在构造函数中调用该Data member的默认构造函数初始化该成员。
@@ -39,17 +38,16 @@ tags: Object Model
   * 该class有"Virtual base class"
     * 需要在构造函数中维护vtbl和vptr，保证virtual base class在每一个derived class object中的位置在执行期准备妥当。
 
-&ensp;&ensp;至于没有存在上述4种情况且没有声明任何constructor的class，我们说它拥有的是implicit trivial default constructor，它们实际上不会被合成出来。
+&ensp;&ensp;&ensp;&ensp;至于没有存在上述4种情况且没有声明任何constructor的class，我们说它拥有的是implicit trivial default constructor，它们实际上不会被合成出来。
 
-&ensp;&ensp;C++新手一般有两个常见的误解：
-
-  * 任何class，如果没有定义default constructor，就会被合成出来一个。
-  * 编译器默认合成出来的default constructor会显式地设定"class内每一个data member的默认值"。
+&ensp;&ensp;&ensp;&ensp;C++新手一般有两个常见的误解：
+(1)任何class，如果没有定义default constructor，就会被合成出来一个。
+(2)编译器默认合成出来的default constructor会显式地设定"class内每一个data member的默认值"。
 
 
 2.&ensp;Copy Constructor的构造操作<br/>
 
-&ensp;&ensp;调用Copy constructor三种情况分别是：初始化、传参和返回值。和default construtor一样，copy constructor也分为trivial和nontrivial两种，只有nontrivial的class才会合成它。倘若一个class展现出所谓的"bitwise copy semantics"，那么它的copy constructor就是trivival的。一个class不展现出"bitwise copy semantics"的4种情况如下：<br/>
+&ensp;&ensp;&ensp;&ensp;调用Copy constructor三种情况分别是：初始化、传参和返回值。和default construtor一样，copy constructor也分为trivial和nontrivial两种，只有nontrivial的class才会合成它。倘若一个class展现出所谓的"bitwise copy semantics"，那么它的copy constructor就是trivival的。一个class不展现出"bitwise copy semantics"的4种情况如下：<br/>
 
   * 当class内含有一个member object，而后者的class声明有一个copy constructor时(不论是被class设计者显式声明，还是被编译器合成都算)，该class的copy constructor需要调用该member object的copy constructor完成该成员的拷贝构造。
   * 当class继承自一个base class，而后者存在一个显式声明的copy constructor时，该class的copy constructor需要调用base class的copy constructor完成base class subobject的拷贝构造。
@@ -76,12 +74,42 @@ tags: Object Model
 
 ##<font color="blue">第3章 Data语意学</font>##
 
+1.&ensp;Data member的绑定<br/>
+&ensp;&ensp;&ensp;&ensp;编译器对于一个inline member function的本体的分析，会在整个class的声明都出现了才开始；然而对于member function的argument list，则是在它们第一次出现时被适当地进行决议完成的。因此上，在现代C++程序设计中，需要将"nested type声明"放在class的起始处，这是一种安全的防御性程序设计风格。
+
+2.&ensp;Data member的布局<br/>
+&ensp;&ensp;&ensp;&ensp;C++ Standard要求，在同一个access session中，较晚出现的members在class object中有较高的地址。同时，编译器还可能会合成一些内部使用的data member(如vptr)，传统上它们通常被放在所有显式声明的members之前或者之后。
+
+3.&ensp;Data member的存取<br/>
+
+   * Static data members对每个class来说只有一个实例，存放在从class之外的data segment中，并被视为一个global变量；不论通过实例访问，还是通过类名访问，都会在内部被转化成类名的访问形式。
+
+   * Nonstatic data members直接存放在每一个object当中。每一个nonstatic data member的偏移位置在编译时期即可获知，因此存取一个nonstatic data member的效率和存取一个C struct member的效率是一样的。唯一的例外是，当使用指针或引用访问member时，该指针或引用指向的class的继承结构中有一个virtual base class，且该member是从该virtual base class继承而来的。这种情况下，因为不知道该指针或引用指向哪一种class type，因此存取操作必须延迟至执行期，经由一个额外的间接引导才能解决。
+
+4.&ensp;继承与data member<br/>
+   
+   * 单一继承不含virtual functions：
+      * 一个object由两部分构成，base class subobject和本身的data members。这种情况下并不会增加空间或者时间上的额外负担。
+   * 单一继承且含virtual functions：
+      * 为每一个class导入一个virtual table，用来存放它所声明的每一个virtual function的地址。
+      * 在每一个class object种导入一个vptr，提供执行期的链接，使每一个object都能找到相应的virtual table。对base class来说，vptr在object中的位置通常在所有data members之后；而derived class object会继承base class的vptr，不用单独再留存储空间。
+      * 加强constructor，使它能够为vptr设定初值，让它指向class所对应的virtual table。这可能意味者在derived class和每一个base class的constructor中，会重新设定vptr的值。
+      * 加强destructor，使它能够矫正vptr，让它指向class所对应的virtual table。因为，vptr很可能已经在derived class destructor中被设定为derived class的virtual table的地址了。
+   * 多重继承：
+      * 对于多重继承来说，一个derived class object由几部分组成：base class1 subobject, base class2 subobject, ..., data members。在这种情况下，把一个derived object转换为其base类型，就需要编译器的介入，用以调整地址。
+      * 多重继承的情况下，如果一个derived class object有vptr，那么其vptr就存放在其继承列表中第一个含有vptr的subobject的vptr处，否则在data members之后新增一个vptr域。
+   * 虚拟继承：
+      * 对于虚拟继承来说，它跟多重继承的情况类似。只是它需要指出shared base subobject的偏移位置，而这个偏移量通常会被放置在virtual table最前面的slot中。在将derived object赋值给base object时，需要通过virtual table查找这个偏移量，并进行复制构造。
+      * 当通过object来存取一个从virtual base class的member，可以被优化成一个直接存取操作；然而通过指针或引用来访问上述member时，就需要在执行期通过查找virtual table中的offset，经过两次间接引导才能访问到。因此上，virtual base class最有效的一种运用形式就是：一个抽象的virtual base class，没有任何的data member。
+
+5.&ensp;指向data members的指针<br/>
+
+   * 对class的nonstatic member取地址得到的是一个偏移值，表示该member在class中的偏移位置，可以将该值赋给一个指向该class的data member的指针；而对object的nonstatic member取地址得到的是一个地址值，表示该object中的data member的地址，可以将该值赋给一个指向该member类型的指针。
+   * 对class或者object中的static member取地址得到的是一个地址值，表示该class中static member的在内存中的位置，可以将该值赋给一个指向该member类型的指针。
+   * 为了区分一个"没有指向任何data member的指针"和"一个指向第一个data member的指针"，每一个真正的member offset值都会被加上1，而在使用该offset取值之前，需要减掉1。
 
 
-
-
-
-
+##<font color="blue">第4章 Function 语意学</font>##
 
 
 
@@ -91,19 +119,12 @@ tags: Object Model
 
 
 <p>
-使用Python爬虫登录知乎，就可以轻松地进行一些监控、搜索、备份工作。慢慢地，你会发现Python真的很强大。
 <font color="blue"><strong>
-本文主要介绍在模拟登录知乎之后，如何用Python为知乎写一些API。主要是采用面向对象编程的思想，分别对Question、User、Answer、Collection
-进行抽象，接前面开始介绍Collection类。
 </strong></font>
 </p>
 
 
-最后贴上源代码。以下代码原来出自: <br/>
-<https://github.com/egrcc/zhihu-python> <br/>
-我对代码进行修改，并加了详细的注释：<br/>
 <https://github.com/liticer/zhihu_python> <br/>
-应该比较容易阅读，如发现问题可以及时留言。
 <p/>
 <br/>
 
