@@ -109,27 +109,49 @@ tags: Object Model
    * 为了区分一个"没有指向任何data member的指针"和"一个指向第一个data member的指针"，每一个真正的member offset值都会被加上1，而在使用该offset取值之前，需要减掉1。
 
 
-##<font color="blue">第4章 Function 语意学</font>##
+##<font color="blue">第4章 Function语意学</font>##
+
+1.&ensp;Member function的各种调用方式<br/>
+   
+   * Nonstatic member functions:
+      * C++的设计准则之一就是：nonstatic member function至少必须和一般的nonmember function有相同的效率。
+      * 在编译器内部，会将member function实例转换为对等的nonmember function实例。通常member function的函数名称会被"mangling"为程序中独一无二的名称，其函数原型会被安插一个额外的this指针参数，其"对nonstatic data member的存取操作"会被改写成通过this指针的存取操作。
+   
+   * Virtual member functions:
+      * 如果通过指针或引用去访问一个virtual member function，将在编译器内部被转换为通过查询virtual table进行访问的形式。
+      * 如果通过object取访问一个virtual member function，其在编译器内部的转换方式跟nonstatic member function相同。
+   
+   * Static member functions：
+      * 无论通过何种形式访问一个static member function，总是会被转化一个对对等的nonmember function的访问形式。通常static member function的函数名称会被"mangling"为程序中独一无二的名字。
+      * Static member functions的主要特性就是它没有this指针。因此上，它不可以访问class中的nonstatic members，也不能够被声明为const、volatile或virtual。
+
+2.&ensp;Virtual member functions<br/>
+   
+   * 单一继承下的virtual functions：
+      * 含有virtual functions的单一继承下，一个class只会有一个virtual table，每一个table中含有该从class的类型信息和对应class object中所有active virtual functions函数实例的地址。其中的active virtual functions包括继承自base class的virtual functions、重写的base class的virtual functions、自己定义的virtual functions。
+      * 含有virtual functions的单一继承下，一个class object中会被安插一个指向该class virtual table的指针。为了找到函数地址，编译器会为每一个virtual function指派一个表格索引值。
+  
+   * 多重继承下的virtual functions:
+      * 含有virtual functions的多重继承下，一个derived class内含有n个virtual tables，n表示其上一层的base class的个数。其中包含1个主要实例(由derived class于base1 class共享)、n-1个次要实例(除base1 class之外的每个base class各享一个)。针对每一个virtual table，derived对象中都有一个对应的vptr，需要在构造、复制、析构时进行适当的维护。为了调节执行期链接器的效率，编译器或许会将多个virtual tables连锁为一个，指向次要表格的指针，可以主要表格名称加上一个offset获得。
+      * 在多重继承中支持virtual functions，其复杂度围绕在第二个及后继的base  class身上，以及必须在执行期调整this指针这一点上。具体地有三种情况，第二或后继的base class会影响对virtual function的支持：(1) 通过一个指向"第二个base class或后继"的指针，调用derived class virtual function；(2) 通过一个指向"derived class"的指针，调用第二个base class或后继中继承而来的virtual function；(3)允许一个virtual function的返回值类型有所变化，可能时base type，也可能时derived type。
+
+   * 虚拟继承下的virtual functions:
+      * 含有virtual functions的虚拟继承下，编译器会在生成virtual table的时，在table的首部加入一个额外的slot(索引为-1)，指出virtual base的偏移量。
+      * 强烈建议，不要在一个virtual base class中声明nonstatic data members，只将它作为一个接口使用即可。
 
 
+3.&ensp;指向member function的指针<br/>
+  
+   * Nonvirtual member function指针：对一个nonstatic member function取地址得到的是一个带有相同参数+额外参数(this指针)的普通函数指针；而对一个static member function取地址得到的是一个相同参数的普通函数指针。
+   * Virtual member function指针：
+      * 对一个单一继承下的virtual member function取地址得到的它在virtual table中的索引值；对一个多重继承下的virtual member function取地址得到的是一个结构体，除了反应virtual table索引值之外，还要反应this指针的offset值。
 
+4.&ensp;Inline functions<br/>
+  
+   * 定义在类内的函数，隐式为内联的；在类外声明的内联函数，须加inline声明。并非所有的inline声明都会变成inline函数，代码过多的话，编译器可能会拒绝，转而将它作为普通函数。
+   * 内联函数的形参：传入参数，直接替换为参数名；传入常量，直接替换为常量值；传入函数运行结果，则需要导入临时变量。
+   * 内联函数的局部变量：局部变量会被"mangling"，以便inline函数被替换后局部变量名字唯一。也就是说，一次性调用N次，就会出现N个临时变量，程序体积会暴增。总之，inline的使用要小心处理。
 
-
-
-
-
-<p>
-<font color="blue"><strong>
-</strong></font>
-</p>
-
-
-<https://github.com/liticer/zhihu_python> <br/>
-<p/>
-<br/>
-
-<strong>附: <a href="{{ site.BASE_PATH}}/assets/source/zhihu.py" download>zhihu.py</a> </strong>
-
-<pre class="prettyPrint lang=python">
-</pre>
+##<font color="blue">第5章 构造、析构、拷贝语意学</font>##
+  
 
