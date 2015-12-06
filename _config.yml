@@ -21,13 +21,13 @@ BASE_PATH : http://liticer.github.io
 #BASE_PATH : 127.0.0.1:4000
 
 
-title : MiKi
+title : Minky
 
 
 
 author:
-  name: MiKi
-  role: Programmer
+  name: Minky
+  role: Coder
   email: shijh09@sina.com
   github: liticer
   weixin: test
