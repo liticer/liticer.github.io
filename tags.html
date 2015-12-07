@@ -12,7 +12,7 @@ title: Tags
     {% for item in (0..site.tags.size) %}{% unless forloop.last %}
       {% capture this_word %}{{ tag_words[item] | strip_newlines }}{% endcapture %}
       <li>
-          <a style="font-family: 'Comic Sans MS',Verdana,Consolas,'Hiragino Sans GB',SimSun,Arial; color:#666;font-weight:bold" href="#{{ this_word | replace:' ','-' }}-ref" data-toggle="tab">
+          <a style="font-family: Consolas,Verdana,'Hiragino Sans GB',SimSun,Arial; color:#666;font-weight:bold" href="#{{ this_word | replace:' ','-' }}-ref" data-toggle="tab">
             {{ this_word }}<span class="badge pull-right">{{ site.tags[this_word].size }}</span>
          </a>
       </li>
@@ -27,7 +27,7 @@ title: Tags
       <h2 style="margin-top: 0px;font-weight:bold;font-family: 'Comic Sans MS',Verdana,Consolas,'Hiragino Sans GB',SimSun,Arial;">Posts tagged  with {{ this_word }}</h2>
       <ul class="list-unstyled">
         {% for post in site.tags[this_word] %}{% if post.title != null %}
-          <li style="line-height: 35px;"><a style="font-family: 'Comic Sans MS',Verdana,Consolas,'Hiragino Sans GB',SimSun,Arial; color:#333;font-weight:bold" href="{{ site.BASE_PATH }}{{post.url}}">{{post.title}}</a> <span class="text-muted">- {{ post.date | date: "%B %d, %Y" }}</span></li>
+          <li style="line-height: 35px;"><a style="font-family: Consolas,Verdana,'Hiragino Sans GB',SimSun,Arial; color:#333;font-weight:bold" href="{{ site.BASE_PATH }}{{post.url}}">{{post.title}}</a> <span class="text-muted">- {{ post.date | date: "%B %d, %Y" }}</span></li>
         {% endif %}{% endfor %}
       </ul>
     </div>

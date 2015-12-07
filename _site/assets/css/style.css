@@ -36,7 +36,7 @@ font-family: 'Raleway', sans-serif;
 	color: #e74c3c;
 	text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);
 	padding: 0 5% 40px;
-	font-family: 'Comic Sans MS',Verdana,Consolas,'Hiragino Sans GB',SimSun,Arial;
+	font-family: Consolas,Verdana,'Hiragino Sans GB',SimSun,Arial;
 }
 
 
@@ -137,7 +137,7 @@ footer {
 .hr-line {
 	height: 1px;
 	border:none;
-	width: 40%;
+	width: 50%;
 	background-color: rgba(255,255,255,0.50);
 }
 
