@@ -16,7 +16,7 @@ tags: Object Model
 
 2.&ensp;C++对象模型<br/>
 
-  * 数据成员：Nonstatic data members被配置于每一个class object之内；Static data members 被存放在个别的class object之外。
+  * 数据成员：Nonstatic data members被配置于每一个class object之内；Static data members被存放在个别的class object之外。
   * 非虚函数成员：Nostatic/Static function members均被置于个别的class object 之外，同一般的非成员函数处理机制类似。
   * 虚函数成员：
     * 每一个class产生出一堆指向virtual functions的指针，存放在一个叫做virtual table(vtbl)的表格之中。通常一个class所关联的type_info object被存放在该表格的第一个slot中。
