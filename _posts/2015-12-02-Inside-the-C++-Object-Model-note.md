@@ -228,3 +228,37 @@ tags: Object Model
    * 临时性对象的生命规则有两个例外：第一个例外发生在表达式被用来初始化一个object时，临时对象应该存留到object的初始化操作完成为止，如用一个问号表达式的结果初始化一个string对象；第二个例外是当一个临时性对象被一个reference绑定时，临时对象将残留到reference的生命结束或者临时对象的生命范畴结束，如将一个string对象绑定到一个字符串上。
 
 <p style="font-size:25px;color:blue;text-align:center;padding:20px 0">第7章 站在对象模型的尖端</p>
+
+1.&ensp;Template<br/>
+ 
+   * 实例化：一个template会在定义了该template一个实例对象时，进行相应的实例化，以便产生该实例对象的真正布局形式。然而该实例的member functions只有在被使用的时候才要求它们被实例化。(其主要原因是：空间和时间效率的考虑；尚未实现的机能)
+   * 名称决议法：一个编译器必须保持两个scope contexts："scope of the template declaration"用以专注于一般的template class；"scope of the template instantiation"用以专注于特定的实例。
+   * Member Function的实例化行为：
+       * 编译器如何找出函数的定义？包含template program text file，就好像它是一个头文件一样；要求一个文件命名规则，如Point.h的声明，其定义必被放在Point.C/Point.cpp中。
+       * 编译器如何只实例化程序中用到的member functions？忽略这项要求，把一个已经实例化的class的所有member functions都产生出来；模拟链接操作，检测哪一个函数真正需要，只为它们产生实例。
+       * 编译器怎么组织member definitions在多个.o文件中都被实例化？产生多个实例，然后从链接器中提供支持，只留下其中一个实例，其余都忽略；另一个方法就是由使用者来引导"模拟链接阶段"的实例化策略，决定哪些实例才是需求的。
+
+2.&ensp;异常处理<br/>
+
+   * 当一个exception发生时，编译系统必须完成以下事情：
+       * 检验发生throw操作的函数。
+       * 决定throw操作是否发生才try区段中。如果是，跳到3，否则，跳到4。
+       * 把exception type拿来和每一个catch子句进行比较。如果比较吻合，就将控制流程交到catch子句手上；否则跳到4。
+       * 首先摧毁所有的active local objects；然后从堆栈中将目前的函数"unwind"掉；最后进行到程序堆栈的下一个函数中去，重复操作2~4。
+   * 当一个catch子句捕获到一个异常时：
+       * 如果catch是以object方式捕获的，就会发生copy动作，在catch子句结束时，这个用以捕获异常的临时对象会被销毁掉。此时如果发生throw操作，则是参考真正的exception object。
+       * 如果catch是以reference方式捕获的，任何对其做的改变，都会随着再次的throw操作被繁殖到下一个catch子句中。
+
+3.&ensp;执行期类型识别<br/>
+
+   * 欲支持type-safe downcast的额外负担：
+       * 需要额外的空间以存储类型信息，通常是一个指针，指向某个类型信息结点。
+       * 需要额外的时间以决定执行期的类型，因为这需要在执行期才能决定。
+   * Type-safe dynamic cast：
+       * C++的dynamic_cast运算符可以在执行期决定真正的类型，如果downcast是安全的，这个运算符会传回适当的转换过的指针；如果是不安全的，这个运算符会传回0。
+       * 这种动态转换的真正成本是：一个type_info会被编译器产生出来，其地址被放在virtual table的第一个slot内。而在执行期需要转换时，需要由object的vptr指针简介取得相应的type_info object，才能保证安全转换。
+       * 当dynamic_cast运算符用于reference时：如果reference真正参考到适当的derived class，downcast会被执行而程序可以继续运行；否则，由于不能传回0，因此抛出一个bad_cast exception。
+   * Typeid运算符：
+       * C++的typeid运算符传回一个类型为type_info的const reference，该class定义了判断相等与否的equality运算符。
+       * 事实上，type_info除过适用于多态类之外，也适用于内建类型以及非多态的使用者自定类型。区别在于，后者的type_info object是静态取得，而非执行期取得。
+       * 使用typeid运算符，就可以配合static_cast产生跟dynamic_cast一样的效果。
