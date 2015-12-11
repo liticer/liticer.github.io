@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Python爬虫遇上知乎(四)
-description: 使用简单的Python脚本登录知乎，轻松地进行一些监控、搜索、备份工作
+description: 知乎的Python API，对用户进行抽象构建User类。
 categories: Python
 tags: Requests Termcolor
 

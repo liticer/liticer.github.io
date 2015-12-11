@@ -2,7 +2,7 @@
 layout: post
 title:  "计算机方面的一些网站和博客"
 date:  2015-03-30
-description: 计算机方面的一些网址，其实就是个网络书签
+description: 计算机方面的一些网址，其实就是个网络书签。
 comments: true
 categories: Web
 tags: Website

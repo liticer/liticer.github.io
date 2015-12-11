@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 深度探索C++对象模型学习笔记
-description: 阅读侯捷老师翻译的Lippman大作《Inside the C++ Object Mode》过程中，在自己理解和体会的基础上做了一些笔记。
+description: 阅读侯捷老师翻译的Lippman大作《Inside the C++ Object Model》过程中，在自己理解和体会的基础上做了一些笔记。
 categories: CPP
 tags: Object Model
 

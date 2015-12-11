@@ -2,7 +2,7 @@
 layout: post
 title:  "GNU/Linux下使用Jekyll搭建博客"
 date:  2015-03-28 22:11:07
-description: 在GNU/Linux下使用Jekyll在Github上搭建博客
+description: 在GNU/Linux下使用Jekyll在Github上搭建一个属于自己的博客。
 comments: true
 categories: [Linux]
 tags: Jekyll
