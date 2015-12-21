@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+	<head>
+
+		<title>行胜于言</title>
+
+	
+	<meta name="description" content="Excel软件使用的一些笔记，以备查用。">
+	
+
+	<meta name="uyan_auth" content="d1688267ba" />
+	<meta name="ujianVerification" content="a95a574e56de0fa5e1eaafdd30f676aa" />
+	<meta property="wb:webmaster" content="c8ddfcbeabe108f4" />
+	<meta name="author" content="半文盲阿尔瓦">
+	<meta charset="utf-8" />
+
+		<!-- Enable responsive viewport -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+<link rel="stylesheet" type="text/css" href="/assets/resources/syntax/syntax.css">
+<link rel="stylesheet" type="text/css" href="/assets/resources/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/assets/resources/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="/assets/themes/prettify/prettify.css" media="all">
+<link rel="icon" href="../assets/media/favicon.jpg">
+
+<link href='http://fonts.googleapis.com/css?family=Raleway:300' rel='stylesheet' type='text/css'>
+
+<script type="text/javascript" src="/assets/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/assets/js/app.js"></script>
+<script type="text/javascript" src="/assets/resources/bootstrap/js/bootstrap.js"></script>
+
+
+	</head>
+<body>
+
+<nav class="navbar navbar-default visible-xs" role="navigation">
+
+
+ <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarHeaderCollapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+      <a type="button" class="navbar-toggle nav-link" href="http://github.com/liticer">
+        <i class="fa fa-github"></i>
+      </a>
+      
+      
+       
+      <a type="button" class="navbar-toggle nav-link" href="mailto:shijh09@sina.com">
+        <i class="fa fa-envelope"></i>
+      </a>
+      
+
+
+
+      <a class="navbar-brand" href="">
+        <img src="../assets/media/me.jpg" class="img-circle" style="height:35px;width:35px"/>
+        半文盲阿尔瓦
+      </a>
+    </div>
+
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="navbarHeaderCollapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="">Home</a></li>
+        <li><a href="/categories.html">Categories</a></li>
+        <li><a href="/tags.html">Tags</a></li>
+        <li><a href="/me.html">About Me</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+
+</nav>
+
+  <!-- nav-menu-dropdown -->
+  <div class="btn-group hidden-xs" id="nav-menu">
+   <button type="button" class="btn btn-default dropdown-toggle pull-right" data-toggle="dropdown">
+     <i class="fa fa-bars"></i>
+   </button>
+   <ul class="dropdown-menu pull-right" role="menu">
+     <li><a href=""><i class="fa fa-home"></i> Home</a></li>
+	 <li><a href="/#blog"><i class="fa fa-bars"></i> Blog</a></li>
+     <li><a href="/categories.html"><i class="fa fa-folder"></i> Categories</a></li>
+     <li><a href="/tags.html"><i class="fa fa-tags"></i> Tags</a></li>
+     <li><a href="/me.html"><i class="fa fa-envelope"></i> About Me</a></li>
+     <li class="divider"></li>
+     <li><a href="#"><i class="fa fa-arrow-up"></i> Top of Page</a></li>
+   </ul>
+ </div>
+
+<div class="col-sm-4 sidebar hidden-xs" id="sidebar">
+		<! -- sidebar.html -->
+<header class="sidebar-header" role="banner">
+    <a href="">
+        <img src="../assets/media/me.jpg" class="img-circle" style="border-radius: 50%;
+border: 3px solid #FFF; height:150px;width:150px"/>
+    </a>
+
+    <h3 class="title">
+        <a href="/me.html" style="font-size:25px; font-weight:700; font-family: Consolas,Verdana,'Hiragino Sans GB',SimSun,Arial;">半文盲阿尔瓦</a>
+
+        <p style="font-size:20px;font-family: Consolas,Verdana,'Hiragino Sans GB',SimSun,Arial;"></p>
+    </h3>
+
+    <hr class="hr-line">
+    <h5 class="title">
+        <a type="button" class="social2" id="btnblog" href="/#blog">
+            <i class="fa"
+            style="letter-spacing:0; position:relative; top:-5px; left: -5px; font-size:20px;font-family: Consolas,Verdana,'Hiragino Sans GB',SimSun,Arial;">博客</i>
+        </a>
+    </h5>
+
+    <hr class="hr-line1">
+    <h3 class="title" style="font-size:30px;font-family: Consolas,Verdana,'Hiragino Sans GB',SimSun,Arial;">
+
+        <a type="button" class="social1" href="http://github.com/liticer">
+            <i class="fa fa-github"></i>
+        </a>
+
+        <a type="button" class="social1" href="https://www.facebook.com/liticer">
+            <i class="fa fa-facebook"></i>
+        </a>
+        <a type="button" class="social1" href="https://cn.linkedin.com/pub/liticer"
+                style="padding-right: 10px">
+            <i class="fa fa-linkedin"></i>
+        </a>
+
+    </h3>
+
+</header>
+
+
+<! -- sidebar.html end -->
+
+	</div>
+
+<div class="col-sm-8 col-sm-offset-4" id="container">
+  
+<div class="page-header">
+  <h1>Excel使用笔记 </h1>
+</div>
+
+<article>
+
+  <div class="col-sm-10">
+   <span class="post-date" style="font-family: Consolas,Verdana,'Hiragino Sans GB',SimSun,Arial;">
+     
+     December 
+     21st,
+       
+     2015
+      
+   </span>
+    <div class="article_body" id="article_body">
+    <p style="font-size:25px;color:blue;text-align:center;padding:20px 0">第1篇  快捷键</p>
+
+<p>1.<font color="red">Esc键:</font></p>
+
+<p>    修改单元格时如果不小心更改公式的构成，可以用Esc键退出，避免破坏了公式</p>
+
+<p>2.<font color="red">鼠标快速移动：</font></p>
+
+<ul>
+  <li>Home移动到该单元格所在行行首</li>
+  <li>Ctrl+Home移动到工作表的第一行第一列</li>
+  <li>Ctrl+End移动到工作表的最后一行最后一列</li>
+  <li>Ctrl+上键移动到该单元格所在列列首，Ctrl+下键移动到该单元格所在列列尾</li>
+  <li>Ctrl+左键移动到该单元格所在行行首，Ctrl+右键移动到该单元格所在行行尾</li>
+</ul>
+
+<p>3.<font color="red">Alt+分号键：</font></p>
+
+<ul>
+  <li>快速删除不连续的多行数据：
+    <ul>
+      <li>筛选得到要删除的行—-&gt;全部选中这些行—-&gt;按Alt+分号键—-&gt;按Ctrl+减号键删除行</li>
+    </ul>
+  </li>
+  <li>快速复制不连续的多行数据：
+    <ul>
+      <li>筛选得到要复制的行—-&gt;全部选中这些行—-&gt;按Alt+分号键—-&gt;按Ctrl+C键复制数据</li>
+    </ul>
+  </li>
+  <li>快速将公式应用到不连续的多行数据：
+    <ul>
+      <li>筛选得到要应用公式的行—-&gt;在首行编辑公式—-&gt;按Ctrl+V键复制首行—-&gt;选中除首行外要应用公式的所有行—-&gt;按Alt+分号键—-&gt;按Ctrl+V键粘贴公式</li>
+    </ul>
+  </li>
+</ul>
+
+<p style="font-size:25px;color:blue;text-align:center;padding:20px 0">第2篇  函数</p>
+
+<p>1.<font color="red">条件求和：</font></p>
+
+<p>    =SUMIF(B2:B56, “男”, K2:K56)</p>
+
+<p>2.<font color="red">查找重复内容公式：</font></p>
+
+<p>    =IF(COUNTIF($A$2:$A$56, A2)&gt;1, “重复”, “ “)</p>
+
+<p>3.<font color="red">用出生年月来计算年龄公式：</font></p>
+
+<p>    =TRUNC((DAYS360(A2, “2015/8/30”, FALSE))/360)</p>
+
+<p>4.<font color="red">计算单元格地址：</font></p>
+
+<p>    =ADDRESSS(row_num,column_num,abs_num,a1,sheet_text)</p>
+
+<p>5.<font color="red">间接引用：</font></p>
+
+<p>    =INDRECT(ref_txt), 有两种使用方式：</p>
+
+<ul>
+  <li>=INDIRECT(“A1”)——加引号，文本引用——即引用A1单元格所在的文本(B2)。</li>
+  <li>=INDIRECT(A1)——不加引号，地址引用——因为A1的值为B2，B2=11，所以返回11。</li>
+</ul>
+
+<p style="font-size:25px;color:blue;text-align:center;padding:20px 0">第3篇  技巧</p>
+
+<p>1.<font color="red">快速选中一行或一列：</font></p>
+
+<ul>
+  <li>先将鼠标移动到行首或列首：可以使用“Ctrl+方向键”快速移动</li>
+  <li>再使用“Ctrl+Shift+下键”选中一行或者使用“Ctrl+Shift+右键”选中一列</li>
+</ul>
+
+<p>2.<font color="red">快速插入一行或一列：</font></p>
+
+<ul>
+  <li>先用鼠标选中要插入的行的下一行或者要插入的列的右一列：可以使用技巧篇中1的快捷键选中</li>
+  <li>再用“Ctrl+Shift+加键”插入一行或一列</li>
+</ul>
+
+<p>3.<font color="red">删除一行或一列：</font></p>
+
+<ul>
+  <li>先用鼠标选中要删除的行或列：可以使用技巧篇中1的快捷键选中</li>
+  <li>再用“Ctrl+减键”删除一行或一列</li>
+</ul>
+
+<p>4.<font color="red">快速选中一个区域：</font></p>
+
+<ul>
+  <li>先选中该区域中左上角的单元格或者右下角的单元格</li>
+  <li>按住“Shift键”，再选中该区域中右下角的单元格或者左上角的单元格</li>
+</ul>
+
+<p>5.<font color="red">删除一张工作表中重复的行：</font></p>
+
+<ul>
+  <li>先选中包含重复值的行：可以用技巧篇中4的快捷键选中</li>
+  <li>依次点击“数据—-&gt;删除重复项—-&gt;选择作为键值的列名—-&gt;确定”</li>
+</ul>
+
+<p>6.<font color="red">如何将公式快速应用到一列：</font></p>
+
+<ul>
+  <li>在该列最开始一格编辑好公式并应用</li>
+  <li>选中该单元格并双击填充柄将公式应用到一整列</li>
+</ul>
+
+<p>7.<font color="red">找出一张工作表中重复的行：</font></p>
+
+<ul>
+  <li>公式：=IF(COUNTIF($A$2:$A$456,A2)&gt;1, “重复”, 0)</li>
+  <li>在第三列去进行筛选，选择值为重复的列</li>
+</ul>
+
+<p>8.<font color="red">找出两张工作表中不一样的行：</font></p>
+
+<ul>
+  <li>有两张表查找表1和查找表2:</li>
+</ul>
+
+<p>     <img src="/assets/image/10-1.png" alt="pseudo" title="查找表1" />    <img src="/assets/image/10-2.png" alt="pseudo" title="查找表2" /></p>
+
+<ul>
+  <li>用两张表中所有的人员工号连接表1：</li>
+</ul>
+
+<p>     <img src="/assets/image/10-3.png" alt="pseudo" /></p>
+
+<ul>
+  <li>用两张表中所有的人员工号连接表2：</li>
+</ul>
+
+<p>     <img src="/assets/image/10-4.png" alt="pseudo" /></p>
+
+<ul>
+  <li>连接结果相减，N/A的表示该工号对应的数据在其中一张表中不存在，不为0的数据表示该工号对应的数据在两张表中都存在但是数值不一样：</li>
+</ul>
+
+<p>     <img src="/assets/image/10-5.png" alt="pseudo" /></p>
+
+<p>9.<font color="red">使用文本为公式的地址参数：</font></p>
+
+<ul>
+  <li>先使用ADDRESS函数得到单元格地址，形如A1/$A$1/A$1/$A$1</li>
+  <li>再将上述地址文本作为参数，传递给INDRECT函数</li>
+  <li>就可以将INDRECT函数返回值作为参数，来传递给其它需要地址参数的公式</li>
+</ul>
+
+<p>    举例如下，要为每个人计算月均工资：</p>
+
+<p>     <img src="/assets/image/10-6.png" alt="pseudo" /></p>
+
+
+    </div>
+
+    
+    <ul class="tag_box list-unstyled list-inline">
+      <li><i class="fa fa-folder-open"></i></li>
+      
+      
+      
+        <li><a href="/categories.html#excel-ref" style="font-family: Consolas,Verdana,'Hiragino Sans GB',SimSun,Arial;">
+          excel <span>(1)</span>
+          
+        </a></li>
+      
+      
+    </ul>
+    
+
+    
+    <ul class="list-inline">
+      <li><i class="fa fa-tags"></i></li>
+      
+      
+      
+        <li>
+          <a href="/tags.html#tutorial-ref" style="font-family: Consolas,Verdana,'Hiragino Sans GB',SimSun,Arial;">
+          tutorial <span>(1)</span>
+          
+          </a>
+        </li>
+      
+      
+      
+    </ul>
+    
+
+    <hr>
+
+    <div>
+      <section class="share col-sm-6">
+        <h4 class="section-title" style="font-family: Consolas,Verdana,'Hiragino Sans GB',SimSun,Arial;">Share Post</h4>
+        <a class="btn btn-default btn-sm twitter" href="http://twitter.com/share?text=Excel使用笔记"
+           onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+          <i class="fa fa-weixin fa-lg"></i>
+          Wechat
+        </a>
+        <a class="btn btn-default btn-sm facebook" href="https://www.facebook.com/sharer/sharer.php"
+           onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+          <i class="fa fa-facebook fa-lg"></i>
+          Facebook
+        </a>
+        <a class="btn btn-default btn-sm gplus"
+           onclick="window.open('https://plus.google.com/share?url='+window.location.href, 'google-plus-share', 'width=490,height=530');return false;">
+          <i class="fa fa-google-plus fa-lg"></i>
+          Google+
+        </a>
+      </section>
+
+      <section class="col-sm-6 author">
+        <img src="../assets/media/me.jpg" style="height:100px;width:100px;" class="img-rounded author-image" />
+        <h4 class="section-title author-name" style="font-family: Calibri,Consolas,Verdana,'Hiragino Sans GB',SimSun,Arial;"><b>半文盲阿尔瓦</b><br/><p style="color:#888;font-size:13px;"></p></h4>
+        <p class="author-bio" style="font-family: Calibri,Consolas,Verdana,'Hiragino Sans GB',SimSun,Arial;">Talk is cheap, show me the code!</p>
+      </section>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <ul class="pager">
+      
+      <li class="previous"><a href="/Inside-the-C++-Object-Model-note" title="深度探索C++对象模型学习笔记">&larr; 上一篇</a></li>
+      
+      
+      <li class="next disabled"><a>下一篇 &rarr;</a>
+      
+    </ul>
+
+  </div>
+    <!-- UY BEGIN -->
+    <div id="uyan_frame" class="col-sm-10"></div>
+    <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2072524"></script>
+    <!-- UY END -->
+
+</article>
+<div class="clearfix"></div>
+
+
+<footer class="navbar navbar-default">
+    <div class="container">
+      <p class="navbar-text pull-left">Some rights reserved &copy; 2015 半文盲阿尔瓦. </br>
+      如有任何疑问请发送邮件至 <a class="navbar-button" href="http://gmail.google.com/">shijh09@gmail.com</a></p>
+ </div>
+  </footer>
+</div>
+
+<script type="text/javascript" src="/assets/themes/prettify/prettify.js"></script>
+<script type="text/javascript">
+    // 需要引入jQuery
+    $(document).ready(function() {
+        $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
+        prettyPrint();
+    });
+</script>
+
+</body>
+</html>
