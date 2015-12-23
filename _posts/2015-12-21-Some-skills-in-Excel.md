@@ -3,7 +3,7 @@ layout: post
 title: Excel使用笔记
 description: Excel软件使用的一些笔记，以备查用。
 categories: Excel
-tags: tutorial
+tags: Tutorial
 
 ---
 
