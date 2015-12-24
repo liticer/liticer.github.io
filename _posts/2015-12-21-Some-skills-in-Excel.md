@@ -46,11 +46,15 @@ tags: Tutorial
  
 &ensp;&ensp;&ensp;&ensp;=TRUNC((DAYS360(A2, "2015/8/30", FALSE))/360)
 
-4.<font color="red">计算单元格地址：</font> 
+4.<font color="red">计算日期差：</font> 
+
+&ensp;&ensp;&ensp;&ensp;DATEDIF(start_date,end_date,unit)
+
+5.<font color="red">计算单元格地址：</font> 
 
 &ensp;&ensp;&ensp;&ensp;=ADDRESSS(row_num,column_num,abs_num,a1,sheet_text)
 
-5.<font color="red">间接引用：</font> 
+6.<font color="red">间接引用：</font> 
 
 &ensp;&ensp;&ensp;&ensp;=INDRECT(ref_txt), 有两种使用方式：
 
@@ -124,7 +128,12 @@ tags: Tutorial
 
 &ensp;&ensp;&ensp;&ensp;举例如下，要为每个人计算月均工资：
 
-&ensp;&ensp;&ensp;&ensp;&ensp;![pseudo](/assets/image/10-6.png)   
+&ensp;&ensp;&ensp;&ensp;&ensp;![pseudo](/assets/image/10-6.png)  
 
+10.<font color="red">双向查找：</font> 
+
+&ensp;&ensp;&ensp;&ensp;查找某个人某个月份的工资：
+
+&ensp;&ensp;&ensp;&ensp;&ensp;![pseudo](/assets/image/10-7.png) 
          
 
