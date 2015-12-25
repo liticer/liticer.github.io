@@ -135,5 +135,10 @@ tags: Tutorial
 &ensp;&ensp;&ensp;&ensp;查找某个人某个月份的工资：
 
 &ensp;&ensp;&ensp;&ensp;&ensp;![pseudo](/assets/image/10-7.png) 
+
+<br/><br/>
+参考资料：
+
+1.&ensp;[常用函数公式](http://www.kuaiji.com/weixin/2347231)
          
 
