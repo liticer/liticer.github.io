@@ -35,32 +35,36 @@ tags: Tutorial
 <p style="font-size:25px;color:blue;text-align:center;padding:20px 0">第2篇  函数</p>
 	   
 1.<font color="red">条件求和：</font> 
+<pre class="prettyPrint lang=python">
+=SUMIF(B2:B56, "男", K2:K56)
+</pre> 
   
-&ensp;&ensp;&ensp;&ensp;=SUMIF(B2:B56, "男", K2:K56)
-	   
 2.<font color="red">查找重复内容公式：</font> 
- 
-&ensp;&ensp;&ensp;&ensp;=IF(COUNTIF($A$2:$A$56, A2)>1, "重复", " ")
-	   
+<pre class="prettyPrint lang=python">
+=IF(COUNTIF($A$2:$A$56, A2)>1, "重复", " ")
+</pre> 
+	  
 3.<font color="red">用出生年月来计算年龄公式：</font> 
- 
-&ensp;&ensp;&ensp;&ensp;=TRUNC((DAYS360(A2, "2015/8/30", FALSE))/360)
+<pre class="prettyPrint lang=python">
+=TRUNC((DAYS360(A2, "2015/8/30", FALSE))/360)
+</pre>
 
 4.<font color="red">计算日期差：</font> 
-
-&ensp;&ensp;&ensp;&ensp;DATEDIF(start_date,end_date,unit)
+<pre class="prettyPrint lang=python">
+=DATEDIF(start_date,end_date,unit)
+</pre>
 
 5.<font color="red">计算单元格地址：</font> 
-
-&ensp;&ensp;&ensp;&ensp;=ADDRESSS(row_num,column_num,abs_num,a1,sheet_text)
+<pre class="prettyPrint lang=python">
+=ADDRESSS(row_num,column_num,abs_num,a1,sheet_text)
+</pre>
 
 6.<font color="red">间接引用：</font> 
-
-&ensp;&ensp;&ensp;&ensp;=INDRECT(ref_txt), 有两种使用方式：
-
-* =INDIRECT("A1")——加引号，文本引用——即引用A1单元格所在的文本(B2)。
-* =INDIRECT(A1)——不加引号，地址引用——因为A1的值为B2，B2=11，所以返回11。
-
+<pre class="prettyPrint lang=python">
+=INDRECT(ref_txt), 有两种使用方式：
+=INDIRECT("A1")——加引号，文本引用——即引用A1单元格所在的文本(B2)。
+=INDIRECT(A1)——不加引号，地址引用——因为A1的值为B2，B2=11，所以返回11。
+</pre>
 
 
 
@@ -128,13 +132,25 @@ tags: Tutorial
 
 &ensp;&ensp;&ensp;&ensp;举例如下，要为每个人计算月均工资：
 
-&ensp;&ensp;&ensp;&ensp;&ensp;![pseudo](/assets/image/10-6.png)  
+&ensp;&ensp;&ensp;&ensp;&ensp;![pseudo](/assets/image/10-6.png) 
+
+<pre class="prettyPrint lang=python">
+备注：
+D6=COUNTIF(A:A,A6)-1 
+E6=SUM(INDIRECT(ADDRESS(ROW(A6)-D6,COLUMN(A6)+4)):INDIRECT(ADDRESS(ROW(A6)-1,COLUMN(A6)+4)))/D6
+</pre>
 
 10.<font color="red">双向查找：</font> 
 
 &ensp;&ensp;&ensp;&ensp;查找某个人某个月份的工资：
 
 &ensp;&ensp;&ensp;&ensp;&ensp;![pseudo](/assets/image/10-7.png) 
+
+<pre class="prettyPrint lang=python">
+备注：
+C10=INDEX($B$2:$E$7,MATCH(A10,$A$2:$A$7),MATCH($C$9,$B$1:$E$1))
+C11=INDEX($B$2:$E$7,MATCH(A11,$A$2:$A$7),MATCH($C$9,$B$1:$E$1))
+</pre>
 
 <br/><br/>
 参考资料：
