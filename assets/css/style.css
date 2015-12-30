@@ -6,9 +6,9 @@ body{
 
 #nav-menu{
     position: fixed;
-    top: 45px;
-    right: 45px;
-    z-index: 4;
+    top: 40px;
+    right: 40px;
+    z-index: 9999;
 }
 
 h1,h2,h3,h4,h5,h6 { font-family: 'Ubuntu', sans-serif; }
@@ -35,8 +35,13 @@ font-family: 'Raleway', sans-serif;
 .page-header {
 	color: #e74c3c;
 	text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);
-	padding: 0 5% 40px;
+	padding: 0 0 0;
 	font-family: 'Courier New',Verdana,'Hiragino Sans GB',SimSun,Arial;
+}
+
+.mystyle{
+	border: dashed 1px blue;
+	min-height: 1px;
 }
 
 
@@ -52,13 +57,18 @@ a.nav-link:hover { color: #777 }
 
 
 article {
-	padding: 0 5% 0;
-	margin-bottom: 40px;
+	padding: 5% 5% 0;
+	margin-bottom: 0px;	
 }
 
 .article_body{
+	border:1px solid #f0f0f0;
+    border-radius: 10px;
+	box-shadow: 0 2px 16px #888888, 0 0 1px #888888, 0 0 1px #888888; 
+	background-color: #fff;
 	margin-top: 20px;
 	margin-bottom: 20px;
+	padding: 40px 7% 30px;
 }
 
 #article_body{

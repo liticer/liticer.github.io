@@ -1,12 +1,14 @@
 
-<div class="page-header">
-  <h1>{{ page.title }} </h1>
-</div>
+
 
 <article>
 
   <div class="col-sm-10">
-   <span class="post-date" style="font-family: Consolas,Verdana,'Hiragino Sans GB',SimSun,Arial;">
+    <div class="article_body" id="article_body">
+	<div class="page-header">
+        <h1>{{ page.title }} </h1>
+    </div>
+    <span class="post-date" style="font-family: Consolas,Verdana,'Hiragino Sans GB',SimSun,Arial;">
      {% assign d = page.date | date: "%d" | plus:'0' %}
      {{ page.date | date: "%B" }} 
      {% case d %}
@@ -17,8 +19,7 @@
      {% endcase %}
      {{ page.date | date: "%Y" }}
      {% if page.tagline %}<small style="text-transform:none">{{page.tagline}}</small>{% endif %} {% if post.tagline %}<small>{{post.tagline}}</small>{% endif %}
-   </span>
-    <div class="article_body" id="article_body">
+    </span>
     {{ content }}
     </div>
 
