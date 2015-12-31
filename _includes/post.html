@@ -11,7 +11,7 @@
     <div class="mystyle">
     <span class="post-date myfont3" style="color: cyan;">
      {% assign d = page.date | date: "%d" | plus:'0' %}
-     Date: {{ page.date | date: "%B" }} 
+     Date:{{ page.date | date: "%B" }} 
      {% case d %}
        {% when 1 or 21 or 31 %}{{ d }}st,
        {% when 2 or 22 %}{{ d }}nd,
@@ -22,7 +22,7 @@
      {% if page.tagline %}<small style="text-transform:none">{{page.tagline}}</small>{% endif %} {% if post.tagline %}<small>{{post.tagline}}</small>{% endif %}
     </span>
 	<span class="myfont3" style="color: cyan; float:right;">
-	Author: liticer
+	Author：liticer
 	</span>
 	</div>
   
