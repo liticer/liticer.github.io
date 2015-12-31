@@ -31,8 +31,8 @@
 	border-image: url("/assets/image/background-article.jpg") 30 round ;
 	box-shadow: 0 2px 16px #e0e0e0, 0 0 1px #e0e0e0, 0 0 1px #e0e0e0; 
 	background-color: #fff;
-	min-height:100px;
-	min-width:1px;
+	min-height: 90%;
+	min-width: 1px;
 }
 
 .myhr-line {
