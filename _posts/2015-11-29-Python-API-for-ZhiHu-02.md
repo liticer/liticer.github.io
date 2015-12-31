@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Python爬虫遇上知乎(四)
+title: Python爬虫遇上知乎(4)
 description: 知乎的Python API，对用户进行抽象构建User类。
 categories: Python
 tags: Requests Termcolor

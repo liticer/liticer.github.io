@@ -23,6 +23,15 @@
 	min-width:1px;
 }
 
+.myhr-line {
+	height: 1px;
+	border:none;
+	width: 100%;
+	margin-bottom: 30px;
+	background-color: rgba(230,230,230,1);
+}
+
+
 body{
   overflow-X:hidden; 
 }

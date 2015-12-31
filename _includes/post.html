@@ -5,13 +5,13 @@
 
   <div class="col-sm-10">
     <div class="article_body" id="article_body">
-	<div class="page-header">
+	<div class="page-header" style="border-bottom: 1px dashed #d0d0d0;">
         {{ page.title }}
     </div>
     <div class="mystyle">
-    <span class="post-date myfont3" >
+    <span class="post-date myfont3" style="color: #CD1076;">
      {% assign d = page.date | date: "%d" | plus:'0' %}
-     {{ page.date | date: "%B" }} 
+     Date: {{ page.date | date: "%B" }} 
      {% case d %}
        {% when 1 or 21 or 31 %}{{ d }}st,
        {% when 2 or 22 %}{{ d }}nd,
@@ -21,6 +21,9 @@
      {{ page.date | date: "%Y" }}
      {% if page.tagline %}<small style="text-transform:none">{{page.tagline}}</small>{% endif %} {% if post.tagline %}<small>{{post.tagline}}</small>{% endif %}
     </span>
+	<span class="myfont3" style="color: #CD1076; float:right;">
+	Author: liticer
+	</span>
 	</div>
   
 	{{ content }}
@@ -35,14 +38,14 @@
       {% if categories_list.first[0] == null %}
       {% for category in categories_list %}
         <li><a href="{{ site.BASE_PATH }}/{{ site.categories_path }}#{{ category }}-ref" class="myfont3">
-          {{ category | capitalize | join: "/" }} <span>({{ site.categories[category].size }})</span>
+          {{ category | capitalize | join: "/" }}<span>({{ site.categories[category].size }})</span>
           {% unless forloop.last %},{% endunless %}
         </a></li>
       {% endfor %}
       {% else %}
       {% for category in categories_list %}
         <li><a href="{{ site.BASE_PATH }}/{{ site.categories_path }}#{{ category[0] }}-ref" class="myfont3">
-          {{ category[0] | capitalize | join: "/" }} <span>/{{ category[1].size }})</span>
+          {{ category[0] | capitalize | join: "/" }}<span>/{{ category[1].size }})</span>
         </a></li>
       {% endfor %}
       {% endif %}
@@ -58,7 +61,7 @@
       {% for tag in tags_list %}
         <li>
           <a href="{{ site.BASE_PATH }}/{{ site.tags_path }}#{{ tag }}-ref" class="myfont3">
-          {{ tag }} <span>({{ site.tags[tag].size }})</span>
+          {{ tag }}<span>({{ site.tags[tag].size }})</span>
           {% unless forloop.last %},{% endunless %}
           </a>
         </li>
@@ -67,7 +70,7 @@
       {% for tag in tags_list %}
         <li>
           <a href="{{ site.BASE_PATH }}/{{ site.tags_path }}#{{ tag[0] }}-ref" class="myfont3">
-            {{ tag[0] }} <span>({{ tag[1].size }})</span>
+            {{ tag[0] }}<span>({{ tag[1].size }})</span>
             {% unless forloop.last %},{% endunless %}
           </a>
         </li>

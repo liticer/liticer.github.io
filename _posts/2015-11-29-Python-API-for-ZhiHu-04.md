@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Python爬虫遇上知乎(六)
+title: Python爬虫遇上知乎(6)
 description: 知乎的Python API，对收藏夹进行抽象构建Collection类。
 categories: Python
 tags: Requests Termcolor

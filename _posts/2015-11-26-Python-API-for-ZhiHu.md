@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Python爬虫遇上知乎(二)
+title: Python爬虫遇上知乎(2)
 description: 检查是否登录，为后续API的正常运行提供基础。
 categories: Python
 tags: BS4 Requests

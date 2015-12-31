@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Python爬虫遇上知乎(三)
+title: Python爬虫遇上知乎(3)
 description: 知乎的Python API，对问题进行抽象构建Question类。
 categories: Python
 tags: Requests Termcolor
