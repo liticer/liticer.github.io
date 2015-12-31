@@ -23,6 +23,18 @@
 	min-width:1px;
 }
 
+.myborder2{
+	border:1px solid #e0e0e0;
+    border-radius: 10px;
+	-webkit-border-image: url("/assets/image/background-article.jpg") 30 round ;
+	-moz-border-image: url("/assets/image/background-article.jpg") 30 round ;
+	border-image: url("/assets/image/background-article.jpg") 30 round ;
+	box-shadow: 0 2px 16px #e0e0e0, 0 0 1px #e0e0e0, 0 0 1px #e0e0e0; 
+	background-color: #fff;
+	min-height:100px;
+	min-width:1px;
+}
+
 .myhr-line {
 	height: 1px;
 	border:none;
@@ -96,7 +108,7 @@ article {
 
 .article_body{
 	border:30px solid #e0e0e0;
-	-webkit-border-image: url("/assets/image/background-article.jpg") 40 round ;
+	-webkit-border-image: url("/assets/image/background-article.jpg") 30 round ;
 	-moz-border-image: url("/assets/image/background-article.jpg") 30 round ;
 	border-image: url("/assets/image/background-article.jpg") 30 round ;
     border-radius: 10px;
