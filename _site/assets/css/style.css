@@ -1,5 +1,28 @@
 @import url(http://fonts.googleapis.com/css?family=Ubuntu:500&subset=latin,latin-ext);
 
+.myfont1{
+	font-family: Lato,Calibri,Arial,sans-serif,Consolas,Verdana,'Hiragino Sans GB',SimSun,Arial;
+}
+
+.myfont2{
+	font-family: Lato,Calibri,Arial,sans-serif,Consolas,Verdana,'Hiragino Sans GB',SimSun,Arial;
+	font-weight: 700;
+}
+
+.myfont3{
+	font-family: 'Courier New',sans-serif,Verdana,'Hiragino Sans GB',SimSun,Arial;
+	font-weight: 700;
+}
+
+.myborder1{
+	border:1px solid #e0e0e0;
+    border-radius: 10px;
+	box-shadow: 0 2px 16px #e0e0e0, 0 0 1px #e0e0e0, 0 0 1px #e0e0e0; 
+	background-color: #fff;
+	min-height:100px;
+	min-width:1px;
+}
+
 body{
   overflow-X:hidden; 
 }
@@ -8,7 +31,7 @@ body{
     position: fixed;
     top: 40px;
     right: 40px;
-    z-index: 9999;
+    z-index: 4;
 }
 
 h1,h2,h3,h4,h5,h6 { font-family: 'Ubuntu', sans-serif; }
@@ -35,8 +58,9 @@ font-family: 'Raleway', sans-serif;
 .page-header {
 	color: #e74c3c;
 	text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);
-	padding: 0 0 0;
-	font-family: 'Courier New',Verdana,'Hiragino Sans GB',SimSun,Arial;
+	padding: 10px 0 0;
+	font-family: 'Courier New',sans-serif,Verdana,'Hiragino Sans GB',SimSun,Arial;
+	font-weight: 700;
 }
 
 .mystyle{
@@ -66,19 +90,17 @@ article {
 	box-shadow: 0 2px 16px #e0e0e0, 0 0 1px #e0e0e0, 0 0 1px #e0e0e0; 
 	background-color: #fff;
 	margin-top: 20px;
-	margin-bottom: 40px;
+	margin-bottom: 10px;
 	padding: 40px 7% 30px;
 }
 
 #article_body{
 	font-family: 'Courier New',sans-serif,Verdana,'Hiragino Sans GB',SimSun,Arial;
-	font-size: 16px;
+	font-size: 15px;
 }
 
 .post-date {
-	text-transform: uppercase;
 	font-size: 14px;
-	letter-spacing: 3px;
 }
 
 
