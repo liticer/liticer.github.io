@@ -1,17 +1,15 @@
 ---
 layout: default
-title: "uno-dbyll : Jekyll Theme"
+title: Blog Archives
 ---
 
-<br/>
-<div class="myborder2" style="margin:5% 7% 5%">
-<div class="page-header" style="margin-top:20px; margin-left:5%; margin-bottom: 0px; border-bottom: 1px solid #dddddd;">
-    Blog Archives
-</div>
 
+<div class="myborder2" style="margin:70px 7% 30px 7%; padding: 40px 7% 30px">
+	<div class="page-header" style="border-bottom: 1px dashed #d0d0d0;">
+        Blog Archives	
+    </div>
 {% for post in paginator.posts %}
-
-<article class="home">
+<article class="home" style="padding:5% 5% 0">
 <div class="col-sm-10">
   <h3>
  <p class="post-date myfont3">
@@ -40,7 +38,7 @@ title: "uno-dbyll : Jekyll Theme"
     {{ post.excerpt }}
     {% endif %}
     {% endif %}
-    <hr style="width: 75%; " align="left">
+    <hr style="height:1px; width:75%; border:none; border-top:2px dotted cyan;" align="left">
   </div>
 </div>
 </article>
