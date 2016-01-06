@@ -36,36 +36,28 @@ tags: Tutorial
    
 <p style="font-weight:700;font-size:25px;color:blue;text-align:center;padding:20px 0">第2篇  函数</p>
 	   
->####**条件求和** 
+>####**简单公式** 
 <pre class="prettyPrint lang=python">
+#条件求和
 =SUMIF(B2:B56, "男", K2:K56)
-</pre> 
-  
->####**查找重复内容公式**
-<pre class="prettyPrint lang=python">
+
+#查找重复内容公式
 =IF(COUNTIF($A$2:$A$56, A2)>1, "重复", " ")
-</pre> 
 	  
->####**用出生年月来计算年龄公式** 
-<pre class="prettyPrint lang=python">
+#用出生年月来计算年龄公式
 =TRUNC((DAYS360(A2, "2015/8/30", FALSE))/360)
-</pre>
 
->####**计算日期差**
-<pre class="prettyPrint lang=python">
+#计算日期差
 =DATEDIF(start_date,end_date,unit)
-</pre>
 
->####**计算单元格地址**
-<pre class="prettyPrint lang=python">
+#计算单元格地址
 =ADDRESSS(row_num,column_num,abs_num,a1,sheet_text)
-</pre>
 
->####**间接引用**
-<pre class="prettyPrint lang=python">
+#间接引用
 =INDRECT(ref_txt), 有两种使用方式：
 =INDIRECT("A1")——加引号，文本引用——即引用A1单元格所在的文本(B2)。
 =INDIRECT(A1)——不加引号，地址引用——因为A1的值为B2，B2=11，所以返回11。
+
 </pre>
 
 
