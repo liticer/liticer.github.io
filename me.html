@@ -1,12 +1,19 @@
 ---
-layout: page
+layout: default
 title: About Me
 ---
+
+<div class="mylayout1">
+<div class="myborder2" style="min-height:600px;">
+<div class="page-header" style="border-bottom: 1px dashed #d0d0d0;">
+        About Me	
+</div>
+
 
 {% capture site_tags %}{% for tag in site.tags %}{{ tag | first }}{% unless forloop.last %},{% endunless %}{% endfor %}{% endcapture %}
 {% assign tag_words = site_tags | split:',' | sort %}
 
-<div class="col-sm-10" style="padding: 0 5% 0;">
+<div class="col-sm-10" style="padding: 0 0 0;">
     <div style="text-align :center">
         <font size="4" color="cyan">Music，High起来！</font>
         </br>
@@ -25,3 +32,6 @@ title: About Me
 
 </div>
 <div class="clearfix"></div>
+
+</div>
+</div>

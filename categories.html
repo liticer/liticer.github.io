@@ -1,9 +1,15 @@
 ---
-layout: page
+layout: default
 title: Categories
 ---
 
-<div class="col-sm-3 col-xs-9" style="padding: 0 5% 20%;">
+<div class="mylayout1">
+<div class="myborder2" style="min-height:600px;">
+<div class="page-header" style="border-bottom: 1px dashed #d0d0d0;">
+        Categories	
+</div>
+
+<div class="col-sm-3 col-xs-9" style="padding: 0 0 0;">
     <ul class="nav nav-tabs-vertical">
       {% assign categories_list = site.categories %}
       {% if categories_list.first[0] == null %}
@@ -27,7 +33,7 @@ title: Categories
     </ul>
 </div>
 <!-- Tab panes -->
-<div class="tab-content col-sm-9 col-xs-6">
+<div class="tab-content col-sm-9 col-xs-6" style="padding: 0 0 0;">
   {% for category in site.categories %}
     <div class="tab-pane" id="{{ category[0] | replace:' ','-' }}-ref">
       <h4 class="myfont2" style="margin-top: 0px;">Posts in {{ category[0] | capitalize }}</h4>
@@ -45,6 +51,8 @@ title: Categories
     </div>
   {% endfor %}
 </div>
-
-
 <div class="clearfix"></div>
+
+</div>
+</div>
+

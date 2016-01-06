@@ -3,14 +3,14 @@ layout: default
 title: Blog Archives
 ---
 
-
-<div class="myborder2" style="margin:70px 7% 30px 7%; padding: 40px 7% 30px">
-	<div class="page-header" style="border-bottom: 1px dashed #d0d0d0;">
+<div class="mylayout1">
+<div class="myborder2">
+<div class="page-header" style="border-bottom: 1px dashed #d0d0d0;">
         Blog Archives	
-    </div>
+</div>
 {% for post in paginator.posts %}
-<article class="home" style="padding:5% 5% 0">
-<div class="col-sm-10">
+<article class="home" style="padding:0 0 0;" >
+<div class="col-sm-10" style="padding:0 0 0;">
   <h3>
  <p class="post-date myfont3">
     {% assign d = post.date | date: "%d" | plus:'0' %}
@@ -23,10 +23,10 @@ title: Blog Archives
     {% endcase %}
     {{ post.date | date: "%Y" }}
   </p>
-    <a href="{{ site.BASE_PATH }}{{ post.url }}" style="font-family: 'Courier New',Verdana,'Hiragino Sans GB',SimSun,Arial; color: black; font-weight: 500;">{{ post.title }}</a>
+    <a href="{{ site.BASE_PATH }}{{ post.url }}" class="myfont2" style="font-size:20px;">{{ post.title }}</a>
   </h3>
 
-  <div style="font-family: 'Courier New',Verdana,'Hiragino Sans GB',SimSun,Arial;font-size:large; font-weight: 400;"> 
+  <div class="myfont2" style="padding-bottom:9px; border-bottom: 1px dashed #d0d0d0;"> 
     {% if post.fullview %}
     {{ post.content }}
     {% else %}
@@ -38,7 +38,6 @@ title: Blog Archives
     {{ post.excerpt }}
     {% endif %}
     {% endif %}
-    <hr style="height:1px; width:75%; border:none; border-top:2px dotted cyan;" align="left">
   </div>
 </div>
 </article>
@@ -46,7 +45,7 @@ title: Blog Archives
 <hr/>
 
 <ul class="pager"> 
-<div class="col-sm-10">
+<div class="col-sm-10" style="margin:10px 0 0; padding:0 5px 0;">
   {% if paginator.previous_page %}
   <li class="previous">
     {% if paginator.previous_page == 1 %}
@@ -76,4 +75,5 @@ title: Blog Archives
   {% endif %}
 </div>
 </ul>
+</div>
 </div>

@@ -1,13 +1,19 @@
 ---
-layout: page
+layout: default
 title: Tags
 ---
+
+<div class="mylayout1">
+<div class="myborder2" style="min-height:600px;">
+<div class="page-header" style="border-bottom: 1px dashed #d0d0d0;">
+        Tags	
+</div>
 
 {% capture site_tags %}{% for tag in site.tags %}{{ tag | first }}{% unless forloop.last %},{% endunless %}{% endfor %}{% endcapture %}
 {% assign tag_words = site_tags | split:',' | sort %}
 
 
-<div class="col-sm-3 col-xs-9" style="padding: 0 5% 20px; ">
+<div class="col-sm-3 col-xs-9" style="padding: 0 0 0;">
     <ul class="nav nav-tabs-vertical">
     {% for item in (0..site.tags.size) %}{% unless forloop.last %}
       {% capture this_word %}{{ tag_words[item] | strip_newlines }}{% endcapture %}
@@ -20,7 +26,7 @@ title: Tags
    </ul>
 </div>
 <!-- Tab panes -->
-<div class="tab-content col-sm-9 col-xs-6">
+<div class="tab-content col-sm-9 col-xs-6" style="padding: 0 0 0;">
   {% for item in (0..site.tags.size) %}{% unless forloop.last %}
     {% capture this_word %}{{ tag_words[item] | strip_newlines }}{% endcapture %}
     <div class="tab-pane" id="{{ this_word | replace:' ','-' }}-ref">
@@ -35,3 +41,6 @@ title: Tags
 </div>
 
 <div class="clearfix"></div>
+
+</div>
+</div>
