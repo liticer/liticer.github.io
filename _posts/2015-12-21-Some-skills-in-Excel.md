@@ -57,7 +57,6 @@ tags: Tutorial
 =INDRECT(ref_txt), 有两种使用方式：
 =INDIRECT("A1")——加引号，文本引用——即引用A1单元格所在的文本(B2)。
 =INDIRECT(A1)——不加引号，地址引用——因为A1的值为B2，B2=11，所以返回11。
-
 </pre>
 
 
