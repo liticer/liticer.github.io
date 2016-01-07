@@ -8,7 +8,7 @@ tags: Object Model
 ---
 
 
-<p style="font-weight:700;font-size:25px;color:blue;text-align:center;padding:20px 0">第1章 关于对象</p>
+<p style="font-weight:700;font-size:20px;color:Magenta;text-align:center;padding:20px 0">第1章 关于对象</p>
 
 >####**C++对象的布局成本**
 
@@ -29,7 +29,7 @@ tags: Object Model
 
 
 
-<p style="font-weight:700;font-size:25px;color:blue;text-align:center;padding:20px 0">第2章 构造函数语意学</p>
+<p style="font-weight:700;font-size:20px;color:Magenta;text-align:center;padding:20px 0">第2章 构造函数语意学</p>
 
 >####**Default Constructor的构造操作**
 
@@ -80,7 +80,7 @@ tags: Object Model
   
   
   
-<p style="font-weight:700;font-size:25px;color:blue;text-align:center;padding:20px 0">第3章 Data语意学</p>
+<p style="font-weight:700;font-size:20px;color:Magenta;text-align:center;padding:20px 0">第3章 Data语意学</p>
 
 >####**Data member的绑定**
 
@@ -123,7 +123,7 @@ tags: Object Model
    
    
    
-<p style="font-weight:700;font-size:25px;color:blue;text-align:center;padding:20px 0">第4章 Function语意学</p>
+<p style="font-weight:700;font-size:20px;color:Magenta;text-align:center;padding:20px 0">第4章 Function语意学</p>
 
 >####**Member function的各种调用方式**<br/>
    
@@ -171,7 +171,7 @@ tags: Object Model
    
    
    
-<p style="font-weight:700;font-size:25px;color:blue;text-align:center;padding:20px 0">第5章 构造，析构，拷贝语意学</p>
+<p style="font-weight:700;font-size:20px;color:Magenta;text-align:center;padding:20px 0">第5章 构造，析构，拷贝语意学</p>
   
 >####**关于纯虚函数**<br/>
    
@@ -226,7 +226,7 @@ tags: Object Model
    
    
 
-<p style="font-weight:700;font-size:25px;color:blue;text-align:center;padding:20px 0">第6章 执行期语意学</p>
+<p style="font-weight:700;font-size:20px;color:Magenta;text-align:center;padding:20px 0">第6章 执行期语意学</p>
 
 >####**对象的构造和析构**<br/>
 
@@ -257,7 +257,7 @@ tags: Object Model
    
    
    
-<p style="font-weight:700;font-size:25px;color:blue;text-align:center;padding:20px 0">第7章 站在对象模型的尖端</p>
+<p style="font-weight:700;font-size:20px;color:Magenta;text-align:center;padding:20px 0">第7章 站在对象模型的尖端</p>
 
 >####**Template**<br/>
  

@@ -7,7 +7,7 @@ tags: Tutorial
 
 ---
 
-<p style="font-weight:700;font-size:25px;color:blue;text-align:center;padding:20px 0">第1篇  快捷键</p>
+<p style="font-weight:700;font-size:20px;color:Magenta;text-align:center;padding:20px 0">第1篇  快捷键</p>
 
 >####**Esc键**
 
@@ -34,9 +34,10 @@ tags: Tutorial
 
    
    
-<p style="font-weight:700;font-size:25px;color:blue;text-align:center;padding:20px 0">第2篇  函数</p>
+<p style="font-weight:700;font-size:20px;color:Magenta;text-align:center;padding:20px 0">第2篇  函数</p>
 	   
 >####**简单公式** 
+
 <pre class="prettyPrint lang=python">
 #条件求和
 =SUMIF(B2:B56, "男", K2:K56)
@@ -49,7 +50,11 @@ tags: Tutorial
 
 #计算日期差
 =DATEDIF(start_date,end_date,unit)
+</pre>
 
+>####**复杂公式** 
+
+<pre class="prettyPrint lang=python">
 #计算单元格地址
 =ADDRESSS(row_num,column_num,abs_num,a1,sheet_text)
 
@@ -63,7 +68,7 @@ tags: Tutorial
 
 
 
-<p style="font-weight:700;font-size:25px;color:blue;text-align:center;padding:20px 0">第3篇  技巧</p>
+<p style="font-weight:700;font-size:20px;color:Magenta;text-align:center;padding:20px 0">第3篇  技巧</p>
 
 
 >####**快速选中一行或一列**

@@ -164,7 +164,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 	</span>
 	</div>
   
-	<p style="font-weight:700;font-size:25px;color:blue;text-align:center;padding:20px 0">第1章 关于对象</p>
+	<p style="font-weight:700;font-size:20px;color:Magenta;text-align:center;padding:20px 0">第1章 关于对象</p>
 
 <blockquote>
   <h4 id="c"><strong>C++对象的布局成本</strong></h4>
@@ -187,7 +187,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 (2)每一个<code>class object</code>被安插一个叫做<code>virtual pointer(vptr)</code>的指针，指向相关的<code>virtual table</code>。通常<code>vptr</code>会被每一个<code>class</code>的<code>constructor</code>，<code>destructor</code>和<code>copy assignment</code>等函数自动地进行设定和重置。</li>
 </ul>
 
-<p style="font-weight:700;font-size:25px;color:blue;text-align:center;padding:20px 0">第2章 构造函数语意学</p>
+<p style="font-weight:700;font-size:20px;color:Magenta;text-align:center;padding:20px 0">第2章 构造函数语意学</p>
 
 <blockquote>
   <h4 id="default-constructor"><strong>Default Constructor的构造操作</strong></h4>
@@ -244,7 +244,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
   <li>初始化的一些特殊情况：以<code>member function</code>的结果初始化<code>member</code>；以<code>member function</code>的结果作为<code>base class constructor</code>的参数。<code>Member function</code>的调用是合法的，因为在<code>object</code>相关的<code>this</code>指针在构建时已经准备妥当，但还是要尽量避免上述情况。具体原因时，构造函数调用前，<code>object</code>的<code>data member</code>有可能还未被全部初始化；而在调用构造<code>base class subobject</code>时，通过<code>this</code>指针调用虚函数时将有可能发生异常的动态绑定过程。</li>
 </ul>
 
-<p style="font-weight:700;font-size:25px;color:blue;text-align:center;padding:20px 0">第3章 Data语意学</p>
+<p style="font-weight:700;font-size:20px;color:Magenta;text-align:center;padding:20px 0">第3章 Data语意学</p>
 
 <blockquote>
   <h4 id="data-member"><strong>Data member的绑定</strong></h4>
@@ -313,7 +313,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
   <li>为了区分一个”没有指向任何<code>data member</code>的指针”和”一个指向第一个<code>data member</code>的指针”,每一个真正的<code>member offset</code>值都会被加上1，而在使用该<code>offset</code>取值之前，需要减掉1。</li>
 </ul>
 
-<p style="font-weight:700;font-size:25px;color:blue;text-align:center;padding:20px 0">第4章 Function语意学</p>
+<p style="font-weight:700;font-size:20px;color:Magenta;text-align:center;padding:20px 0">第4章 Function语意学</p>
 
 <blockquote>
   <h4 id="member-functionbr"><strong>Member function的各种调用方式</strong><br /></h4>
@@ -388,7 +388,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
   <li>内联函数的局部变量：局部变量会被”<code>mangling</code>“,以便<code>inline</code>函数被替换后局部变量名字唯一。也就是说，一次性调用N次，就会出现N个临时变量，程序体积会暴增。总之，<code>inline</code>的使用要小心处理。</li>
 </ul>
 
-<p style="font-weight:700;font-size:25px;color:blue;text-align:center;padding:20px 0">第5章 构造，析构，拷贝语意学</p>
+<p style="font-weight:700;font-size:20px;color:Magenta;text-align:center;padding:20px 0">第5章 构造，析构，拷贝语意学</p>
 
 <blockquote>
   <h4 id="br"><strong>关于纯虚函数</strong><br /></h4>
@@ -463,7 +463,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
   <li>如果有，假如讨论的是类是<code>most-derived</code>的，按照<code>virtual base classes</code>被声明的顺序的相反顺序，调用其<code>destructor</code>。</li>
 </ul>
 
-<p style="font-weight:700;font-size:25px;color:blue;text-align:center;padding:20px 0">第6章 执行期语意学</p>
+<p style="font-weight:700;font-size:20px;color:Magenta;text-align:center;padding:20px 0">第6章 执行期语意学</p>
 
 <blockquote>
   <h4 id="br-5"><strong>对象的构造和析构</strong><br /></h4>
@@ -508,7 +508,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
   <li>临时性对象的生命规则有两个例外：第一个例外发生在表达式被用来初始化一个<code>object</code>时，临时对象应该存留到<code>object</code>的初始化操作完成为止，如用一个问号表达式的结果初始化一个<code>string</code>对象；第二个例外是当一个临时性对象被一个<code>reference</code>绑定时，临时对象将残留到<code>reference</code>的生命结束或者临时对象的生命范畴结束，如将一个<code>string</code>对象绑定到一个字符串上。</li>
 </ul>
 
-<p style="font-weight:700;font-size:25px;color:blue;text-align:center;padding:20px 0">第7章 站在对象模型的尖端</p>
+<p style="font-weight:700;font-size:20px;color:Magenta;text-align:center;padding:20px 0">第7章 站在对象模型的尖端</p>
 
 <blockquote>
   <h4 id="templatebr"><strong>Template</strong><br /></h4>
