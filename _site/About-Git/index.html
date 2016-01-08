@@ -173,7 +173,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 
 <p>一、简要介绍</p>
 
-<p>    Git管理下的有四个区，分别为：Workspace(工作区)、Index/Stage(暂存区)、Repository(本地仓库）、Remote(远程仓库)。</p>
+<p>    Git管理下的仓库有四个区，分别为：Workspace(工作区)、Index/Stage(暂存区)、Repository(本地仓库）、Remote(远程仓库)。</p>
 
 <p>二、新建仓库</p>
 
@@ -192,7 +192,7 @@ $ git clone [url]
 
 <p>三、配置仓库</p>
 
-<p>    Git的设置文件为.gitconfig，它可以在用户主目录下（全局配置），也可以在项目目录下（项目配置）。</p>
+<p>    Git的设置文件为.gitconfig，它可以在用户主目录下（全局配置，如用户名和电子邮件等），也可以在项目目录下（项目配置，如URL等）。</p>
 <pre class="prettyPrint lang=bash">
 # 显示当前的Git配置
 $ git config --list
@@ -206,6 +206,8 @@ $ git config [--global] user.email "[email address]"
 </pre>
 
 <p>三、增删文件</p>
+
+<p>    增删文件指的是，工作区和暂存区之间的交互。包括将文件添加到暂存区、从暂存区删除文件、为文件改名等等。</p>
 
 <pre class="prettyPrint lang=bash">
 # 添加指定文件到暂存区
@@ -229,6 +231,8 @@ $ git mv [file-original] [file-renamed]
 
 <p>四、代码提交</p>
 
+<p>    代码提交指的是，将暂存区中的变化提交到本地仓库。</p>
+
 <pre class="prettyPrint lang=bash">
 # 提交暂存区到仓库区
 $ git commit -m [message]
@@ -251,6 +255,8 @@ $ git commit --amend [file1] [file2] ...
 </pre>
 
 <p>五、分支</p>
+
+<p>    分支就是提供给你开发新的功能，而又不会影响主分支的代码，等你完成功能再将自己的分支合并到主分支就好了。</p>
 
 <pre class="prettyPrint lang=bash">
 # 列出所有本地分支
