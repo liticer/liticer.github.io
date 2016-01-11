@@ -302,6 +302,8 @@ $ git branch -dr [remote/branch]
 
 <p>六、标签</p>
 
+<p>    Git的标签是版本库的快照，其实就是指向某个commit的指针且该指针无法移动，所以创建和删除标签都是瞬间完成的。</p>
+
 <pre class="prettyPrint lang=bash">
 # 列出所有tag
 $ git tag
@@ -332,6 +334,8 @@ $ git checkout -b [branch] [tag]
 </pre>
 
 <p>七、查看信息</p>
+
+<p>    Git的显示命令主要用来追踪不同时刻文件之间的变化。</p>
 
 <pre class="prettyPrint lang=bash">
 # 显示有变更的文件
@@ -380,6 +384,8 @@ $ git reflog
 
 <p>八、远程同步</p>
 
+<p>    远程同步指的是将本地仓库和远程仓库进行同步的过程，主要用于多人协作开发。</p>
+
 <pre class="prettyPrint lang=bash">
 # 下载远程仓库的所有变动
 $ git fetch [remote]
@@ -407,6 +413,8 @@ $ git push [remote] --all
 </pre>
 
 <p>九、撤销</p>
+
+<p>    撤销相关的一系列命令主要用于恢复文件的历史版本和仓库的历史状态。</p>
 
 <pre class="prettyPrint lang=bash">
 # 恢复暂存区的指定文件到工作区
@@ -439,6 +447,8 @@ $ git revert [commit]
 </pre>
 
 <p>十、其他</p>
+
+<p>    其它一些比较常用的命令。</p>
 
 <pre class="prettyPrint lang=bash">
 # 生成一个可供发布的压缩包
