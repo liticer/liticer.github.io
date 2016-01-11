@@ -147,12 +147,8 @@ article {
 }
 
 #article_body{
-	font-family: $base-font-family;
-	color: $base-font-color;
-	font-family: $base-font-family;
-	font-feature-settings: "kern", "liga", "pnum";
+	font-family: 'Courier New',sans-serif,Verdana,'Hiragino Sans GB',SimSun,Arial;
 	font-size: 15px;
-	line-height: $base-line-height;
 }
 
 .post-date {
