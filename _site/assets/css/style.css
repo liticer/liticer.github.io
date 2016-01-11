@@ -42,6 +42,15 @@
 	margin:0 15px 0;
 }
 
+
+
+.mylabel1{
+	font-size: 20px;
+	font-weight: 400;
+	font-family: 'Courier New',sans-serif,Verdana,'Hiragino Sans GB',SimSun,Arial;
+}
+
+
 .myhr-line {
 	height: 1px;
 	border:none;
@@ -83,11 +92,21 @@ font-family: 'Raleway', sans-serif;
 	font-family: 'Raleway', sans-serif;
 }
 
+
 .page-header {
 	color: #e74c3c;
 	text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);
 	padding: 10px 0 9px;
-	font-size: 40px;
+	font-size: 35px;
+	font-family: 'Courier New',sans-serif,Verdana,'Hiragino Sans GB',SimSun,Arial;
+	font-weight: 700;
+}
+
+.page-header2 {
+	color: Magenta;
+	text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);
+	padding: 10px 0 9px;
+	font-size: 35px;
 	font-family: 'Courier New',sans-serif,Verdana,'Hiragino Sans GB',SimSun,Arial;
 	font-weight: 700;
 }
@@ -180,7 +199,6 @@ footer {
 }
 
 .sidebar-header .title a{
-	font-family: 'Raleway', sans-serif;
 	text-decoration: none;
 	color: inherit;
 	outline: none;
@@ -194,9 +212,10 @@ footer {
 
 .title{
 	font-family: 'Raleway', sans-serif;
-	font-size: 45px;
+	font-size: 18px;
 	text-shadow:0 0 5px #000;
 }
+
 .hr-line {
 	height: 1px;
 	border:none;
