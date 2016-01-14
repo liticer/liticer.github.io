@@ -13,6 +13,7 @@ title: About Me
 {% capture site_tags %}{% for tag in site.tags %}{{ tag | first }}{% unless forloop.last %},{% endunless %}{% endfor %}{% endcapture %}
 {% assign tag_words = site_tags | split:',' | sort %}
 
+
 <div class="col-sm-10" style="padding: 0 0 0;">
     <div style="text-align :center; margin-top: 20px;">
         <font size="4" color="cyan">Music，High起来！</font>
@@ -21,6 +22,7 @@ title: About Me
             marginheight="0" width=330 height=450 align="middle"
             src="http://music.163.com/outchain/player?type=0&id=132252500&auto=0&height=430">
         </iframe>
+
     </div>
 
     <hr/>
@@ -29,7 +31,25 @@ title: About Me
         </br>
         <embed src="http://player.youku.com/player.php/sid/XNjE2NTAyNjU2/v.swf" allowFullScreen="true" quality="high" width="480" height="400" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>
     </div>
+	
+	<!--
+	<hr/>
+	<script type="text/javascript" src="/assets/js/test.js"></script>
+	<div>
+		<p id="test-jsonp">当前价格：</p>
+		<p><button type="button" onclick="getPrice()">刷新</button></p>
+	</div>
+	-->
+	
 
+	<hr/>
+	<script type="text/javascript" src="/assets/js/test-2.js"></script>
+	<div>
+		<p id="test-jsonp">当前价格：</p>
+		<p><button type="button" onclick="getPrice()">刷新</button></p>
+	</div>
+
+	
 </div>
 <div class="clearfix"></div>
 
