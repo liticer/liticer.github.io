@@ -1,7 +1,7 @@
 ﻿function weather(){
 	var yqlUrl3= "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20location%3D98119%20and%20u%3D%22c%22&format=json&diagnostics=true&callback=";
     $.getJSON(yqlUrl3, function(data){
-		$('#test-jsonp>p').remove();
+		//$('#test-jsonp>p').remove();
 
 		var allTexts = JSON.stringify(data.query.results.channel.item.description);
 
@@ -14,9 +14,9 @@
 		var re3 = /<b>Forecast:.*?\\n(.*?)</;
 		var imgsrc3 = re3.exec(allTexts);
 		
-        var mystr = '<img src="' + imgsrc[1] + '"/>'+ imgsrc2[1] + imgsrc3[1];
-
-		$('#test-jsonp').append($('<p/>').html(mystr));
+		$('#test-jsonp').append($('<p/>').html('<img src="' + imgsrc[1] + '"/>' + " " + imgsrc2[2] + imgsrc3[1]));
+		
+		
 		//$('#test-jsonp').append($('<p/>').html(data.query.results.channel.item.description));
 
 	});
