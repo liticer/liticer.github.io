@@ -14,7 +14,7 @@
 		var re3 = /<b>Forecast:.*?\\n(.*?)</;
 		var imgsrc3 = re3.exec(allTexts);
 		
-		$('#test-jsonp').append($('<p/>').html('<img src="' + imgsrc[1] + '"/>' + " " + imgsrc2[2] + imgsrc3[1]));
+		$('#test-jsonp').append($('<p/>').html('<img src="' + imgsrc[1] + '"/>' + " " + imgsrc2[2] + ". " + imgsrc3[1]));
 		
 		
 		//$('#test-jsonp').append($('<p/>').html(data.query.results.channel.item.description));
