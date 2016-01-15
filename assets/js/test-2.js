@@ -1,5 +1,5 @@
 ﻿function weather(){
-	var yqlUrl3= "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20location%3D98119%20and%20u%3D%22c%22&format=json&diagnostics=true&callback=";
+	var yqlUrl3= "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%3D26198119%20and%20u%3D%22c%22&format=json&diagnostics=true&callback=";
     $.getJSON(yqlUrl3, function(data){
 		//$('#test-jsonp>p').remove();
 
