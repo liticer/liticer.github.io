@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Excel笔记
+title: Excel学习笔记
 description: Excel软件使用的一些笔记，以备查用。
 categories: Excel
 tags: Tutorial
