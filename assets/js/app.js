@@ -4,7 +4,7 @@ $(function () {
     if (window.location.href == "http://liticer.github.io/") {
         $("#sidebar").css({width: '100%'});
         $("#btnblog").click(function () {
-            $("#sidebar").animate({width: '30%'}, 'slow');
+            $("#sidebar").animate({width: '25%'}, 'slow');
         });
     }
 
