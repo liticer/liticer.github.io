@@ -95,7 +95,7 @@ font-family: 'Raleway', sans-serif;
 
 
 .page-header {
-	color: #e74c3c;
+	color: #FF0000;
 	padding: 10px 0 9px;
 	font-size: 25px;
 	font-family: 'Courier New',sans-serif,Verdana,'Hiragino Sans GB',SimSun,Arial;
@@ -103,7 +103,7 @@ font-family: 'Raleway', sans-serif;
 }
 
 .page-header2 {
-	color: #e74c3c;
+	color: red;
 	padding: 10px 0 9px;
 	font-size: 25px;
 	font-family: 'Courier New',sans-serif,Verdana,'Hiragino Sans GB',SimSun,Arial;

@@ -7,6 +7,9 @@ tags: Tutorial
 
 ---
 
+&ensp;&ensp;&ensp;&ensp;&ensp;![pseudo](/assets/image/10-0.jpg) 
+
+
 <p style="font-weight:700;font-size:20px;color:Magenta;text-align:center;padding:20px 0">第1篇  快捷键</p>
 
 >####**Esc键**
@@ -153,5 +156,5 @@ C11=INDEX($B$2:$E$7,MATCH(A11,$A$2:$A$7),MATCH($C$9,$B$1:$E$1))
 参考资料：
 
 1.&ensp;[常用函数公式](http://www.kuaiji.com/weixin/2347231)
-         
+2.&ensp;[Excel函数大全](https://exceljet.net/excel-functions)
 
