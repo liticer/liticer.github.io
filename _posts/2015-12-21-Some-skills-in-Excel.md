@@ -23,12 +23,9 @@ tags: Tutorial
    
 >####**Alt+分号键**
 
-   * 快速删除不连续的多行数据：
-      * 筛选得到要删除的行---->全部选中这些行---->按Alt+分号键---->按Ctrl+减号键删除行
-   * 快速复制不连续的多行数据：
-      * 筛选得到要复制的行---->全部选中这些行---->按Alt+分号键---->按Ctrl+C键复制数据
-   * 快速将公式应用到不连续的多行数据：
-      * 筛选得到要应用公式的行---->在首行编辑公式---->按Ctrl+V键复制首行---->选中除首行外要应用公式的所有行---->按Alt+分号键---->按Ctrl+V键粘贴公式
+   * 快速删除不连续的多行数据：筛选得到要删除的行---->全部选中这些行---->按Alt+分号键---->按Ctrl+减号键删除行
+   * 快速复制不连续的多行数据：筛选得到要复制的行---->全部选中这些行---->按Alt+分号键---->按Ctrl+C键复制数据
+   * 快速将公式应用到不连续的多行数据：筛选得到要应用公式的行---->在首行编辑公式---->按Ctrl+V键复制首行---->选中除首行外要应用公式的所有行---->按Alt+分号键---->按Ctrl+V键粘贴公式
    
 
 
@@ -135,7 +132,7 @@ tags: Tutorial
 &ensp;&ensp;&ensp;&ensp;&ensp;![pseudo](/assets/image/10-6.png) 
 
 <pre class="prettyPrint lang=python">
-备注：
+#备注：
 D6=COUNTIF(A:A,A6)-1 
 E6=SUM(INDIRECT(ADDRESS(ROW(A6)-D6,COLUMN(A6)+4)):INDIRECT(ADDRESS(ROW(A6)-1,COLUMN(A6)+4)))/D6
 </pre>
@@ -147,7 +144,7 @@ E6=SUM(INDIRECT(ADDRESS(ROW(A6)-D6,COLUMN(A6)+4)):INDIRECT(ADDRESS(ROW(A6)-1,COL
 &ensp;&ensp;&ensp;&ensp;&ensp;![pseudo](/assets/image/10-7.png) 
 
 <pre class="prettyPrint lang=python">
-备注：
+#备注：
 C10=INDEX($B$2:$E$7,MATCH(A10,$A$2:$A$7),MATCH($C$9,$B$1:$E$1))
 C11=INDEX($B$2:$E$7,MATCH(A11,$A$2:$A$7),MATCH($C$9,$B$1:$E$1))
 </pre>
