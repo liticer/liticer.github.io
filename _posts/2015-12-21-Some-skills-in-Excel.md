@@ -155,6 +155,6 @@ C11=INDEX($B$2:$E$7,MATCH(A11,$A$2:$A$7),MATCH($C$9,$B$1:$E$1))
 <br/><br/>
 参考资料：
 
-1.&ensp;[常用函数公式](http://www.kuaiji.com/weixin/2347231)
+1.&ensp;[常用函数公式](http://www.kuaiji.com/weixin/2347231)<br/>
 2.&ensp;[Excel函数大全](https://exceljet.net/excel-functions)
 
