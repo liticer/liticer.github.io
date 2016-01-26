@@ -1,24 +1,26 @@
 ---
 layout: post
-title: Python爬虫遇上知乎(1)
+title: Python爬虫采集知乎信息
 description: 使用简单的Python脚本登录知乎，轻松地进行一些监控、搜索、备份工作。
 categories: Python
-tags: Requests Termcolor
+tags: Requests Termcolor BS4 Requests
 
 ---
 
+
+<p style="font-weight:700;font-size:20px;color:Magenta;text-align:center;padding:20px 0">第1章  登录知乎</p>
+
 <p>
-使用Python爬虫登录知乎，就可以轻松地进行一些监控、搜索、备份工作。慢慢地，你会发现Python真的很强大。<font color="blue"><strong>本文主要介绍如何使用Python登录知乎，然后还会介绍一些使用Python为知乎写的API，最后你想做什么就做什么吧，不要不好意思。
+使用Python爬虫登录知乎，就可以轻松地进行一些监控、搜索、备份工作。<font color="blue"><strong>本文首先介绍如何使用Python登录知乎，然后还会介绍一些Python写的API。
 </strong></font>
 </p>
 
 
 <p>
-要想使用Python爬虫去做一些自动化的管理工作，首先需要写一段脚本模拟登录过程。就像你要上知乎之前需要登录一样，这部分工作当然得由脚本自己完成。其实，Python模拟登录知乎的代码可以在100行之内，甚至50行之内完成。不过要是考虑到出错处理、交互友好、代码可读性等因素，可能代码量要稍微大些。不过一段优雅的代码还是值得你用心去看的，尽管下面这代码跟完美还有一段距离。
+要想使用Python爬虫去做一些自动化的管理工作，首先需要写一段脚本模拟登录过程。就像你要上知乎之前需要登录一样，这部分工作当然得由脚本自己完成。其实，Python模拟登录知乎的代码可以在100行之内，甚至50行之内完成。不过要是考虑到出错处理、交互友好、代码可读性等因素，可能代码量要稍微大些。
 </p>
 
 
-<br/>
 <p>
 <font color="#B22222"><strong>
 登录过程主要可以分为三步：<br/>
@@ -26,10 +28,21 @@ tags: Requests Termcolor
 2. 根据参数构造表单，发送post请求上传表单。<br/>
 3. 解析表单返回结果，保存Cookies，这样就不用每次访问都登录了。<br/>
 </strong></font>
+</p>
 要理解登录过程可能需要一点Web基础，不过幸运的是这些知识都比较简单。打开Firefox，按下F12，一边登录，一边去看，很快就明白了。
+
+
+
+<p style="font-weight:700;font-size:20px;color:Magenta;text-align:center;padding:20px 0">第2章  爬取信息</p>
+
+<p>
+在使用API爬取信息之前，首先要检查是否已经成功登陆。<font color="blue"><strong>在成功登录的基础上，采用面向对象编程的思想，分别对Question、User、Answer、Collection进行抽象。
+</strong></font>
 </p>
 
-最后贴上源代码。以下代码原来出自: <br/>
+
+
+最后附上源代码链接。以下代码原来出自: <br/>
 <https://github.com/egrcc/zhihu-python> <br/>
 我对代码进行修改，并加了详细的注释：<br/>
 <https://github.com/liticer/zhihu_python> <br/>
@@ -37,242 +50,5 @@ tags: Requests Termcolor
 <p/>
 <br/>
 
-<strong>附: <a href="{{ site.BASE_PATH}}/assets/source/auth.py" download>auth.py</a> </strong>
-
-<pre class="prettyPrint lang=python">
-#!/usr/bin/env python
-#-*- coding:utf-8 -*-
-
-# Build-in/std packages
-import os, sys, time, platform, random
-import re, json, cookielib
-
-# Requirements packages
-import requests, termcolor
-
-# 申请一次会话并加载cookie
-requests = requests.Session()
-requests.cookies = cookielib.LWPCookieJar('cookies')
-try:
-    requests.cookies.load(ignore_discard=True)
-except:
-    pass
-
-
-# 抽象的日志记录类
-class Logging:
-    flag = True
-    @staticmethod
-    def error(msg):
-        if Logging.flag:
-            print "".join([termcolor.colored("ERROR", "red"),\
-                          ": ", termcolor.colored(msg, "white")])
-    @staticmethod
-    def warn(msg):
-        if Logging.flag:
-            print "".join([termcolor.colored("WARN", "yellow"),\
-                          ": ", termcolor.colored(msg, "white")])
-    @staticmethod
-    def info(msg):
-        if Logging.flag:
-            print "".join([termcolor.colored("INFO", "magenta"),\
-                          ": ", termcolor.colored(msg, "white")])
-    @staticmethod
-    def debug(msg):
-        if Logging.flag:
-            print "".join([termcolor.colored("DEBUG", "magenta"),\
-                           ": ", termcolor.colored(msg, "white")])
-    @staticmethod
-    def success(msg):
-        if Logging.flag:
-            print "".join([termcolor.colored("SUCCES", "green"),\
-                          ": ", termcolor.colored(msg, "white")])
-
-# 开始记录日志
-Logging.flag = True
-
-
-# 抽象的网络错误异常类，继承Exception
-class NetworkError(Exception):
-    def __init__(self, message=""):
-        if message == "": self.message = u"网络异常"
-        else: self.message = message
-        Logging.error(self.message)
-
-# 抽象的帐号类型错误异常类，继承Exception
-class AccountError(Exception):
-    def __init__(self, message=""):
-        if message == "": self.message = u"帐号类型错误"
-        else: self.message = message
-        Logging.error(self.message)
-
-
-# 下载登陆时的验证码图片，并通过输入读取验证码
-def download_captcha():
-    url = "http://www.zhihu.com/captcha.gif"
-    r = requests.get(url, params={"r": random.random()})
-    if int(r.status_code) != 200:
-        raise NetworkError(u"验证码请求失败")
-    image_name = u"verify." + r.headers['content-type'].split("/")[1]
-    open(image_name, "wb").write(r.content)
-    """
-        System platform: https://docs.python.org/2/library/platform.html
-    """
-    Logging.info(u"正在调用外部程序渲染验证码 ... ")
-    if platform.system() == "Linux":
-        Logging.info(u"Command: xdg-open %s &" % image_name )
-        os.system("xdg-open %s &" % image_name )
-    elif platform.system() == "Darwin":
-        Logging.info(u"Command: open %s &" % image_name )
-        os.system("open %s &" % image_name )
-    elif platform.system() == "SunOS":
-        os.system("open %s &" % image_name )
-    elif platform.system() == "FreeBSD":
-        os.system("open %s &" % image_name )
-    elif platform.system() == "Unix":
-        os.system("open %s &" % image_name )
-    elif platform.system() == "OpenBSD":
-        os.system("open %s &" % image_name )
-    elif platform.system() == "NetBSD":
-        os.system("open %s &" % image_name )
-    elif platform.system() == "Windows":
-        os.system("open %s &" % image_name )
-    else:
-        Logging.info(u"请自行打开验证码文件, 并输入验证码!")
-        Logging.info(u"验证码文件: %s" % os.path.join(os.getcwd(), image_name))
-    captcha_code = raw_input(termcolor.colored("请输入验证码: ", "cyan"))
-    return captcha_code
-
-# 获取表单中的参数: _xsrf
-def search_xsrf():
-    url = "http://www.zhihu.com/"
-    r = requests.get(url)
-    if int(r.status_code) != 200:
-        raise NetworkError(u"验证码请求失败")
-    _xsrf_pat = r"\<input\stype=\"hidden\"\sname=\"_xsrf\"\svalue=\"(\S+)\""
-    results = re.compile(_xsrf_pat, re.DOTALL).findall(r.text)
-    if len(results) < 1:
-        Logging.info(u"提取XSRF 代码失败" )
-        return None
-    return results[0]
- 
-# 依据密码帐号，构造表单
-def build_form(account, password):
-    if re.match(r"^1\d{10}$", account): account_type = "phone_num"
-    elif re.match(r"^\S+\@\S+\.\S+$", account): account_type = "email"
-    else: raise AccountError(u"帐号类型错误")
-    # 构造表单的各项参数
-    form = {account_type:account, "password":password, "remember_me":True}
-    form['_xsrf'] = search_xsrf()
-    form['captcha'] = download_captcha()
-    return form
-
-# 上传表单
-def upload_form(form):
-    if "email" in form: url = "http://www.zhihu.com/login/email"
-    elif "phone_num" in form: url = "http://www.zhihu.com/login/phone_num"
-    else: raise AccountError(u"账号类型错误")
-    # post请求的消息头
-    headers = {
-        'User-Agent': "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36"\
-             + " (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36",
-        'Host': "www.zhihu.com",
-        'Origin': "http://www.zhihu.com",
-        'Pragma': "no-cache",
-        'Referer': "http://www.zhihu.com/",
-        'X-Requested-With': "XMLHttpRequest"
-    }
-    # 发送post请求 
-    r = requests.post(url, data=form, headers=headers)
-    if int(r.status_code) != 200:
-        raise NetworkError(u"表单上传失败!")
-    if r.headers['content-type'].lower() == "application/json":
-        try:
-            # 修正justkg提出的问题: 
-            # https://github.com/egrcc/zhihu-python/issues/30
-            result = json.loads(r.content)
-        except Exception as e:
-            Logging.error(u"JSON解析失败！")
-            Logging.debug(e)
-            Logging.debug(r.content)
-            result = {}
-        if result["r"] == 0:
-            Logging.success(u"登录成功！" )
-            return {"result": True}
-        elif result["r"] == 1:
-            Logging.success(u"登录失败！" )
-            return {"error": 
-                           {
-                           "code": int(result['errcode']), 
-                           "message": result['msg'], 
-                           "data": result['data'] 
-                           } 
-                   }
-        else:
-            Logging.warn(u"表单上传出现未知错误:\n\t%s)" % (str(result)))
-            return {"error": {"code": -1, "message": u"unknow error"}}
-    else:
-        Logging.warn(u"无法解析服务器的响应内容:\n\t%s" % r.text)
-        return {"error": {"code": -2, "message": u"parse error"}}
-
-# 判断是否已经登陆成功
-def islogin():
-    url = "https://www.zhihu.com/settings/profile"
-    r = requests.get(url, allow_redirects=False)
-    status_code = int(r.status_code)
-    if status_code == 301 or status_code == 302:
-        return False
-    elif status_code == 200:
-        return True
-    else:
-        Logging.warn(u"网络故障")
-        return None
-
-# 从配置文件读取配置数据
-def read_account_from_config_file(config_file="config.ini"):
-    from ConfigParser import ConfigParser
-    cf = ConfigParser()
-    if os.path.exists(config_file) and os.path.isfile(config_file):
-        Logging.info(u"正在加载配置文件 ...")
-        cf.read(config_file)
-        email = cf.get("info", "email")
-        password = cf.get("info", "password")
-        if email == "" or password == "":
-            Logging.warn(u"帐号信息无效")
-            return (None, None)
-        else: 
-            return (email, password)
-    else:
-        Logging.error(u"配置文件加载失败！")
-        return (None, None)
-
-# 登陆过程
-def login(account=None, password=None):
-    if islogin() == True:
-        Logging.success(u"你已经登录过咯")
-        return True
-    if account == None:
-        (account, password) = read_account_from_config_file()
-    if account == None:
-        account  = raw_input("请输入登录帐号: ")
-        password = raw_input("请输入登录密码: ")
-    form_data = build_form(account, password)
-    result = upload_form(form_data)
-    if "error" in result:
-        if result["error"]['code'] == 1991829:
-            Logging.error(u"验证码输入错误，请准备重新输." )
-            return login()
-        else:
-            Logging.warn(u"unknow error." )
-            return False
-    elif "result" in result and result['result'] == True:
-        Logging.success(u"登录成功！" )
-        requests.cookies.save()
-        return True
-
-# 如果单独执行auth.py，则调用登陆函数
-if __name__ == "__main__":
-    # login(account="xxxx@email.com", password="xxxxx")
-    login()
-</pre>
-
+<strong>附: <a href="{{ site.BASE_PATH}}/assets/source/auth.py" download>auth.py</a> </strong><br/>
+<strong>&ensp;&ensp;&ensp;&ensp;<a href="{{ site.BASE_PATH}}/assets/source/zhihu.py" download>zhihu.py</a> </strong>
