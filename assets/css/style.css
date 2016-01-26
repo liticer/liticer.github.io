@@ -259,3 +259,13 @@ img {
 	content: '';
 	background-color: #333333;
 }
+
+
+
+.my_header1{
+	font-weight:700;
+	font-size:20px;
+	color:Magenta;
+	text-align:center;
+	padding:20px 0;
+}
