@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+	<head>
+
+		<title>行胜于言</title>
+
+	
+	<meta name="description" content="在编写Makefile文件的过程中，做的一些笔记。">
+	
+
+	<meta name="uyan_auth" content="d1688267ba" />
+	<meta name="ujianVerification" content="a95a574e56de0fa5e1eaafdd30f676aa" />
+	<meta property="wb:webmaster" content="c8ddfcbeabe108f4" />
+	<meta name="author" content="半文盲阿尔瓦">
+	<meta charset="utf-8" />
+
+		<!-- Enable responsive viewport -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+<link rel="stylesheet" type="text/css" href="/assets/resources/syntax/syntax.css">
+<link rel="stylesheet" type="text/css" href="/assets/resources/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/assets/resources/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="/assets/themes/prettify/prettify.css" media="all">
+<link rel="icon" href="../assets/media/favicon.jpg">
+
+<link href='http://fonts.googleapis.com/css?family=Raleway:300' rel='stylesheet' type='text/css'>
+
+
+<script type="text/javascript" src="/assets/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/assets/js/judge-broswer.js"></script>
+<script type="text/javascript" src="/assets/js/app.js"></script>
+<script type="text/javascript" src="/assets/resources/bootstrap/js/bootstrap.js"></script>
+
+
+</head>
+<body style="background:#f0f0f0;"">
+
+<nav class="navbar navbar-default visible-xs" role="navigation">
+
+
+ <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarHeaderCollapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+      <a type="button" class="navbar-toggle nav-link" href="http://github.com/liticer">
+        <i class="fa fa-github"></i>
+      </a>
+      
+      
+       
+      <a type="button" class="navbar-toggle nav-link" href="mailto:shijh09@sina.com">
+        <i class="fa fa-envelope"></i>
+      </a>
+      
+
+
+
+      <a class="navbar-brand" href="">
+        <img src="/assets/media/me.jpg" class="img-circle" style="height:35px;width:35px"/>
+        半文盲阿尔瓦
+      </a>
+    </div>
+	
+
+</nav>
+
+
+<div class="col-sm-4 sidebar hidden-xs" id="sidebar">
+		<! -- sidebar.html -->
+<header class="sidebar-header" role="banner">
+    <a href="">
+        <img src="/assets/media/me.jpg" class="img-circle" style="border-radius: 50%;
+border: 3px solid #FFF; height:150px;width:150px"/>
+    </a>
+
+    <h3 class="title">
+        <a class="myfont2" href="/me.html" style="font-size:25px;">半文盲阿尔瓦</a>
+
+        <p style="font-size:20px;font-family: Consolas,Verdana,'Hiragino Sans GB',SimSun,Arial;"></p>
+    </h3>
+
+    <hr class="hr-line">
+    <h5 class="title">
+		<a class="mylabel1" href="/">
+			<i class="fa fa-home" style="font-size:20px;min-width:30px;"></i>主页
+        </a>
+		<br/>
+		<a class="button mylabel1" class="social2" id="btnblog" href="/#blog">
+			<i class="fa fa-bars" style="min-width:30px;"></i>博客
+        </a>
+		<br/>
+		<a class="mylabel1" href="/categories.html">
+			<i class="fa fa-folder" style="min-width:30px;"></i>分类
+        </a>
+		<br/>
+		<a class="mylabel1" href="/tags.html">
+			<i class="fa fa-tags" style="min-width:30px;"></i>标签
+        </a>
+		<br/>
+		<a class="mylabel1" href="/me.html">
+			<i class="fa fa-envelope" style="min-width:30px;"></i>关于
+        </a>
+		<br/>
+		<a class="mylabel1" href="#">
+			<i class="fa fa-arrow-up" style="min-width:30px;"></i>顶部
+        </a>
+		<br/>
+    </h5>
+
+    <hr class="hr-line1">
+    <h3 class="title" style="font-size:30px;font-family: Consolas,Verdana,'Hiragino Sans GB',SimSun,Arial;">
+
+        <a type="button" class="social1" href="http://github.com/liticer">
+            <i class="fa fa-github"></i>
+        </a>
+
+        <a type="button" class="social1" href="http://weibo.com/u/1665724095">
+            <i class="fa fa-weibo"></i>
+        </a>
+        <a type="button" class="social1" href="http://www.douban.com/people/126961503/"
+                style="padding-right: 10px">
+            <i class="fa fa-coffee"></i>
+        </a>
+
+    </h3>
+
+</header>
+
+
+<! -- sidebar.html end -->
+
+</div>
+
+<div class="col-sm-8 col-sm-offset-4" id="container" style="background:#f0f0f0; padding: 0.5% 3% 0.5%">
+  
+
+
+<article>
+
+  <div class="col-sm-10">
+    <div class="article_body" id="article_body">
+	<div class="page-header" style="border-bottom: 1px dashed #d0d0d0;">
+        Makefile学习笔记
+    </div>
+    <div class="mystyle">
+    <span class="post-date" style="font-family:'Courier New','Open Sans'; font-weight: 300;">
+     
+     Date:January 
+     28th,
+     
+     2016
+      
+    </span>
+	<span style="font-family:'Courier New','Open Sans'; font-weight: 300; float:right;">
+	Author：liticer
+	</span>
+	</div>
+  
+	<link rel="stylesheet" type="text/css" href="/assets//css/style.css" />
+
+<p>    本篇文章是自己在学习Makefile时的笔记，旨在写出一篇简明扼要Makefile教程。要学的东西太多了，今天学，明天忘，也不是是个事。希望在以后都记不起来的时候，看一眼文章就能快速想起这些东西。</p>
+<p />
+
+<p class="my_header1">第1章  Makefile基础</p>
+
+<p><strong>一、简要介绍</strong></p>
+
+<p>    <code>C/C++</code>源文件，首先会被编译生成中间目标文件，再由中间目标文件链接生成执行文件。在编译时，编译器只检测程序语法，和函数/变量是否被声明；如果函数未被声明，编译器会给出一个警告，但可以生成<code>Object File</code>；在链接时，链接器会在所有的<code>Object File</code>中找寻函数的实现，如果找不到，那到就会报链接错误码，指出链接器未能找到函数的实现。</p>
+
+<p><strong>二、典型示例</strong></p>
+
+<p>    在这个示例中，工程有8个C文件和3个H文件，我们要写一个<code>Makefile</code>来告诉<code>make</code>命令如何编译和链接这几个文件。规则如下：<br /></p>
+
+<ul>
+  <li>如果这个工程没有编译过，那么所有的C文件都要编译并被链接。</li>
+  <li>如果这个工程的某几个C文件被修改，那么只编译被修改的C文件，并链接目标工程。</li>
+  <li>如果这个工程的头文件被改变了，那么只编译引用了这几个头文件的C文件，并链接目标程序。</li>
+</ul>
+
+<p>按照上述规则，编写<code>Makefile</code>文件如下：</p>
+
+<pre class="prettyPrint lang=bash">
+# 使用变量
+OBJS = main.o kbd.o command.o display.o insert.o search.o files.o utils.o
+# 第一个target为最终目标文件
+edit : $(OBJS)
+	cc -o edit $(OBJS)
+# 分别指定各个目标的生成规则
+main.o : main.c defs.h
+	cc -c main.c	
+kbd.o : kbd.c defs.h command.h
+	cc -c kbd.c
+command.o : command.c defs.h command.h
+	cc -c command.c	
+display.o : display.c defs.h buffer.h
+	cc -c display.c
+insert.o : insert.c defs.h buffer.h
+	cc -c insert.c
+search.o : search.c defs.h buffer.h
+	cc -c search.c
+files.o : files.c defs.h buffer.h command.h
+	cc -c files.c
+utils.o : utils.c defs.h
+	cc -c utils.c
+# 表示clean是个伪目标	
+.PHONY : clean	
+clean :
+	rm edit $(OBJS)
+</pre>
+
+<p>在默认的方式下，也就是我们只输入<code>make</code>命令，执行流程如下：</p>
+
+<ul>
+  <li>首先<code>make</code>会在当前目录下找名字叫<code>Makefile</code>或<code>makefile</code>的文件。<br /></li>
+  <li>如果找到，它会找文件中的第一个<code>target</code>，并把这个文件作为最终的目标文件。<br /></li>
+  <li>如果最终目标文件不存在，或其所依赖的<code>.o</code>文件修改时间比它更新，就会执行后面所定义的命令来生成这个文件。<br /></li>
+  <li>如果最终目标文件所依赖的<code>.o</code>文件也不存在，或者<code>.o</code>文件比其依赖文件修改时间更早，就会根据其对应规则先生成<code>.o</code>文件。<br /></li>
+  <li>重复上述的递推过程，直到遇到源代码文件，再按照逆序一步步地生成最终目标文件。<br /></li>
+</ul>
+
+<p><strong>三、基本规则</strong></p>
+
+<p>1. <code>Makefile</code>文件构成</p>
+
+<ul>
+  <li>显式规则。说明了如何生成一个或多的的目标文件。这是由<code>Makefile</code>的书写者明显指出，要生成的文件，文件的依赖文件，生成的命令。在<code>Makefile</code>中的命令，必须要以&lt;/code&gt;[Tab]&lt;/code&gt;键开始。</li>
+  <li>隐晦规则。可以让我们比较粗糙地简略地书写<code>Makefile</code>，这是由<code>make</code>所支持的。<br /></li>
+  <li>变量定义。变量一般都是字符串，有点你C语言中的宏，当<code>Makefile</code>被执行时，其中的变量都会被扩展到相应的引用位置上。<br /></li>
+  <li>文件指示。包括了三个部分：一个是在一个<code>Makefile</code>中引用另一个<code>Makefile</code>，就像<code>C</code>语言中的<code>include</code>一样；另一个是指根据某些情况指定<code>Makefile</code>中的有效部分，就像<code>C</code>语言中的预编译<code>#if</code>一样；还有就是定义一个多行的命令。<br /></li>
+  <li>注释。只有行注释，和<code>UNIX</code>的<code>Shell</code>脚本一样，其注释是用<code>"#"</code>字符。<br /></li>
+</ul>
+
+<p>2. <code>Makefile</code>注意事项</p>
+
+<ul>
+  <li>大多数的<code>make</code>都支持<code>makefile</code>和<code>Makefile</code>这两种默认文件名。如果要指定特定的<code>Makefile</code>，你可以使用<code>make</code>的<code>-f</code>和<code>--file</code>参数，如<code>make -f Make.Linux</code>。</li>
+  <li>在<code>Makefile</code>使用<code>include</code>关键字可以把别的<code>Makefile</code>包含进来，这很像<code>C</code>语言的<code>#include</code>，被包含的文件会原模原样的放在当前文件的包含位置。<code>make</code>命令开始时，如果文件都没有指定绝对路径或是相对路径的话，<code>make</code>会在当前目录下首先寻找，如果当前目录下没有找到，那么，<code>make</code>还会在下面的几个目录下找：(1)如果<code>make</code>执行时，有<code>-I</code>或<code>--include-dir</code>参数，那么<code>make</code>就会在这个参数所指定的目录下去寻找；(2)如果目录<code>[prefix]/include</code>（一般是：<code>/usr/local/bin</code>或<code>/usr/include</code>）存在的话，<code>make</code>也会去找。<br /></li>
+  <li><code>GNU</code>的<code>make</code>工作时的执行步骤入下：
+(1)读入所有的<code>Makefile</code>；(2)读入被<code>include</code>的其它<code>Makefile</code>；(3)初始化文件中的变量；(4)推导隐晦规则，并分析所有规则；(5)为所有的目标文件创建依赖关系链；(6)根据依赖关系，决定哪些目标要重新生成；(7)执行生成命令。</li>
+</ul>
+
+<p><strong>四、书写规则</strong></p>
+
+<p>1. 语法规则</p>
+
+<p>    包含两个部分，一个是依赖关系，一个是生成目标的方法:</p>
+
+<pre class="prettyPrint lang=bash">
+targets : prerequisites
+	command
+</pre>
+
+<p>2. 通配符</p>
+
+<p>    <code>make</code>支持三各通配符：<code>*</code>，<code>?</code>和<code>[]</code>，这是和<code>Unix</code>的<code>B-Shell</code>是相同的。分别表示匹配零个或多个字符、匹配任意一个字符和匹配括弧 中的任意单一字符。</p>
+
+<p>3. 文件搜寻</p>
+
+<p>    在一些大的工程中，通常是把这许多的源文件分类，并存放在不同的目录中。当<code>make</code>需要去找寻文件的依赖关系时，你可以在文件前加上路径，但最好的方法是把一个路径告诉<code>make</code>，让<code>make</code>自动去找。一般来说有两种方法：</p>
+
+<ul>
+  <li><code>Makefile</code>文件中的特殊变量<code>VPATH</code>。如果没有指明这个变量，<code>make</code>只会在当前的目录中去找寻依赖文件和目标文件。如果定义了这个变量，那么，<code>make</code>就会在当前目录找不到的情况下，到所指定的目录中去找寻，如：</li>
+</ul>
+
+<pre class="prettyPrint lang=bash">
+VPATH = src:../headers
+#上面的的定义指定两个目录，"src"和"../headers"，目录由冒号分隔。
+# make会在当前目录搜索不到的情况下，按照上述顺序进行搜索。
+</pre>
+
+<ul>
+  <li>使用<code>make</code>的<code>vpath</code>关键字，这和上面提到的那个VPATH变量很类似。这种方法更为灵活，它可以指定不同的文件在不同的搜索目录中。</li>
+</ul>
+
+<pre class="prettyPrint lang=bash">
+# 它的使用方法有三种：
+vpath <pattern> <directories>
+# 为符合模式<pattern>的文件指定搜索目录<directories>
+vpath <pattern>
+# 清除符合模式<pattern>的文件的搜索目录
+vpath
+# 清除所有已被设置好了的文件搜索目录
+
+# vapth使用方法中的<pattern>需要包含"%”字符，“%”的意思是匹配零或若干字符
+vpath %.h ../headers
+# 该语句表示，要求make在“../headers”目录下搜索所有以“.h”结尾的文件
+
+# 我们可以连续地使用vpath语句，以指定不同搜索策略：
+vpath %.c foo
+vpath % blish
+vpath %.c bar
+# 其表示“.c”结尾的文件，先在“foo”目录，然后是“blish”，最后是“bar”目录
+vpath %.c foo:bar
+vpath % blish
+# 上面的语句则表示“.c”结尾的文件，先在“foo”目录，然后是“bar”目录，最后才是“blish”目录
+
+</pattern></pattern></pattern></directories></pattern></directories></pattern></pre>
+
+	
+    
+    
+    <ul class="tag_box list-unstyled list-inline">
+      <li><i class="fa fa-folder-open" style="padding: 20px 0px 0px 0px"></i></li>
+      
+      
+      
+        <li><a href="/categories.html#tools-ref" class="myfont3">
+          Tools<span>(2)</span>
+          
+        </a></li>
+      
+      
+    </ul>
+    
+
+
+    
+    <ul class="list-inline">
+      <li><i class="fa fa-tags" style="padding: 0px 0px 0px 0px"></i></li>
+      
+      
+      
+        <li>
+          <a href="/tags.html#Git-ref" class="myfont3">
+          Git<span>(2)</span>
+          
+          </a>
+        </li>
+      
+      
+      
+    </ul>
+    
+
+    
+      <section class="share col-sm-6" style="padding:0 0 0;">
+        <h4 class="section-title myfont3">Share Post</h4>
+        <a class="btn btn-default btn-sm twitter myfont1" href="http://twitter.com/share?text=Makefile学习笔记"
+           onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+          <i class="fa fa-weixin fa-lg"></i>
+          Wechat
+        </a>
+        <a class="btn btn-default btn-sm facebook myfont1" href="https://www.facebook.com/sharer/sharer.php"
+           onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+          <i class="fa fa-facebook fa-lg"></i>
+          Facebook
+        </a>
+        <a class="btn btn-default btn-sm gplus myfont1"
+           onclick="window.open('https://plus.google.com/share?url='+window.location.href, 'google-plus-share', 'width=490,height=530');return false;">
+          <i class="fa fa-google-plus fa-lg"></i>
+          Google+
+        </a>
+      </section>
+    
+
+    <div class="clearfix" style="margin-bottom: 15px;"></div>
+	</div>
+
+    <ul class="pager" style="margin-top: 10px; margin-bottom: 10px;">
+      
+      <li class="previous"><a href="/About-Git" title="Git学习笔记">&larr; 上一篇</a></li>
+      
+      
+      <li class="next disabled"><a>下一篇 &rarr;</a>
+      
+    </ul>
+	
+	
+
+
+    <!-- UY BEGIN -->
+    <div id="uyan_frame" class="myborder1" style="padding: 15px 15px 15px 15px"></div>
+    <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2072524"></script>
+    <!-- UY END -->
+
+</article>
+<div class="clearfix"></div>
+
+
+<footer class="navbar navbar-default" style="background:#f0f0f0;">
+    <div class="container">
+      <p class="navbar-text pull-left">Some rights reserved &copy; 2016 半文盲阿尔瓦. </br>
+      如有任何疑问请发送邮件至 <a class="navbar-button" href="http://gmail.google.com/">shijh09@gmail.com</a></p>
+ </div>
+</footer>
+</div>
+
+<script type="text/javascript" src="/assets/themes/prettify/prettify.js"></script>
+<script type="text/javascript">
+    // 需要引入jQuery
+    $(document).ready(function() {
+        $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
+        prettyPrint();
+    });
+</script>
+
+</body>
+</html>
