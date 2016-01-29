@@ -10,7 +10,7 @@ tags: Git
 <link rel="stylesheet" type="text/css" href="/assets//css/style.css">
 
 
-&ensp;&ensp;&ensp;&ensp;本篇文章是自己在学习Makefile时的笔记，旨在写出一篇简明扼要Makefile教程。要学的东西太多了，今天学，明天忘，也不是是个事。希望在以后都记不起来的时候，看一眼文章就能快速想起这些东西。
+&ensp;&ensp;&ensp;&ensp;本篇文章是自己在学习<code>Makefile</code>时的笔记，旨在编写一部简明扼要<code>Makefile</code>使用手册。要学的东西太多了，今天学，明天忘，多做笔记总是好的。希望在以后都记不起来的时候，看一眼文章就能快速想起这些东西。
 <p/>
 
 <p class="my_header1">第1章  Makefile基础</p>
@@ -87,6 +87,8 @@ clean :
 (1)读入所有的<code>Makefile</code>；(2)读入被<code>include</code>的其它<code>Makefile</code>；(3)初始化文件中的变量；(4)推导隐晦规则，并分析所有规则；(5)为所有的目标文件创建依赖关系链；(6)根据依赖关系，决定哪些目标要重新生成；(7)执行生成命令。
 
 
+<p class="my_header1">第2章  Makefile进阶</p>
+
 <strong>四、书写规则</strong>
 
 1.&ensp;语法规则
@@ -119,14 +121,14 @@ VPATH = src:../headers
 
 <pre class="prettyPrint lang=bash">
 # 它的使用方法有三种：
-vpath <pattern> <directories>
-# 为符合模式<pattern>的文件指定搜索目录<directories>
-vpath <pattern>
-# 清除符合模式<pattern>的文件的搜索目录
+vpath &lt;pattern&gt; &lt;directories&gt;
+# 为符合模式pattern的文件指定搜索目录directories
+vpath &lt;pattern&gt;
+# 清除符合模式pattern的文件的搜索目录
 vpath
 # 清除所有已被设置好了的文件搜索目录
 
-# vapth使用方法中的<pattern>需要包含"%”字符，“%”的意思是匹配零或若干字符
+# vapth使用方法中的pattern需要包含"%”字符，“%”的意思是匹配零或若干字符
 vpath %.h ../headers
 # 该语句表示，要求make在“../headers”目录下搜索所有以“.h”结尾的文件
 
@@ -139,3 +141,128 @@ vpath %.c foo:bar
 vpath % blish
 # 上面的语句则表示“.c”结尾的文件，先在“foo”目录，然后是“bar”目录，最后才是“blish”目录
 </pre>
+
+4.&ensp;伪目标
+
+&ensp;&ensp;&ensp;&ensp;“伪目标”并不是一个文件，只是一个标签。由于“伪目标”不是文件，所以<code>make</code>无法生成它的依赖关系和决定它是否要执行,只有通过显示地指明这个“目标”才能让其生效。当然，“伪目标”的取名不能和文件名重名，不然其就失去了“伪目标”的意义。为了避免和文件重名的这种情况，可以使用一个特殊的标记<code>.PHONY</code>来显式地指明一个目标是“伪目标”，向<code>make</code>说明，不管是否有这个文件，这个目标就是“伪目标”。
+
+&ensp;&ensp;&ensp;&ensp;伪目标一般没有依赖的文件。但是，也可以为伪目标指定所依赖的文件。伪目标同样可以作为“默认目标”，只要将其放在第一个。一个示例就是，如果你的<code>Makefile</code>需要一口气生成若干个可执行文件，但你只想简单地敲一个<code>make</code>完事，并且，所有的目标文件都写在一个<code>Makefile</code>中，那么你可以使用“伪目标”这个特性：
+
+<pre class="prettyPrint lang=bash">
+all : prog1 prog2 prog3
+.PHONY : all
+
+prog1 : prog1.o utils.o
+	cc -o prog1 prog1.o utils.o
+prog2 : prog2.o
+	cc -o prog2 prog2.o
+prog3 : prog3.o sort.o utils.o
+	cc -o prog3 prog3.o sort.o utils.o
+</pre>
+
+其中，<code>Makefile</code>中的第一个目标会被作为其默认目标。我们声明了一个<code>all</code>的伪目标，其依赖于其它三个目标。由于伪目标的特性是，总是被执行的，所以其依赖的那三个目标就总是不如<code>all</code>这个目标新。所以，其它三个目标的规则总是会被决议。也就达到了我们一口气生成多个目标的目的。
+
+&ensp;&ensp;&ensp;&ensp;随便提一句，从上面的例子我们可以看出，目标也可以成为依赖。所以，伪目标同样也可成为依赖。看下面的例子：
+
+<pre class="prettyPrint lang=bash">
+.PHONY: cleanall cleanobj cleandiff
+cleanall : cleanobj cleandiff
+	rm program
+cleanobj :
+	rm *.o
+cleandiff :
+	rm *.diff
+</pre>
+其中，<code>make clean</code>将清除所有要被清除的文件。<code>cleanobj</code>和<code>cleandiff</code>这两个伪目标有点像“子程序”的意思。我们可以输入<code>make cleanall</code>和<code>make cleanobj</code>和<code>make cleandiff</code>命令来达到清除不同种类文件的目的。
+
+5.&ensp;静态模式
+
+&ensp;&ensp;&ensp;&ensp;静态模式可以更加容易地定义多目标的规则，可以让规则变得更加的有弹性和灵活。语法如下：
+
+<pre class="prettyPrint lang=bash">
+&lt;targets ...&gt;: &lt;target-pattern&gt;: &lt;rereq-patterns ...&gt;
+	&lt;commands&gt;
+# targets定义了一系列的目标文件，可以有通配符。是目标的一个集合。
+# target-parrtern是指明了targets的模式，也就是的目标集模式。
+# prereq-parrterns是目标的依赖模式，它对target-parrtern模式再进行一次依赖目标的定义。
+</pre>
+
+&ensp;&ensp;&ensp;&ensp;如果<code>target-parrtern</code>定义成<code>%.o</code>，意思是<code>target</code>集合中都是以<code>.o</code>结尾的；而如果<code>prereq-parrterns</code>定义成<code>%.c</code>，意思是对<code>target-parrtern</code>所形成的目标集进行二次定义。其计算方法是，取<code>target-parrtern</code>模式中的<code>%</code>，并为其加上<code>.c</code>这个结尾，形成的新集合。看一个例子：
+
+<pre class="prettyPrint lang=bash">
+# $(objects)指明了我们的目标从$object中获取
+# %.o表明要所有以.o结尾的目标，也就是[foo.o bar.o]
+# %.c则取模式%.o的%，也就是[foo bar]，并为其加下.c的后缀，依赖目标就是[foo.c bar.c]
+objects = foo.o bar.o
+all: $(objects)
+$(objects): %.o: %.c
+$(CC) -c $(CFLAGS) $< -o $@
+# $<和$@则是自动化变量，$<表示所有的依赖目标集，$@表示目标集
+# 于是，上面的规则展开后等价于下面的规则：
+foo.o : foo.c
+$(CC) -c $(CFLAGS) foo.c -o foo.o
+bar.o : bar.c
+$(CC) -c $(CFLAGS) bar.c -o bar.o
+</pre>
+
+&ensp;&ensp;&ensp;&ensp;试想，如果我们的<code>%.o</code>有几百个，那种我们只要用这种很简单的静态模式规则就可以写完一堆规则，实在是太有效率了。静态模式规则的用法很灵活，如果用得好，那会一个很强大的功能。再看一个例子：
+
+<pre class="prettyPrint lang=bash">
+files = foo.elc bar.o lose.o
+$(filter %.o,$(files)): %.o: %.c
+$(CC) -c $(CFLAGS) $< -o $@
+$(filter %.elc,$(files)): %.elc: %.el
+emacs -f batch-byte-compile $<
+# $(filter %.o,$(files))表示调用<code>Makefile</code>的</code>filter</code>函数
+# 过滤<code>$files</code>集，只要其中模式为<code>%.o</code>的内容
+</pre>
+
+
+6.&ensp;静态模式
+
+&ensp;&ensp;&ensp;&ensp;在<code>Makefile</code>中，依赖关系可能会需要包含一系列的头文件。但是，如果是一个比较大型的工程，你必需清楚哪些C文件包含了哪些头文件，并且，你在加入或删除头文件时，也需要小心地修改Makefile，这是一个很没有维护性的工作。为了避免这种繁重而又容易出错的事情，我们可以使用C/C++编译的一个功能。大多数的C/C++编译器都支持一个“-M”的选项，即自动找寻源文件中包含的头文件，并生成一个依赖关系。例如，如果我们执行下面的命令：
+
+<pre class="prettyPrint lang=bash">
+cc -M main.c
+# 其输出是：
+main.o : main.c defs.h
+# 如果是GNU的C/C++编译器，得用-MM参数；-M参数会把标准库的头文件也包含进来
+gcc -MM main.c
+# 其输出是：
+main.o : main.c defs.h
+</pre>
+
+
+&ensp;&ensp;&ensp;&ensp;那么，编译器的这个功能如何与我们的Makefile联系在一起，让<code>Makefile</code>自已依赖于源文件呢？<code>GNU</code>组织建议把编译器为每一个源文件自动生成的依赖关系放到一个文件中，为每一个<code>name.c</code>的文件都生成一个<code>name.d</code>的<code>Makefile</code>文件。于是，我们可以写出<code>.c/.h</code>文件和<code>.d</code>文件的依赖关系，并让<code>make</code>自动生成和更新<code>.d</code>文件，并把其包含在我们的主<code>Makefile</code>中，这样，我们就可以自动化地生成每个文件的依赖关系。
+
+<pre class="prettyPrint lang=bash">
+# 这里，我们给出了一个模式规则来产生[.d]文件：
+%.d: %.c
+	@set -e; rm -f $@; \
+	$(CC) -M $(CPPFLAGS) $< > $@.$$$$; \
+	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
+	rm -f $@.$$$$
+sources = foo.c bar.c
+include $(sources:.c=.d)
+# 1. 第一行所有的[.d]文件依赖于[.c]文件
+# 2. 第二行@关键字告诉make不输出该行命令；set -e是说当后面的命令的返回值非0时立即退出
+# 3. 第二行"rm -f $@"的意思是删除所有的目标，也就是[.d]文件
+# 4. 第三行是为每个依赖文件“$<”，也就是[.c]文件生成依赖文件，“$@”表示模式“%.d”文件
+# 5. 第三行的“$$$$”为一个随机编号，表示生成结果存储在一个形如"name.d.1234"临时文件中
+# 6. 第四行使用sed命令做了一个替换，将"name.d"加入到目标集合中
+# 7. 第五行是删除临时文件
+# 8. 第六行"$(sources:.c=.d)"是把变量$(sources)所有[.c]的字串都替换成[.d]
+# 9. 第七行表示将.d文件包含到主Makefile文件中
+
+# 总而言之，这个模式要做的事就是在编译器生成的依赖关系中加入[.d]文件的依赖
+# 即把依赖关系(以foo的依赖关系为例)：
+foo.o : foo.c defs.h
+# 转成：
+foo.o foo.d : foo.c defs.h
+# 于是，我们的[.d]文件也会自动更新了，并会自动生成了
+</pre>
+
+<br/><br/>
+参考资料：
+
+1.&ensp;<a href="{{ site.BASE_PATH}}/assets/source/20080330Makefile.pdf" download>跟我一起写Makefile(陈皓)</a><br/>
