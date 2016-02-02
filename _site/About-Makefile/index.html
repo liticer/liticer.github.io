@@ -377,9 +377,9 @@ emacs -f batch-byte-compile $&lt;
 # 过滤<code>$files</code>集，只要其中模式为<code>%.o</code>的内容
 </pre>
 
-<p>6. 静态模式</p>
+<p>6. 自动生成依赖</p>
 
-<p>    在<code>Makefile</code>中，依赖关系可能会需要包含一系列的头文件。但是，如果是一个比较大型的工程，你必需清楚哪些C文件包含了哪些头文件，并且，你在加入或删除头文件时，也需要小心地修改Makefile，这是一个很没有维护性的工作。为了避免这种繁重而又容易出错的事情，我们可以使用C/C++编译的一个功能。大多数的C/C++编译器都支持一个“-M”的选项，即自动找寻源文件中包含的头文件，并生成一个依赖关系。例如，如果我们执行下面的命令：</p>
+<p>    在<code>Makefile</code>中，依赖关系可能会需要包含一系列的头文件。但是，如果是一个比较大型的工程，你必需清楚哪些<code>C</code>文件包含了哪些头文件，并且，你在加入或删除头文件时，也需要小心地修改<code>Makefile</code>，这是一个很没有维护性的工作。为了避免这种繁重而又容易出错的事情，我们可以使用<code>C/C++</code>编译的一个功能。大多数的<code>C/C++</code>编译器都支持一个<code>-M</code>的选项，即自动找寻源文件中包含的头文件，并生成一个依赖关系。例如，如果我们执行下面的命令：</p>
 
 <pre class="prettyPrint lang=bash">
 cc -M main.c
@@ -391,7 +391,7 @@ gcc -MM main.c
 main.o : main.c defs.h
 </pre>
 
-<p>    那么，编译器的这个功能如何与我们的Makefile联系在一起，让<code>Makefile</code>自已依赖于源文件呢？<code>GNU</code>组织建议把编译器为每一个源文件自动生成的依赖关系放到一个文件中，为每一个<code>name.c</code>的文件都生成一个<code>name.d</code>的<code>Makefile</code>文件。于是，我们可以写出<code>.c/.h</code>文件和<code>.d</code>文件的依赖关系，并让<code>make</code>自动生成和更新<code>.d</code>文件，并把其包含在我们的主<code>Makefile</code>中，这样，我们就可以自动化地生成每个文件的依赖关系。</p>
+<p>    那么，编译器的这个功能如何与我们的<code>Makefile</code>联系在一起，让<code>Makefile</code>自已依赖于源文件呢？<code>GNU</code>组织建议把编译器为每一个源文件自动生成的依赖关系放到一个文件中，为每一个<code>name.c</code>的文件都生成一个<code>name.d</code>的<code>Makefile</code>文件。于是，我们可以写出<code>.c/.h</code>文件和<code>.d</code>文件的依赖关系，并让<code>make</code>自动生成和更新<code>.d</code>文件，并把其包含在我们的主<code>Makefile</code>中，这样，我们就可以自动化地生成每个文件的依赖关系。</p>
 
 <pre class="prettyPrint lang=bash">
 # 这里，我们给出了一个模式规则来产生[.d]文件：
