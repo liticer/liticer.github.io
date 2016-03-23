@@ -165,7 +165,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 	<p style="font-weight:700;font-size:20px;color:Magenta;text-align:center;padding:20px 0">第1章 关于对象</p>
 
 <blockquote>
-  <h4 id="c"><strong>C++对象的布局成本</strong></h4>
+  <p><strong>C++对象的布局成本</strong></p>
 </blockquote>
 
 <ul>
@@ -174,7 +174,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 </ul>
 
 <blockquote>
-  <h4 id="c-1"><strong>C++对象模型</strong></h4>
+  <p><strong>C++对象模型</strong></p>
 </blockquote>
 
 <ul>
@@ -188,7 +188,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 <p style="font-weight:700;font-size:20px;color:Magenta;text-align:center;padding:20px 0">第2章 构造函数语意学</p>
 
 <blockquote>
-  <h4 id="default-constructor"><strong>Default Constructor的构造操作</strong></h4>
+  <p><strong>Default Constructor的构造操作</strong></p>
 </blockquote>
 
 <p>    对于一个类，如果没有任何<code>user-declared constructor</code>，那么在编译器有需要的时候，会为它合成一个<code>nontrival default constructor</code>。通常，有如下4种情况需要合成<code>copy constructor</code>：</p>
@@ -207,7 +207,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 (2)编译器默认合成出来的<code>default constructor</code>会显式地设定“<code>class</code>内每一个<code>data member</code>的默认值”。</p>
 
 <blockquote>
-  <h4 id="copy-constructor"><strong>Copy Constructor的构造操作</strong></h4>
+  <p><strong>Copy Constructor的构造操作</strong></p>
 </blockquote>
 
 <p>    调用<code>Copy constructor</code>三种情况分别是：初始化，传参和返回值。和<code>default construtor</code>一样，<code>copy constructor</code>也分为<code>trivial</code>和<code>nontrivial</code>两种，只有<code>nontrivial</code>的<code>class</code>才会合成它。倘若一个<code>class</code>展现出所谓的”<code>bitwise copy semantics</code>“，那么它的<code>copy constructor</code>就是<code>trivival</code>的。一个<code>class</code>不展现出”<code>bitwise copy semantics</code>“的4种情况如下：<br /></p>
@@ -220,7 +220,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 </ul>
 
 <blockquote>
-  <h4 id="section"><strong>程序转化语意学</strong></h4>
+  <p><strong>程序转化语意学</strong></p>
 </blockquote>
 
 <ul>
@@ -232,7 +232,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 </ul>
 
 <blockquote>
-  <h4 id="section-1"><strong>成员初始化</strong></h4>
+  <p><strong>成员初始化</strong></p>
 </blockquote>
 
 <ul>
@@ -245,19 +245,19 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 <p style="font-weight:700;font-size:20px;color:Magenta;text-align:center;padding:20px 0">第3章 Data语意学</p>
 
 <blockquote>
-  <h4 id="data-member"><strong>Data member的绑定</strong></h4>
+  <p><strong>Data member的绑定</strong></p>
 </blockquote>
 
 <p>    编译器对于一个<code>inline member function</code>的本体的分析，会在整个<code>class</code>的声明都出现了才开始；然而对于<code>member function</code>的<code>argument list</code>，则是在它们第一次出现时被适当地进行决议完成的。因此上，在现代C++程序设计中，需要将”<code>nested type</code>声明”放在<code>class</code>的起始处，这是一种安全的防御性程序设计风格。</p>
 
 <blockquote>
-  <h4 id="data-member-1"><strong>Data member的布局</strong></h4>
+  <p><strong>Data member的布局</strong></p>
 </blockquote>
 
 <p>    <code>C++ Standard</code>要求，在同一个<code>access session</code>中，较晚出现的<code>members</code>在<code>class object</code>中有较高的地址。同时，编译器还可能会合成一些内部使用的<code>data member</code>(如<code>vptr),传统上它们通常被放在所有显式声明的<code>members</code>之前或者之后。</code></p>
 
 <blockquote>
-  <h4 id="data-member-2"><strong>Data member的存取</strong></h4>
+  <p><strong>Data member的存取</strong></p>
 </blockquote>
 
 <ul>
@@ -270,7 +270,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 </ul>
 
 <blockquote>
-  <h4 id="data-member-3"><strong>继承与data member</strong></h4>
+  <p><strong>继承与data member</strong></p>
 </blockquote>
 
 <ul>
@@ -302,7 +302,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 </ul>
 
 <blockquote>
-  <h4 id="data-members"><strong>指向data members的指针</strong></h4>
+  <p><strong>指向data members的指针</strong></p>
 </blockquote>
 
 <ul>
@@ -314,7 +314,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 <p style="font-weight:700;font-size:20px;color:Magenta;text-align:center;padding:20px 0">第4章 Function语意学</p>
 
 <blockquote>
-  <h4 id="member-functionbr"><strong>Member function的各种调用方式</strong><br /></h4>
+  <p><strong>Member function的各种调用方式</strong><br /></p>
 </blockquote>
 
 <ul>
@@ -339,7 +339,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 </ul>
 
 <blockquote>
-  <h4 id="virtual-member-functionsbr"><strong>Virtual member functions</strong><br /></h4>
+  <p><strong>Virtual member functions</strong><br /></p>
 </blockquote>
 
 <ul>
@@ -364,7 +364,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 </ul>
 
 <blockquote>
-  <h4 id="member-functionbr-1"><strong>指向member function的指针</strong><br /></h4>
+  <p><strong>指向member function的指针</strong><br /></p>
 </blockquote>
 
 <ul>
@@ -377,7 +377,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 </ul>
 
 <blockquote>
-  <h4 id="inline-functionsbr"><strong>Inline functions</strong><br /></h4>
+  <p><strong>Inline functions</strong><br /></p>
 </blockquote>
 
 <ul>
@@ -389,13 +389,13 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 <p style="font-weight:700;font-size:20px;color:Magenta;text-align:center;padding:20px 0">第5章 构造，析构，拷贝语意学</p>
 
 <blockquote>
-  <h4 id="br"><strong>关于纯虚函数</strong><br /></h4>
+  <p><strong>关于纯虚函数</strong><br /></p>
 </blockquote>
 
 <p>     原则上允许定义和调用一个<code>pure virtual function</code>。不过它只能被静态调用(即通过类名调用),不能经由虚拟机制调用(即通过指针或引用调用).不过<code>pure virtual destructor</code>必须被定义，因为每一个<code>derived class destructor</code>都会被编译器加以扩张，以静态方式调用其”每一个<code>virtual base class</code>“和”上一层<code>base class</code>“的<code>destructor</code>。所以一个比较好的替代方案是，不要把<code>virtual destructor</code>声明为<code>pure</code>。</p>
 
 <blockquote>
-  <h4 id="br-1"><strong>无继承情况下的对象构造</strong><br /></h4>
+  <p><strong>无继承情况下的对象构造</strong><br /></p>
 </blockquote>
 
 <ul>
@@ -405,7 +405,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 </ul>
 
 <blockquote>
-  <h4 id="br-2"><strong>继承体系下的对象构造</strong><br /></h4>
+  <p><strong>继承体系下的对象构造</strong><br /></p>
 </blockquote>
 
 <p>    继承体系下<code>constructor</code>的扩充步骤：</p>
@@ -439,7 +439,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 </ul>
 
 <blockquote>
-  <h4 id="br-3"><strong>对象复制语义学</strong><br /></h4>
+  <p><strong>对象复制语义学</strong><br /></p>
 </blockquote>
 
 <ul>
@@ -448,7 +448,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 </ul>
 
 <blockquote>
-  <h4 id="br-4"><strong>析构语义学</strong><br /></h4>
+  <p><strong>析构语义学</strong><br /></p>
 </blockquote>
 
 <p>    一个由程序员定义的<code>destructor</code>被扩展的方式类似<code>constructor</code>被扩展的方式，但是顺序相反：</p>
@@ -464,7 +464,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 <p style="font-weight:700;font-size:20px;color:Magenta;text-align:center;padding:20px 0">第6章 执行期语意学</p>
 
 <blockquote>
-  <h4 id="br-5"><strong>对象的构造和析构</strong><br /></h4>
+  <p><strong>对象的构造和析构</strong><br /></p>
 </blockquote>
 
 <ul>
@@ -488,7 +488,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 </ul>
 
 <blockquote>
-  <h4 id="newdeletebr"><strong>new和delete运算符</strong><br /></h4>
+  <p><strong>new和delete运算符</strong><br /></p>
 </blockquote>
 
 <ul>
@@ -498,7 +498,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 </ul>
 
 <blockquote>
-  <h4 id="br-6"><strong>临时性对象</strong><br /></h4>
+  <p><strong>临时性对象</strong><br /></p>
 </blockquote>
 
 <ul>
@@ -509,7 +509,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 <p style="font-weight:700;font-size:20px;color:Magenta;text-align:center;padding:20px 0">第7章 站在对象模型的尖端</p>
 
 <blockquote>
-  <h4 id="templatebr"><strong>Template</strong><br /></h4>
+  <p><strong>Template</strong><br /></p>
 </blockquote>
 
 <ul>
@@ -525,7 +525,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 </ul>
 
 <blockquote>
-  <h4 id="br-7"><strong>异常处理</strong><br /></h4>
+  <p><strong>异常处理</strong><br /></p>
 </blockquote>
 
 <ul>
@@ -546,7 +546,7 @@ border: 3px solid #FFF; height:150px;width:150px"/>
 </ul>
 
 <blockquote>
-  <h4 id="br-8"><strong>执行期类型识别</strong><br /></h4>
+  <p><strong>执行期类型识别</strong><br /></p>
 </blockquote>
 
 <ul>
