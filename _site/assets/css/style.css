@@ -39,8 +39,8 @@
 }
 
 .mylayout1{
-	padding: 5% 5% 0; 
-	margin:0 15px 0;
+	padding: 5% 10% 5% 10%; 
+	margin:0 0 0;
 }
 
 
@@ -127,14 +127,14 @@ a.nav-link:hover { color: #777 }
 
 
 article {
-	padding: 5% 5% 0;
+	padding: 5% 10% 10%;
 	margin-bottom: 0px;	
 }
 
 .article_body{
-	margin-top: 20px;
+	margin-top: 0px;
 	margin-bottom: 10px;
-	padding: 40px 0 20px;
+	padding: 0px 0 20px;
 }
 
 #article_body{
