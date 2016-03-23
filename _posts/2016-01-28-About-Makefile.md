@@ -10,7 +10,7 @@ tags: Git
 <link rel="stylesheet" type="text/css" href="/assets//css/style.css">
 
 
-&ensp;&ensp;&ensp;&ensp;本篇文章是自己在学习<code>Makefile</code>时的笔记，旨在编写一部简明扼要<code>Makefile</code>使用手册。要学的东西太多了，今天学，明天忘，多做笔记总是好的。希望在以后都记不起来的时候，看一眼文章就能快速想起这些东西。
+&ensp;&ensp;&ensp;&ensp;本篇文章是自己在学习Makefile时的笔记，旨在编写一部简明扼要Makefile使用手册。要学的东西太多了，今天学，明天忘，多做笔记总是好的。希望在以后都记不起来的时候，看一眼文章就能快速想起这些东西。
 <p/>
 
 <p class="my_header1">第1章  Makefile基础</p>
@@ -18,17 +18,17 @@ tags: Git
 
 <strong>一、简要介绍</strong>
 
-&ensp;&ensp;&ensp;&ensp;<code>C/C++</code>源文件，首先会被编译生成中间目标文件，再由中间目标文件链接生成执行文件。在编译时，编译器只检测程序语法，和函数/变量是否被声明；如果函数未被声明，编译器会给出一个警告，但可以生成<code>Object File</code>；在链接时，链接器会在所有的<code>Object File</code>中找寻函数的实现，如果找不到，那到就会报链接错误码，指出链接器未能找到函数的实现。
+&ensp;&ensp;&ensp;&ensp;C/C++源文件，首先会被编译生成中间目标文件，再由中间目标文件链接生成执行文件。在编译时，编译器只检测程序语法，和函数/变量是否被声明；如果函数未被声明，编译器会给出一个警告，但可以生成Object File；在链接时，链接器会在所有的Object File中找寻函数的实现，如果找不到，那到就会报链接错误码，指出链接器未能找到函数的实现。
 
 <strong>二、典型示例</strong>
 
-&ensp;&ensp;&ensp;&ensp;在这个示例中，工程有8个C文件和3个H文件，我们要写一个<code>Makefile</code>来告诉<code>make</code>命令如何编译和链接这几个文件。规则如下：<br/>
+&ensp;&ensp;&ensp;&ensp;在这个示例中，工程有8个C文件和3个H文件，我们要写一个Makefile来告诉make命令如何编译和链接这几个文件。规则如下：<br/>
 
 * 如果这个工程没有编译过，那么所有的C文件都要编译并被链接。
 * 如果这个工程的某几个C文件被修改，那么只编译被修改的C文件，并链接目标工程。
 * 如果这个工程的头文件被改变了，那么只编译引用了这几个头文件的C文件，并链接目标程序。
 
-按照上述规则，编写<code>Makefile</code>文件如下：
+按照上述规则，编写Makefile文件如下：
 
 <pre class="prettyPrint lang=bash">
 # 使用变量
@@ -60,31 +60,31 @@ clean :
 </pre>
 
 
-在默认的方式下，也就是我们只输入<code>make</code>命令，执行流程如下：
+在默认的方式下，也就是我们只输入make命令，执行流程如下：
 
-* 首先<code>make</code>会在当前目录下找名字叫<code>Makefile</code>或<code>makefile</code>的文件。<br/>
-* 如果找到，它会找文件中的第一个<code>target</code>，并把这个文件作为最终的目标文件。<br/>
-* 如果最终目标文件不存在，或其所依赖的<code>.o</code>文件修改时间比它更新，就会执行后面所定义的命令来生成这个文件。<br/>
-* 如果最终目标文件所依赖的<code>.o</code>文件也不存在，或者<code>.o</code>文件比其依赖文件修改时间更早，就会根据其对应规则先生成<code>.o</code>文件。<br/>
+* 首先make会在当前目录下找名字叫Makefile或makefile的文件。<br/>
+* 如果找到，它会找文件中的第一个target，并把这个文件作为最终的目标文件。<br/>
+* 如果最终目标文件不存在，或其所依赖的.o文件修改时间比它更新，就会执行后面所定义的命令来生成这个文件。<br/>
+* 如果最终目标文件所依赖的.o文件也不存在，或者.o文件比其依赖文件修改时间更早，就会根据其对应规则先生成.o文件。<br/>
 * 重复上述的递推过程，直到遇到源代码文件，再按照逆序一步步地生成最终目标文件。<br/>
 
 <strong>三、基本规则</strong>
 
-1.&ensp;<code>Makefile</code>文件构成
+1.&ensp;Makefile文件构成
 
-* 显式规则。说明了如何生成一个或多的的目标文件。这是由<code>Makefile</code>的书写者明显指出，要生成的文件，文件的依赖文件，生成的命令。在<code>Makefile</code>中的命令，必须要以</code>[Tab]</code>键开始。
-* 隐晦规则。可以让我们比较粗糙地简略地书写<code>Makefile</code>，这是由<code>make</code>所支持的。<br/>
-* 变量定义。变量一般都是字符串，有点你C语言中的宏，当<code>Makefile</code>被执行时，其中的变量都会被扩展到相应的引用位置上。<br/>
-* 文件指示。包括了三个部分：一个是在一个<code>Makefile</code>中引用另一个<code>Makefile</code>，就像<code>C</code>语言中的<code>include</code>一样；另一个是指根据某些情况指定<code>Makefile</code>中的有效部分，就像<code>C</code>语言中的预编译<code>#if</code>一样；还有就是定义一个多行的命令。<br/>
-* 注释。只有行注释，和<code>UNIX</code>的<code>Shell</code>脚本一样，其注释是用<code>"#"</code>字符。<br/>
+* 显式规则。说明了如何生成一个或多的的目标文件。这是由Makefile的书写者明显指出，要生成的文件，文件的依赖文件，生成的命令。在Makefile中的命令，必须要以[Tab]键开始。
+* 隐晦规则。可以让我们比较粗糙地简略地书写Makefile，这是由make所支持的。<br/>
+* 变量定义。变量一般都是字符串，有点你C语言中的宏，当Makefile被执行时，其中的变量都会被扩展到相应的引用位置上。<br/>
+* 文件指示。包括了三个部分：一个是在一个Makefile中引用另一个Makefile，就像C语言中的include一样；另一个是指根据某些情况指定Makefile中的有效部分，就像C语言中的预编译#if一样；还有就是定义一个多行的命令。<br/>
+* 注释。只有行注释，和UNIX的Shell脚本一样，其注释是用"#"字符。<br/>
 
 
-2.&ensp;<code>Makefile</code>注意事项
+2.&ensp;Makefile注意事项
 
-* 大多数的<code>make</code>都支持<code>makefile</code>和<code>Makefile</code>这两种默认文件名。如果要指定特定的<code>Makefile</code>，你可以使用<code>make</code>的<code>-f</code>和<code>--file</code>参数，如<code>make -f Make.Linux</code>。
-* 在<code>Makefile</code>使用<code>include</code>关键字可以把别的<code>Makefile</code>包含进来，这很像<code>C</code>语言的<code>#include</code>，被包含的文件会原模原样的放在当前文件的包含位置。<code>make</code>命令开始时，如果文件都没有指定绝对路径或是相对路径的话，<code>make</code>会在当前目录下首先寻找，如果当前目录下没有找到，那么，<code>make</code>还会在下面的几个目录下找：(1)如果<code>make</code>执行时，有<code>-I</code>或<code>--include-dir</code>参数，那么<code>make</code>就会在这个参数所指定的目录下去寻找；(2)如果目录<code>[prefix]/include</code>（一般是：<code>/usr/local/bin</code>或<code>/usr/include</code>）存在的话，<code>make</code>也会去找。<br/>
-* <code>GNU</code>的<code>make</code>工作时的执行步骤入下：
-(1)读入所有的<code>Makefile</code>；(2)读入被<code>include</code>的其它<code>Makefile</code>；(3)初始化文件中的变量；(4)推导隐晦规则，并分析所有规则；(5)为所有的目标文件创建依赖关系链；(6)根据依赖关系，决定哪些目标要重新生成；(7)执行生成命令。
+* 大多数的make都支持makefile和Makefile这两种默认文件名。如果要指定特定的Makefile，你可以使用make的-f和--file参数，如make -f Make.Linux。
+* 在Makefile使用include关键字可以把别的Makefile包含进来，这很像C语言的#include，被包含的文件会原模原样的放在当前文件的包含位置。make命令开始时，如果文件都没有指定绝对路径或是相对路径的话，make会在当前目录下首先寻找，如果当前目录下没有找到，那么，make还会在下面的几个目录下找：(1)如果make执行时，有-I或--include-dir参数，那么make就会在这个参数所指定的目录下去寻找；(2)如果目录[prefix]/include（一般是：/usr/local/bin或/usr/include）存在的话，make也会去找。<br/>
+* GNU的make工作时的执行步骤入下：
+(1)读入所有的Makefile；(2)读入被include的其它Makefile；(3)初始化文件中的变量；(4)推导隐晦规则，并分析所有规则；(5)为所有的目标文件创建依赖关系链；(6)根据依赖关系，决定哪些目标要重新生成；(7)执行生成命令。
 
 
 <p class="my_header1">第2章  Makefile进阶</p>
@@ -103,13 +103,13 @@ targets : prerequisites
 
 2.&ensp;通配符
 
-&ensp;&ensp;&ensp;&ensp;<code>make</code>支持三各通配符：<code>*</code>，<code>?</code>和<code>[]</code>，这是和<code>Unix</code>的<code>B-Shell</code>是相同的。分别表示匹配零个或多个字符、匹配任意一个字符和匹配括弧 中的任意单一字符。
+&ensp;&ensp;&ensp;&ensp;make支持三各通配符：*，?和[]，这是和Unix的B-Shell是相同的。分别表示匹配零个或多个字符、匹配任意一个字符和匹配括弧 中的任意单一字符。
 
 3.&ensp;文件搜寻
 
-&ensp;&ensp;&ensp;&ensp;在一些大的工程中，通常是把这许多的源文件分类，并存放在不同的目录中。当<code>make</code>需要去找寻文件的依赖关系时，你可以在文件前加上路径，但最好的方法是把一个路径告诉<code>make</code>，让<code>make</code>自动去找。一般来说有两种方法：
+&ensp;&ensp;&ensp;&ensp;在一些大的工程中，通常是把这许多的源文件分类，并存放在不同的目录中。当make需要去找寻文件的依赖关系时，你可以在文件前加上路径，但最好的方法是把一个路径告诉make，让make自动去找。一般来说有两种方法：
 
-* <code>Makefile</code>文件中的特殊变量<code>VPATH</code>。如果没有指明这个变量，<code>make</code>只会在当前的目录中去找寻依赖文件和目标文件。如果定义了这个变量，那么，<code>make</code>就会在当前目录找不到的情况下，到所指定的目录中去找寻，如：
+* Makefile文件中的特殊变量VPATH。如果没有指明这个变量，make只会在当前的目录中去找寻依赖文件和目标文件。如果定义了这个变量，那么，make就会在当前目录找不到的情况下，到所指定的目录中去找寻，如：
 
 <pre class="prettyPrint lang=bash">
 VPATH = src:../headers
@@ -117,7 +117,7 @@ VPATH = src:../headers
 # make会在当前目录搜索不到的情况下，按照上述顺序进行搜索。
 </pre>
 
-* 使用<code>make</code>的<code>vpath</code>关键字，这和上面提到的那个VPATH变量很类似。这种方法更为灵活，它可以指定不同的文件在不同的搜索目录中。
+* 使用make的vpath关键字，这和上面提到的那个VPATH变量很类似。这种方法更为灵活，它可以指定不同的文件在不同的搜索目录中。
 
 <pre class="prettyPrint lang=bash">
 # 它的使用方法有三种：
@@ -144,9 +144,9 @@ vpath % blish
 
 4.&ensp;伪目标
 
-&ensp;&ensp;&ensp;&ensp;“伪目标”并不是一个文件，只是一个标签。由于“伪目标”不是文件，所以<code>make</code>无法生成它的依赖关系和决定它是否要执行,只有通过显示地指明这个“目标”才能让其生效。当然，“伪目标”的取名不能和文件名重名，不然其就失去了“伪目标”的意义。为了避免和文件重名的这种情况，可以使用一个特殊的标记<code>.PHONY</code>来显式地指明一个目标是“伪目标”，向<code>make</code>说明，不管是否有这个文件，这个目标就是“伪目标”。
+&ensp;&ensp;&ensp;&ensp;“伪目标”并不是一个文件，只是一个标签。由于“伪目标”不是文件，所以make无法生成它的依赖关系和决定它是否要执行,只有通过显示地指明这个“目标”才能让其生效。当然，“伪目标”的取名不能和文件名重名，不然其就失去了“伪目标”的意义。为了避免和文件重名的这种情况，可以使用一个特殊的标记.PHONY来显式地指明一个目标是“伪目标”，向make说明，不管是否有这个文件，这个目标就是“伪目标”。
 
-&ensp;&ensp;&ensp;&ensp;伪目标一般没有依赖的文件。但是，也可以为伪目标指定所依赖的文件。伪目标同样可以作为“默认目标”，只要将其放在第一个。一个示例就是，如果你的<code>Makefile</code>需要一口气生成若干个可执行文件，但你只想简单地敲一个<code>make</code>完事，并且，所有的目标文件都写在一个<code>Makefile</code>中，那么你可以使用“伪目标”这个特性：
+&ensp;&ensp;&ensp;&ensp;伪目标一般没有依赖的文件。但是，也可以为伪目标指定所依赖的文件。伪目标同样可以作为“默认目标”，只要将其放在第一个。一个示例就是，如果你的Makefile需要一口气生成若干个可执行文件，但你只想简单地敲一个make完事，并且，所有的目标文件都写在一个Makefile中，那么你可以使用“伪目标”这个特性：
 
 <pre class="prettyPrint lang=bash">
 all : prog1 prog2 prog3
@@ -160,7 +160,7 @@ prog3 : prog3.o sort.o utils.o
 	cc -o prog3 prog3.o sort.o utils.o
 </pre>
 
-其中，<code>Makefile</code>中的第一个目标会被作为其默认目标。我们声明了一个<code>all</code>的伪目标，其依赖于其它三个目标。由于伪目标的特性是，总是被执行的，所以其依赖的那三个目标就总是不如<code>all</code>这个目标新。所以，其它三个目标的规则总是会被决议。也就达到了我们一口气生成多个目标的目的。
+其中，Makefile中的第一个目标会被作为其默认目标。我们声明了一个all的伪目标，其依赖于其它三个目标。由于伪目标的特性是，总是被执行的，所以其依赖的那三个目标就总是不如all这个目标新。所以，其它三个目标的规则总是会被决议。也就达到了我们一口气生成多个目标的目的。
 
 &ensp;&ensp;&ensp;&ensp;随便提一句，从上面的例子我们可以看出，目标也可以成为依赖。所以，伪目标同样也可成为依赖。看下面的例子：
 
@@ -173,7 +173,7 @@ cleanobj :
 cleandiff :
 	rm *.diff
 </pre>
-其中，<code>make clean</code>将清除所有要被清除的文件。<code>cleanobj</code>和<code>cleandiff</code>这两个伪目标有点像“子程序”的意思。我们可以输入<code>make cleanall</code>和<code>make cleanobj</code>和<code>make cleandiff</code>命令来达到清除不同种类文件的目的。
+其中，make clean将清除所有要被清除的文件。cleanobj和cleandiff这两个伪目标有点像“子程序”的意思。我们可以输入make cleanall和make cleanobj和make cleandiff命令来达到清除不同种类文件的目的。
 
 5.&ensp;静态模式
 
@@ -187,7 +187,7 @@ cleandiff :
 # prereq-parrterns是目标的依赖模式，它对target-parrtern模式再进行一次依赖目标的定义。
 </pre>
 
-&ensp;&ensp;&ensp;&ensp;如果<code>target-parrtern</code>定义成<code>%.o</code>，意思是<code>target</code>集合中都是以<code>.o</code>结尾的；而如果<code>prereq-parrterns</code>定义成<code>%.c</code>，意思是对<code>target-parrtern</code>所形成的目标集进行二次定义。其计算方法是，取<code>target-parrtern</code>模式中的<code>%</code>，并为其加上<code>.c</code>这个结尾，形成的新集合。看一个例子：
+&ensp;&ensp;&ensp;&ensp;如果target-parrtern定义成%.o，意思是target集合中都是以.o结尾的；而如果prereq-parrterns定义成%.c，意思是对target-parrtern所形成的目标集进行二次定义。其计算方法是，取target-parrtern模式中的%，并为其加上.c这个结尾，形成的新集合。看一个例子：
 
 <pre class="prettyPrint lang=bash">
 # $(objects)指明了我们的目标从$object中获取
@@ -205,7 +205,7 @@ bar.o : bar.c
 $(CC) -c $(CFLAGS) bar.c -o bar.o
 </pre>
 
-&ensp;&ensp;&ensp;&ensp;试想，如果我们的<code>%.o</code>有几百个，那种我们只要用这种很简单的静态模式规则就可以写完一堆规则，实在是太有效率了。静态模式规则的用法很灵活，如果用得好，那会一个很强大的功能。再看一个例子：
+&ensp;&ensp;&ensp;&ensp;试想，如果我们的%.o有几百个，那种我们只要用这种很简单的静态模式规则就可以写完一堆规则，实在是太有效率了。静态模式规则的用法很灵活，如果用得好，那会一个很强大的功能。再看一个例子：
 
 <pre class="prettyPrint lang=bash">
 files = foo.elc bar.o lose.o
@@ -213,14 +213,14 @@ $(filter %.o,$(files)): %.o: %.c
 $(CC) -c $(CFLAGS) $< -o $@
 $(filter %.elc,$(files)): %.elc: %.el
 emacs -f batch-byte-compile $<
-# $(filter %.o,$(files))表示调用<code>Makefile</code>的</code>filter</code>函数
-# 过滤<code>$files</code>集，只要其中模式为<code>%.o</code>的内容
+# $(filter %.o,$(files))表示调用Makefile的filter函数
+# 过滤$files集，只要其中模式为%.o的内容
 </pre>
 
 
 6.&ensp;自动生成依赖
 
-&ensp;&ensp;&ensp;&ensp;在<code>Makefile</code>中，依赖关系可能会需要包含一系列的头文件。但是，如果是一个比较大型的工程，你必需清楚哪些<code>C</code>文件包含了哪些头文件，并且，你在加入或删除头文件时，也需要小心地修改<code>Makefile</code>，这是一个很没有维护性的工作。为了避免这种繁重而又容易出错的事情，我们可以使用<code>C/C++</code>编译的一个功能。大多数的<code>C/C++</code>编译器都支持一个<code>-M</code>的选项，即自动找寻源文件中包含的头文件，并生成一个依赖关系。例如，如果我们执行下面的命令：
+&ensp;&ensp;&ensp;&ensp;在Makefile中，依赖关系可能会需要包含一系列的头文件。但是，如果是一个比较大型的工程，你必需清楚哪些C文件包含了哪些头文件，并且，你在加入或删除头文件时，也需要小心地修改Makefile，这是一个很没有维护性的工作。为了避免这种繁重而又容易出错的事情，我们可以使用C/C++编译的一个功能。大多数的C/C++编译器都支持一个-M的选项，即自动找寻源文件中包含的头文件，并生成一个依赖关系。例如，如果我们执行下面的命令：
 
 <pre class="prettyPrint lang=bash">
 cc -M main.c
@@ -233,7 +233,7 @@ main.o : main.c defs.h
 </pre>
 
 
-&ensp;&ensp;&ensp;&ensp;那么，编译器的这个功能如何与我们的<code>Makefile</code>联系在一起，让<code>Makefile</code>自已依赖于源文件呢？<code>GNU</code>组织建议把编译器为每一个源文件自动生成的依赖关系放到一个文件中，为每一个<code>name.c</code>的文件都生成一个<code>name.d</code>的<code>Makefile</code>文件。于是，我们可以写出<code>.c/.h</code>文件和<code>.d</code>文件的依赖关系，并让<code>make</code>自动生成和更新<code>.d</code>文件，并把其包含在我们的主<code>Makefile</code>中，这样，我们就可以自动化地生成每个文件的依赖关系。
+&ensp;&ensp;&ensp;&ensp;那么，编译器的这个功能如何与我们的Makefile联系在一起，让Makefile自已依赖于源文件呢？GNU组织建议把编译器为每一个源文件自动生成的依赖关系放到一个文件中，为每一个name.c的文件都生成一个name.d的Makefile文件。于是，我们可以写出.c/.h文件和.d文件的依赖关系，并让make自动生成和更新.d文件，并把其包含在我们的主Makefile中，这样，我们就可以自动化地生成每个文件的依赖关系。
 
 <pre class="prettyPrint lang=bash">
 # 这里，我们给出了一个模式规则来产生[.d]文件：
