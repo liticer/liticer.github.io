@@ -103,7 +103,7 @@ font-family: 'Raleway', sans-serif;
 }
 
 .page-header2 {
-	color: red;
+	color: #FF0000;
 	padding: 10px 0 9px;
 	font-size: 25px;
 	font-family: 'Courier New',sans-serif,Verdana,'Hiragino Sans GB',SimSun,Arial;
@@ -132,16 +132,9 @@ article {
 }
 
 .article_body{
-	border:30px solid #f0f0f0;
-	-webkit-border-image: url("/assets/image/background-article.jpg") 30 round ;
-	-moz-border-image: url("/assets/image/background-article.jpg") 30 round ;
-	border-image: url("/assets/image/background-article.jpg") 30 round ;
-    border-radius: 10px;
-	box-shadow: 0 20px 16px #f0f0f0, 0 0 1px #f0f0f0, 0 0 1px #f0f0f0; 
-	background-color: #fff;
 	margin-top: 20px;
 	margin-bottom: 10px;
-	padding: 40px 5% 20px;
+	padding: 40px 0 20px;
 }
 
 #article_body{
