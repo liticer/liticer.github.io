@@ -211,7 +211,7 @@ clean :
 	rm edit $(OBJS)
 </pre>
 
-<p>在默认的方式下，也就是我们只输入make命令，执行流程如下：<font style="color:red;">(1)</font>首先make会在当前目录下找名字叫Makefile或makefile的文件。<font style="color:red;">(2)</font>如果找到，它会找文件中的第一个target，并把这个文件作为最终的目标文件。<font style="color:red;">(3)</font>如果最终目标文件不存在，或其所依赖的.o文件修改时间比它更新，就会执行后面所定义的命令来生成这个文件。<font style="color:red;">(4)</font>如果最终目标文件所依赖的.o文件也不存在，或者.o文件比其依赖文件修改时间更早，就会根据其对应规则先生成.o文件。<font style="color:red;">(5)</font>重复上述的递推过程，直到遇到源代码文件，再按照逆序一步步地生成最终目标文件。</p>
+<p>    在默认的方式下，也就是我们只输入make命令，执行流程如下：<font style="color:red;">(1)</font>首先make会在当前目录下找名字叫Makefile或makefile的文件。<font style="color:red;">(2)</font>如果找到，它会找文件中的第一个target，并把这个文件作为最终的目标文件。<font style="color:red;">(3)</font>如果最终目标文件不存在，或其所依赖的.o文件修改时间比它更新，就会执行后面所定义的命令来生成这个文件。<font style="color:red;">(4)</font>如果最终目标文件所依赖的.o文件也不存在，或者.o文件比其依赖文件修改时间更早，就会根据其对应规则先生成.o文件。<font style="color:red;">(5)</font>重复上述的递推过程，直到遇到源代码文件，再按照逆序一步步地生成最终目标文件。</p>
 
 <p><strong>三、基本规则</strong></p>
 
