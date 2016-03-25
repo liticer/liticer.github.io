@@ -23,11 +23,9 @@ tags: Git
 <strong>二、典型示例</strong>
 
 &ensp;&ensp;&ensp;&ensp;在这个示例中，工程有8个C文件和3个H文件，我们要写一个Makefile来告诉make命令如何编译和链接这几个文件。规则如下：<br/>
-
-* 如果这个工程没有编译过，那么所有的C文件都要编译并被链接。
-* 如果这个工程的某几个C文件被修改，那么只编译被修改的C文件，并链接目标工程。
-* 如果这个工程的头文件被改变了，那么只编译引用了这几个头文件的C文件，并链接目标程序。
-
+&ensp;&ensp;&ensp;&ensp;A.如果这个工程没有编译过，那么所有的C文件都要编译并被链接。<br/>
+&ensp;&ensp;&ensp;&ensp;B.如果这个工程的某几个C文件被修改，那么只编译被修改的C文件，并链接目标工程。<br/>
+&ensp;&ensp;&ensp;&ensp;C.如果这个工程的头文件被改变了，那么只编译引用了这几个头文件的C文件，并链接目标程序。<br/>
 按照上述规则，编写Makefile文件如下：
 
 <pre class="prettyPrint lang=bash">
@@ -60,31 +58,19 @@ clean :
 </pre>
 
 
-在默认的方式下，也就是我们只输入make命令，执行流程如下：
-
-* 首先make会在当前目录下找名字叫Makefile或makefile的文件。<br/>
-* 如果找到，它会找文件中的第一个target，并把这个文件作为最终的目标文件。<br/>
-* 如果最终目标文件不存在，或其所依赖的.o文件修改时间比它更新，就会执行后面所定义的命令来生成这个文件。<br/>
-* 如果最终目标文件所依赖的.o文件也不存在，或者.o文件比其依赖文件修改时间更早，就会根据其对应规则先生成.o文件。<br/>
-* 重复上述的递推过程，直到遇到源代码文件，再按照逆序一步步地生成最终目标文件。<br/>
+在默认的方式下，也就是我们只输入make命令，执行流程如下：<font style="color:red;">(1)</font>首先make会在当前目录下找名字叫Makefile或makefile的文件。<font style="color:red;">(2)</font>如果找到，它会找文件中的第一个target，并把这个文件作为最终的目标文件。<font style="color:red;">(3)</font>如果最终目标文件不存在，或其所依赖的.o文件修改时间比它更新，就会执行后面所定义的命令来生成这个文件。<font style="color:red;">(4)</font>如果最终目标文件所依赖的.o文件也不存在，或者.o文件比其依赖文件修改时间更早，就会根据其对应规则先生成.o文件。<font style="color:red;">(5)</font>重复上述的递推过程，直到遇到源代码文件，再按照逆序一步步地生成最终目标文件。
 
 <strong>三、基本规则</strong>
 
 1.&ensp;Makefile文件构成
 
-* 显式规则。说明了如何生成一个或多的的目标文件。这是由Makefile的书写者明显指出，要生成的文件，文件的依赖文件，生成的命令。在Makefile中的命令，必须要以[Tab]键开始。
-* 隐晦规则。可以让我们比较粗糙地简略地书写Makefile，这是由make所支持的。<br/>
-* 变量定义。变量一般都是字符串，有点你C语言中的宏，当Makefile被执行时，其中的变量都会被扩展到相应的引用位置上。<br/>
-* 文件指示。包括了三个部分：一个是在一个Makefile中引用另一个Makefile，就像C语言中的include一样；另一个是指根据某些情况指定Makefile中的有效部分，就像C语言中的预编译#if一样；还有就是定义一个多行的命令。<br/>
-* 注释。只有行注释，和UNIX的Shell脚本一样，其注释是用"#"字符。<br/>
-
+&ensp;&ensp;&ensp;&ensp;包含五个部分：<font style="color:red;">(1)</font>显式规则。说明了如何生成一个或多的的目标文件。这是由Makefile的书写者明显指出，要生成的文件，文件的依赖文件，生成的命令。在Makefile中的命令，必须要以[Tab]键开始。<font style="color:red;">(2)</font>隐晦规则。可以让我们比较粗糙地简略地书写Makefile，这是由make所支持的。<font style="color:red;">(3)</font>变量定义。变量一般都是字符串，有点你C语言中的宏，当Makefile被执行时，其中的变量都会被扩展到相应的引用位置上。<font style="color:red;">(4)</font>文件指示。包括了三个部分：一个是在一个Makefile中引用另一个Makefile，就像C语言中的include一样；另一个是指根据某些情况指定Makefile中的有效部分，就像C语言中的预编译#if一样；还有就是定义一个多行的命令。<font style="color:red;">(5)</font>注释。只有行注释，和UNIX的Shell脚本一样，其注释是用"#"字符。
 
 2.&ensp;Makefile注意事项
 
-* 大多数的make都支持makefile和Makefile这两种默认文件名。如果要指定特定的Makefile，你可以使用make的-f和--file参数，如make -f Make.Linux。
-* 在Makefile使用include关键字可以把别的Makefile包含进来，这很像C语言的#include，被包含的文件会原模原样的放在当前文件的包含位置。make命令开始时，如果文件都没有指定绝对路径或是相对路径的话，make会在当前目录下首先寻找，如果当前目录下没有找到，那么，make还会在下面的几个目录下找：(1)如果make执行时，有-I或--include-dir参数，那么make就会在这个参数所指定的目录下去寻找；(2)如果目录[prefix]/include（一般是：/usr/local/bin或/usr/include）存在的话，make也会去找。<br/>
-* GNU的make工作时的执行步骤入下：
-(1)读入所有的Makefile；(2)读入被include的其它Makefile；(3)初始化文件中的变量；(4)推导隐晦规则，并分析所有规则；(5)为所有的目标文件创建依赖关系链；(6)根据依赖关系，决定哪些目标要重新生成；(7)执行生成命令。
+&ensp;&ensp;&ensp;&ensp;大多数的make都支持makefile和Makefile这两种默认文件名。如果要指定特定的Makefile，你可以使用make的-f和--file参数，如make -f Make.Linux。<br/>
+&ensp;&ensp;&ensp;&ensp;在Makefile使用include关键字可以把别的Makefile包含进来，这很像C语言的#include，被包含的文件会原模原样的放在当前文件的包含位置。make命令开始时，如果文件都没有指定绝对路径或是相对路径的话，make会在当前目录下首先寻找，如果当前目录下没有找到，那么，make还会在下面的几个目录下找：<font style="color:red;">(1)</font>如果make执行时，有-I或--include-dir参数，那么make就会在这个参数所指定的目录下去寻找；<font style="color:red;">(2)</font>如果目录[prefix]/include（一般是：/usr/local/bin或/usr/include）存在的话，make也会去找。<br/>
+&ensp;&ensp;&ensp;&ensp;GNU的make工作时的执行步骤入下：<font style="color:red;">(1)</font>读入所有的Makefile；<font style="color:red;">(2)</font>读入被include的其它Makefile；<font style="color:red;">(3)</font>初始化文件中的变量；<font style="color:red;">(4)</font>推导隐晦规则，并分析所有规则；<font style="color:red;">(5)</font>为所有的目标文件创建依赖关系链；<font style="color:red;">(6)</font>根据依赖关系，决定哪些目标要重新生成；<font style="color:red;">(7)</font>执行生成命令。
 
 
 <p class="my_header1">第2章  Makefile进阶</p>
@@ -107,9 +93,8 @@ targets : prerequisites
 
 3.&ensp;文件搜寻
 
-&ensp;&ensp;&ensp;&ensp;在一些大的工程中，通常是把这许多的源文件分类，并存放在不同的目录中。当make需要去找寻文件的依赖关系时，你可以在文件前加上路径，但最好的方法是把一个路径告诉make，让make自动去找。一般来说有两种方法：
-
-* Makefile文件中的特殊变量VPATH。如果没有指明这个变量，make只会在当前的目录中去找寻依赖文件和目标文件。如果定义了这个变量，那么，make就会在当前目录找不到的情况下，到所指定的目录中去找寻，如：
+&ensp;&ensp;&ensp;&ensp;在一些大的工程中，通常是把这许多的源文件分类，并存放在不同的目录中。当make需要去找寻文件的依赖关系时，你可以在文件前加上路径，但最好的方法是把一个路径告诉make，让make自动去找。一般来说有两种方法：<br/>
+第一种，Makefile文件中的特殊变量VPATH。如果没有指明这个变量，make只会在当前的目录中去找寻依赖文件和目标文件。如果定义了这个变量，那么，make就会在当前目录找不到的情况下，到所指定的目录中去找寻，如：
 
 <pre class="prettyPrint lang=bash">
 VPATH = src:../headers
@@ -117,7 +102,7 @@ VPATH = src:../headers
 # make会在当前目录搜索不到的情况下，按照上述顺序进行搜索。
 </pre>
 
-* 使用make的vpath关键字，这和上面提到的那个VPATH变量很类似。这种方法更为灵活，它可以指定不同的文件在不同的搜索目录中。
+第二种，使用make的vpath关键字，这和上面提到的那个VPATH变量很类似。这种方法更为灵活，它可以指定不同的文件在不同的搜索目录中。如：
 
 <pre class="prettyPrint lang=bash">
 # 它的使用方法有三种：
@@ -162,7 +147,7 @@ prog3 : prog3.o sort.o utils.o
 
 其中，Makefile中的第一个目标会被作为其默认目标。我们声明了一个all的伪目标，其依赖于其它三个目标。由于伪目标的特性是，总是被执行的，所以其依赖的那三个目标就总是不如all这个目标新。所以，其它三个目标的规则总是会被决议。也就达到了我们一口气生成多个目标的目的。
 
-&ensp;&ensp;&ensp;&ensp;随便提一句，从上面的例子我们可以看出，目标也可以成为依赖。所以，伪目标同样也可成为依赖。看下面的例子：
+&ensp;&ensp;&ensp;&ensp;随便提一句，从上面的例子我们可以看出，目标也可以成为依赖。所以，伪目标同样也可成为依赖。看下面的例子，其中，make clean将清除所有要被清除的文件。cleanobj和cleandiff这两个伪目标有点像“子程序”的意思。我们可以输入make cleanall和make cleanobj和make cleandiff命令来达到清除不同种类文件的目的。
 
 <pre class="prettyPrint lang=bash">
 .PHONY: cleanall cleanobj cleandiff
@@ -173,7 +158,7 @@ cleanobj :
 cleandiff :
 	rm *.diff
 </pre>
-其中，make clean将清除所有要被清除的文件。cleanobj和cleandiff这两个伪目标有点像“子程序”的意思。我们可以输入make cleanall和make cleanobj和make cleandiff命令来达到清除不同种类文件的目的。
+
 
 5.&ensp;静态模式
 
